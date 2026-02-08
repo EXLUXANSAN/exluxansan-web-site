@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>익스럭스(EXLUX) 안산 체험관 | 내 몸을 위한 에너지 충전소</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root { --primary: #002D5E; --accent: #C5A028; --bg: #f8f9fa; --text: #333; --white: #ffffff; --danger: #d32f2f; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Noto Sans KR', sans-serif; line-height: 1.8; color: var(--text); word-break: keep-all; background-color: var(--white); }
+        
+        /* Navigation */
+        header { position: fixed; width: 100%; top: 0; z-index: 1000; background: rgba(255,255,255,0.98); border-bottom: 1px solid #eee; }
+        nav { max-width: 1200px; margin: 0 auto; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Montserrat', sans-serif; font-size: 1.6rem; font-weight: 800; color: var(--primary); letter-spacing: 1px; }
+        .nav-links { display: flex; align-items: center; }
+        .nav-links a { margin-left: 20px; text-decoration: none; color: var(--text); font-weight: 500; font-size: 0.95rem; transition: 0.3s; cursor: pointer; }
+        .nav-links a:hover { color: var(--accent); }
+        .admin-btn { font-size: 0.8rem !important; color: #999 !important; border: 1px solid #ddd; padding: 4px 8px; border-radius: 4px; margin-left: 25px !important; }
+
+        /* Hero */
+        .hero { 
+            min-height: 400px; 
+            padding: 100px 20px; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+                        url('image_4.png') center/cover;
+            color: #fff; 
+            text-align: center; 
+            margin-top: 60px;
+        }
+        .hero p.subtitle { font-size: 1.2rem; letter-spacing: 3px; margin-bottom: 15px; font-weight: 500; color: var(--accent); }
+        .hero h1 { font-size: 4rem; margin-bottom: 25px; line-height: 1.1; font-weight: 900; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .hero h1 span { color: var(--accent); }
+        .hero p.description { font-size: 1.4rem; max-width: 850px; font-weight: 300; line-height: 1.6; opacity: 1; color: #f0f0f0; }
+
+        /* Sections */
+        section { padding: 100px 20px; max-width: 1200px; margin: 0 auto; }
+        .bg-gray { background-color: var(--bg); max-width: 100%; }
+        .section-title { text-align: center; margin-bottom: 60px; }
+        .section-title h2 { font-size: 2.5rem; color: var(--primary); margin-bottom: 15px; font-weight: 700; }
+        .section-title p { color: var(--accent); font-weight: 600; font-size: 1.1rem; }
+
+        /* Tech Boxes */
+        .tech-card { 
+            padding: 35px 20px; 
+            background: white; 
+            border-radius: 15px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
+            margin-bottom: 30px; 
+            min-width: 340px;
+            border-top: 5px solid var(--accent); 
+        }
+        .tech-card h3 { color: var(--primary); margin-bottom: 20px; border-left: 5px solid var(--accent); padding-left: 15px; }
+        .tech-card p, .tech-card h4 { letter-spacing: -0.5px; word-break: keep-all; }
+        .tech-card ul { list-style-position: inside; margin-top: 15px; }
+        .tech-card li { margin-bottom: 10px; }
+
+        /* Testimonials */
+        .testi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .testi-card { background: white; padding: 30px; border-radius: 15px; border-top: 5px solid var(--accent); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .testi-card h5 { color: var(--primary); margin-bottom: 10px; font-size: 1.1rem; }
+
+        /* Pricing Table */
+        .price-table { width: 100%; border-collapse: collapse; margin-top: 30px; background: white; }
+        .price-table th, .price-table td { padding: 20px; border: 1px solid #eee; text-align: center; }
+        .price-table th { background: var(--primary); color: white; }
+
+        /* Footer & CTA */
+        .cta-btn { display: inline-block; background: var(--accent); color: white; padding: 20px 50px; border-radius: 50px; font-weight: 700; font-size: 1.3rem; text-decoration: none; margin-top: 40px; transition: 0.3s; box-shadow: 0 10px 20px rgba(197, 160, 40, 0.3); cursor: pointer; border: none; }
+        .cta-btn:hover { background: #ab8b22; transform: translateY(-5px); }
+        footer { background: #111; color: #fff; padding: 80px 20px; text-align: center; }
+        
+        .contact-box { background: #fff4f4; border: 1px solid #ffcccc; padding: 30px; border-radius: 15px; margin-top: 40px; }
+        
+        @media (max-width: 768px) { 
+            .hero h1 { font-size: 2.8rem; } 
+            .hero p.description { font-size: 1.2rem; }
+            .nav-links { display: none; } 
+        }
+
+        /* 관리자 보드 모달 스타일 */
+        #adminBoardModal { display:none; position:fixed; z-index:3000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.9); overflow-y: auto; padding: 50px 20px; }
+        .admin-content { background: white; max-width: 1100px; margin: 0 auto; border-radius: 15px; padding: 30px; position: relative; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <div class="logo" style="display: flex; align-items: center;">
+                <img src="C:\Users\PC2507\Desktop\셀리턴\이미지\제품(익스럭스).png" alt="EXLUX Logo" style="height: 40px; margin-right: 10px; width: auto;">
+                EXLUX
+            </div>
+            <div class="nav-links">
+                <a href="#identity">브랜드</a>
+                <a href="#tech">핵심기술</a>
+                <a href="#ansan">안산지사</a>
+                <a href="#pricing">이용안내</a>
+                <a href="#faq">FAQ</a>
+                <a onclick="checkAdmin()" class="admin-btn">관리자</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero" id="identity">
+        <p class="subtitle">PREMIUM HEALTH CARE</p>
+        <h1>익스럭스(<span>EXLUX</span>)</h1>
+        <p class="description">
+            익스럭스는 PEMF(펄스자기장) 기술을 통해 <br> 
+            인체 본연의 회복력을 깨우는 프리미엄 건강 관리 디바이스입니다.
+        </p>
+        <p class="description" style="margin-top: 25px;">
+            세포 수준의 에너지를 충전하여 현대인의 만성 통증과 피로를<br> 
+            근본적으로 관리하는 <strong>'내 몸을 위한 에너지 충전소'</strong>입니다.
+        </p>
+    </section>
+    
+    <div class="bg-gray">
+        <section id="tech">
+            <div class="section-title">
+                <p>PROVEN SCIENCE</p>
+                <h2>핵심 기술: 검증된 과학, PEMF란?</h2>
+            </div>
+            
+            <div class="tech-card">
+                <h3>NASA가 선택한 우주 기술 (The NASA Connection)</h3>
+                <p>PEMF는 지구가 내뿜는 자연적인 자기장 파동을 모사합니다.</p>
+                <ul>
+                    <li><strong>우주비행사의 생존 기술:</strong> NASA는 우주비행사들이 무중력 상태에서 겪는 골밀도 급감, 근육 위축, 우울감을 해결하기 위해 PEMF 기술을 도입했습니다.</li>
+                    <li><strong>세포 재생의 핵심:</strong> NASA 연구에 따르면 특정 PEMF 파동은 세포 재생 속도를 최대 4배까지 촉진시킬 수 있음이 증명되었습니다.</li>
+                </ul>
+            </div>
+
+            <div class="tech-card">
+                <h3>미국 FDA 승인 사례 (안전성과 효과의 상징)</h3>
+                <ul>
+                    <li><strong>1979년:</strong> 골절 부위 뼈 재생 촉진 치료 승인</li>
+                    <li><strong>1998년:</strong> 근육 및 관절 통증 완화 및 근육 자극 승인</li>
+                    <li><strong>2011년:</strong> 약물 저항성 우울증(뇌신경 자극) 치료 승인</li>
+                    <li><strong>2015년:</strong> 뇌종양 치료의 보조 수단 승인</li>
+                </ul>
+            </div>
+
+            <div class="tech-card">
+                <h3>국내 메이저 병원 도입 현황</h3>
+                <ul>
+                    <li><strong>서울대병원, 신촌세브란스:</strong> 난치성 통증 및 재활 의학 분야 활용</li>
+                    <li><strong>고려대병원, 경희대병원:</strong> 뇌신경 자극을 통한 불면증 및 통증 센터 운영</li>
+                    <li><strong>스포츠 재활:</strong> 국가대표 및 프로 구단 선수들의 부상 방지 및 빠른 회복 프로그램 도입</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <section>
+        <div class="tech-card" style="background: var(--primary); color: white; min-height: 200px; display: flex; align-items: center; padding: 40px; border-top: none;">
+            <div style="display: flex; align-items: flex-start; gap: 20px;">
+                <div style="width: 5px; min-height: 80px; background-color: var(--accent); flex-shrink: 0;"></div>
+                <div style="display: flex; flex-direction: column; justify-content: center;">
+                    <h3 style="margin: 0 0 10px 0; color: white; border: none; padding: 0; font-size: 1.5rem;">익스럭스 탄생 스토리텔링</h3>
+                    <p style="margin: 0; line-height: 1.8; font-weight: 300; opacity: 0.9;">
+                        "병원에서만 접하던 고귀한 기술을 당신의 일상으로." 익스럭스(Extra Luxury Energy)는 <br>
+                        "가장 소중한 사람의 아픔을 덜어주고 싶다"는 진심에서 시작되었습니다. <br>
+                        고가의 PEMF 장비 기술력을 유지하면서도 소형화·최적화에 성공하여 세포 수준의 진보된 휴식을 선사합니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-title" style="margin-top: 80px;"><h2>익스럭스가 꼭 필요한 분들 </h2></div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; max-width: 1100px; margin: 0 auto;">
+            <div class="tech-card" style="padding: 35px;">
+                <h4 style="color:var(--primary); font-size: 1.4rem; margin-bottom: 20px; font-weight: 800;">[통증 케어 및 신체 회복]</h4>
+                <p style="line-height: 1.8; font-size: 1.1rem; color: #444;">
+                    <strong>만성 통증</strong>(허리, 무릎, 어깨)으로 일상이 힘겨운 분들,<br>
+                    <strong>혈액 순환 및 대사 기능</strong> 저하로 고생하시는 분들.
+                </p>
+            </div>
+            <div class="tech-card" style="padding: 35px;">
+                <h4 style="color:var(--primary); font-size: 1.4rem; margin-bottom: 20px; font-weight: 800;">[신경계 및 심리 케어]</h4>
+                <p style="line-height: 1.8; font-size: 1.1rem; color: #444;">
+                    <strong>불면증, 우울증, 스트레스</strong>가 심한 분 (브레인 리셋이 필요한 분),<br>
+                    <strong>치매 및 인지 기능</strong> 저하가 우려되는 시니어 층.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <div class="bg-gray" id="ansan">
+        <section>
+            <div class="section-title">
+                <p>NO.1 EXPERIENCE CENTER</p>
+                <h2>국내 1호 체험관: 안산 지사 소개</h2>
+            </div>
+            <div class="tech-card" style="border-top: none;">
+                <h3>[탄생배경] "두 부부의 절실함이 기적이 되기까지"</h3>
+                <p>국내1호 안산체험관은 부부의 직접적인 건강 회복 경험 위에 세워졌습니다.</p>
+                <p style="margin-top: 15px;"><strong>남편(이성기)의 변화:</strong> 대사 질환(고혈압, 당뇨, 고지혈증)과 혈당 수치 조절, 전립선 문제로 불편했던 일상이 체험 후 정상화되었습니다.</p>
+                <p><strong>아내(박미영)의 변화:</strong> 고질적인 다리 저림, 만성 위장병, 몸 곳곳의 만성 통증으로부터 자유로워졌습니다.</p>
+                <p style="margin-top: 15px;">이 기적을 나누기 위해 아내가 직접 운영하며 지역 주민들의 <strong>건강 사랑방</strong> 역할을 하고 있습니다.</p>
+            </div>
+            <div class="tech-card" style="border-top: none;">
+                <h3>[차별화된 장점]</h3>
+                <p>풍부한 임상 데이터 기반의 맞춤형 컨설팅, 실제 호전 사례를 소통하는 신뢰의 공동체, 혈당·혈압 등 데이터 기반의 체계적인 체험 설계를 제공합니다.</p>
+            </div>
+        </section>
+    </div>
+
+    <section>
+        <div class="section-title"><h2>"단 한 번의 체험으로 증명된 놀라운 회복력"</h2></div>
+        <div class="testi-grid">
+            <div class="testi-card">
+                <h5>사례 1: 50대 여성 (식당 운영)</h5>
+                <p>페인트칠 후 발생한 전신 극심 통증이 2시간 집중 케어 후 다음 날 씻은 듯이 사라짐.</p>
+            </div>
+            <div class="testi-card">
+                <h5>사례 2: 60대 남성</h5>
+                <p>30년 고질적인 허리 통증이 안산 체험관 10회 집중 케어 후 일상생활 가능해짐.</p>
+            </div>
+            <div class="testi-card">
+                <h5>사례 3: 50대 여성</h5>
+                <p>손발 저림과 불면증 호소자가 정기 케어 후 온기가 돌며 숙면 취하게 됨.</p>
+            </div>
+            <div class="testi-card">
+                <h5>사례 4: 30대 직장인</h5>
+                <p>운동 후 근육통이 물리치료 수준으로 빠르게 회복되어 컨디션 유지에 도움 받음.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="bg-gray" id="pricing">
+        <section>
+            <div class="section-title"><h2>이용 안내 및 가격 정책</h2></div>
+            <table class="price-table">
+                <thead><tr><th>구분</th><th>상품 및 가격</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>익스럭스(EXLUX)</strong></td><td><strong>4,290,000원</strong> (프리미엄 패키지)</td></tr>
+                    <tr><td><strong>체험 10회권</strong></td><td>100,000원</td></tr>
+                    <tr><td><strong>체험 20회권</strong></td><td>180,000원(10% 할인)</td></tr>
+                    <tr><td><strong>체험 30회권</strong></td><td>240,000원(20% 할인)</td></tr>
+                </tbody>
+            </table>
+            
+            <div class="tech-card" style="margin-top: 50px; background: var(--primary); color: white; padding: 40px; display: flex; align-items: center; border-top: none;">
+                <div style="display: flex; align-items: flex-start; gap: 20px; text-align: left; width: 100%;">
+                    <div style="width: 5px; min-height: 60px; background-color: var(--accent); flex-shrink: 0;"></div>
+                    <div style="display: flex; flex-direction: column; justify-content: center;">
+                        <h3 style="margin: 0 0 10px 0; color: white; border: none; padding: 0; font-size: 1.5rem;">익스럭스(EXLUX) 지사(체험관) 모집</h3>
+                        <p style="margin: 0; line-height: 1.6; font-weight: 300; opacity: 0.9;">데이터와 결과로 말하는 비즈니스! <br> 빠른 손익분기점 달성과 안정적인 현금 흐름을 약속합니다.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <section id="faq">
+        <div class="section-title"><h2>안전 가이드 & FAQ</h2></div>
+        <div class="contact-box">
+            <h4 style="color:var(--danger); margin-bottom:10px;">[이용 시 필수 주의사항]</h4>
+            <p>심박 조율기 착용자 사용 엄금, 임산부 및 영유아 전문의 상담 필요, 급성 출혈 환자 사용 자제.</p>
+        </div>
+        <div class="tech-card" style="margin-top:20px; border-top: none;">
+            <p><strong>Q. 몸에 금속(임플란트 등)이 있는데 괜찮나요?</strong><br>A: 네, 비열성 파동이므로 금속 가열 없이 100mm 깊이까지 안전하게 케어 가능합니다.</p>
+            <p style="margin-top:10px;"><strong>Q. 전용 복장이 필요한가요?</strong><br>A: 아니요, 일상복 차림으로 앉거나 누워 에너지를 충전하세요.</p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="section-title"><h2 style="color:white;">익스럭스(EXLUX) 안산 체험관</h2></div>
+        <p style="font-size: 1.2rem; margin-bottom: 20px;"><strong>지사장 : 박미영</strong></p>
+        <p style="font-size: 1.1rem;"><strong>주소:</strong> 경기도 안산시 단원구 광덕4로 144, 트윈타운 A동 608호</p>
+        <p style="font-size: 1.1rem;"><strong>전화:</strong> <a href="tel:031-8042-3693" style="color:white; text-decoration:none;">031-8042-3693</a></p>
+        <p style="margin-top: 15px; opacity: 0.8;">방문 고객 편의성 극대화! 편안한 체험을 위해 미리 연락주세요.</p>
+        
+        <div style="margin-top: 40px;">
+            <a href="javascript:void(0);" onclick="openModal(event)" class="cta-btn">실시간 예약 및 상담하기</a>
+            <a href="https://blog.naver.com/cellreturn7933" target="_blank" class="cta-btn" style="background: #2db400; margin-left: 10px; box-shadow: 0 10px 20px rgba(45, 180, 0, 0.3);">
+                <i class="fa-solid fa-blog"></i> 공식 블로그 구경하기
+            </a>
+        </div>
+        
+        <p style="margin-top: 50px; opacity: 0.5;">© 2026 EXLUX ANSAN. All Rights Reserved.</p>
+    </footer>
+
+    <div id="bookingModal" style="display:none; position:fixed; z-index:2000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.8); align-items:center; justify-content:center;">
+        <div style="background:white; padding:40px; border-radius:20px; width:90%; max-width:450px; position:relative; box-shadow:0 20px 40px rgba(0,0,0,0.3);">
+            <span onclick="closeModal()" style="position:absolute; right:20px; top:15px; font-size:28px; cursor:pointer; color:#999;">&times;</span>
+            <h3 style="color:var(--primary); margin-bottom:10px; text-align:center;">실시간 예약 및 상담</h3>
+            <form id="contactForm" style="display:flex; flex-direction:column; gap:15px; margin-top: 20px;">
+                <input type="text" placeholder="성함" required style="padding:12px; border:1px solid #ddd; border-radius:8px;">
+                <input type="tel" id="userTel" placeholder="연락처" required maxlength="13" oninput="formatTel(this)" style="padding:12px; border:1px solid #ddd; border-radius:8px;">
+                <select style="padding:12px; border:1px solid #ddd; border-radius:8px;">
+                    <option>체험 예약</option><option>구매 문의</option><option>체험관 상담</option><option>기타 상담</option>
+
+                </select>
+                <textarea placeholder="문의내용" style="padding:12px; border:1px solid #ddd; border-radius:8px; height:100px; resize:none;"></textarea>
+                <button type="submit" class="cta-btn" style="margin-top:10px; padding: 15px;">상담 신청하기</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="adminBoardModal">
+        <div class="admin-content">
+            <span onclick="closeAdminBoard()" style="position:absolute; right:20px; top:15px; font-size:28px; cursor:pointer; color:#999;">&times;</span>
+            <div class="section-title" style="margin-bottom: 30px;">
+                <h2>상담 접수 관리 현황</h2>
+            </div>
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; min-width: 800px;">
+                    <thead><tr style="background: #f8fafc; border-bottom: 2px solid #eee;"><th style="padding:15px;">날짜</th><th style="padding:15px;">성함</th><th style="padding:15px;">연락처</th><th style="padding:15px;">유형</th><th style="padding:15px;">내용</th><th style="padding:15px;">관리</th></tr></thead>
+                    <tbody id="boardBody"></tbody>
+                </table>
+            </div>
+            <div style="text-align: right; margin-top: 30px; display: flex; justify-content: flex-end; gap: 10px;">
+                <button onclick="closeAdminBoard()" style="background:#666; color:white; border:none; padding:10px 20px; border-radius:5px; cursor:pointer; font-weight:bold;">닫기</button>
+                <button onclick="downloadExcel()" style="background:#28a745; color:white; border:none; padding:10px 20px; border-radius:5px; cursor:pointer; font-weight:bold;">엑셀 다운로드</button>
+                <button onclick="clearData()" style="background:#ff4d4d; color:white; border:none; padding:10px 20px; border-radius:5px; cursor:pointer; font-weight:bold;">전체 삭제</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 모달 제어
+        function openModal(e) { if(e) e.preventDefault(); document.getElementById('bookingModal').style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+        function closeModal() { document.getElementById('bookingModal').style.display = 'none'; document.body.style.overflow = 'auto'; }
+        
+        // 연락처 자동 하이픈 함수
+        function formatTel(target) {
+            target.value = target.value
+                .replace(/[^0-9]/g, '')
+                .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+        }
+
+        // 폼 제출
+        document.getElementById('contactForm').onsubmit = function(e) {
+            e.preventDefault();
+            const newData = { 
+                date: new Date().toLocaleString(), 
+                name: this.querySelectorAll('input')[0].value, 
+                tel: this.querySelectorAll('input')[1].value, 
+                type: this.querySelector('select').value, 
+                msg: this.querySelector('textarea').value 
+            };
+            let data = JSON.parse(localStorage.getItem('exlux_requests') || '[]');
+            data.push(newData);
+            localStorage.setItem('exlux_requests', JSON.stringify(data));
+            alert('문의가 성공적으로 접수되었습니다!');
+            this.reset(); closeModal();
+            if(document.getElementById('adminBoardModal').style.display === 'block') loadBoard();
+        };
+
+        // 관리자 로그인 및 보드 열기
+        function checkAdmin() {
+            if (prompt("관리자 비밀번호를 입력하세요.") === "exlux1234") {
+                document.getElementById('adminBoardModal').style.display = 'block';
+                document.body.style.overflow = 'hidden';
+                loadBoard();
+            } else { 
+                alert("비밀번호가 틀렸습니다."); 
+            }
+        }
+
+        // 관리자 보드 닫기
+        function closeAdminBoard() { 
+            document.getElementById('adminBoardModal').style.display = 'none'; 
+            document.body.style.overflow = 'auto';
+        }
+
+        // 보드 데이터 로드
+        function loadBoard() {
+            var data = JSON.parse(localStorage.getItem('exlux_requests') || '[]');
+            var body = document.getElementById('boardBody');
+            body.innerHTML = data.length === 0 ? '<tr><td colspan="6" style="text-align:center; padding:30px; color:#999;">접수된 내역이 없습니다.</td></tr>' : '';
+            for (var i = data.length - 1; i >= 0; i--) {
+                var item = data[i];
+                body.innerHTML += `<tr style="border-bottom: 1px solid #eee;"><td style="padding:12px; font-size:13px;">${item.date}</td><td style="padding:12px; font-weight:bold;">${item.name}</td><td style="padding:12px;">${item.tel}</td><td style="padding:12px;">${item.type}</td><td style="padding:12px; font-size:13px;">${item.msg}</td><td style="padding:12px; text-align:center;"><button onclick="deleteItem(${i})" style="background:#ff4d4d; color:white; border:none; padding:4px 8px; border-radius:3px; cursor:pointer; font-size:11px;">삭제</button></td></tr>`;
+            }
+        }
+
+        // 개별 삭제 및 전체 삭제
+        function deleteItem(index) { if (confirm("삭제하시겠습니까?")) { var data = JSON.parse(localStorage.getItem('exlux_requests')); data.splice(index, 1); localStorage.setItem('exlux_requests', JSON.stringify(data)); loadBoard(); } }
+        function clearData() { if (confirm("전체 삭제하시겠습니까?")) { localStorage.removeItem('exlux_requests'); loadBoard(); } }
+
+        // 엑셀(CSV) 다운로드 함수
+        function downloadExcel() {
+            var data = JSON.parse(localStorage.getItem('exlux_requests') || '[]');
+            if (data.length === 0) {
+                alert("다운로드할 내역이 없습니다.");
+                return;
+            }
+
+            var csvContent = "\uFEFF"; // 한글 깨짐 방지 BOM
+            csvContent += "날짜,성함,연락처,유형,내용\n";
+
+            data.forEach(function(item) {
+                var row = [
+                    item.date,
+                    item.name,
+                    item.tel,
+                    item.type,
+                    '"' + item.msg.replace(/"/g, '""') + '"'
+                ];
+                csvContent += row.join(",") + "\n";
+            });
+
+            var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            var link = document.createElement("a");
+            var url = URL.createObjectURL(blob);
+            var fileName = "익스럭스_상담접수현황_" + new Date().toLocaleDateString() + ".csv";
+            
+            link.setAttribute("href", url);
+            link.setAttribute("download", fileName);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>
