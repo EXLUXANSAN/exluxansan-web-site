@@ -291,15 +291,23 @@
         let currentGalleryIndex = 0;
         let galleryData = [];
 
-        function openGalleryModal() {
-            // 저장된 체험 사례 불러오기
-            galleryData = JSON.parse(localStorage.getItem('exlux_cases') || '[]');
+       function openGalleryModal() {
+            // 1. GitHub에서 불러온 exlux_cases 변수가 있는지 확인 (온라인 데이터)
+            if (typeof exlux_cases !== 'undefined' && exlux_cases.length > 0) {
+                galleryData = exlux_cases;
+            } 
+            // 2. 없다면 내 PC 브라우저 저장소 확인 (로컬 데이터)
+            else {
+                galleryData = JSON.parse(localStorage.getItem('exlux_cases') || '[]');
+            }
+
             if (galleryData.length === 0) {
                 alert("등록된 체험 사례가 없습니다.");
                 return;
             }
-            // 최신순으로 정렬 (역순)
-            galleryData.reverse();
+            
+            // 최신순 정렬 (ID가 큰 순서대로)
+            galleryData.sort((a, b) => b.id - a.id);
             
             currentGalleryIndex = 0;
             renderGalleryItem(currentGalleryIndex);
@@ -373,4 +381,5 @@
     </script>
 </body>
 </html>
+
 
