@@ -157,7 +157,7 @@
     <header>
         <nav>
             <div class="logo" style="display: flex; align-items: center;">
-                <img src="C:\Users\PC2507\Desktop\셀리턴\이미지\제품(익스럭스).png" alt="EXLUX Logo" style="height: 40px; margin-right: 10px; width: auto;">
+                <img src="제품(익스럭스).png" alt="EXLUX Logo" style="height: 40px; margin-right: 10px; width: auto;">
                 EXLUX
             </div>
             <div class="nav-links">
@@ -241,15 +241,53 @@
         function closeModal() { document.getElementById('bookingModal').style.display = 'none'; document.body.style.overflow = 'auto'; }
         function formatTel(target) { target.value = target.value.replace(/[^0-9]/g, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`); }
 
+        // --- 수정된 상담 신청 로직 (카카오톡 연결) ---
+        function submitConsultation(e) {
+            if(e) e.preventDefault();
+            
+            const name = document.querySelector('#contactForm input[placeholder="성함"]').value;
+            const tel = document.getElementById('userTel').value;
+            const type = document.querySelector('#contactForm select').value;
+            const msg = document.querySelector('#contactForm textarea').value;
+
+            // 사장님 카카오톡 오픈채팅 주소 적용
+            const kakaoLink = "https://open.kakao.com/o/siPwz5fi"; 
+
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+            if (isMobile) {
+                // [모바일] 실제 핸드폰 접속 시 카카오톡 연결
+                const text = `[익스럭스 상담신청]\n성함: ${name}\n연락처: ${tel}\n유형: ${type}\n내용: ${msg}`;
+                const encodedText = encodeURIComponent(text);
+                
+                alert('카카오톡 상담창으로 연결합니다. 메시지를 전송해 주세요!');
+                window.location.href = kakaoLink + "?text=" + encodedText;
+            } else {
+                // [PC] 사장님 테스트용 (기존 관리자 페이지 저장)
+                const newData = { 
+                    date: new Date().toLocaleString(), 
+                    name: name, 
+                    tel: tel, 
+                    type: type, 
+                    msg: msg,
+                    device: "PC"
+                };
+                
+                let data = JSON.parse(localStorage.getItem('exlux_requests') || '[]');
+                data.push(newData);
+                localStorage.setItem('exlux_requests', JSON.stringify(data));
+                
+                alert('PC 테스트 접수가 완료되었습니다!\n관리자 페이지에서 확인하세요.');
+                
+                document.getElementById('contactForm').reset();
+                closeModal();
+                
+                if(document.getElementById('adminBoardModal').style.display === 'block') loadBoard();
+            }
+        }
+
         document.getElementById('contactForm').onsubmit = function(e) {
-            e.preventDefault();
-            const newData = { date: new Date().toLocaleString(), name: this.querySelectorAll('input')[0].value, tel: this.querySelectorAll('input')[1].value, type: this.querySelector('select').value, msg: this.querySelector('textarea').value };
-            let data = JSON.parse(localStorage.getItem('exlux_requests') || '[]');
-            data.push(newData);
-            localStorage.setItem('exlux_requests', JSON.stringify(data));
-            alert('문의가 성공적으로 접수되었습니다!');
-            this.reset(); closeModal();
-            if(document.getElementById('adminBoardModal').style.display === 'block') loadBoard();
+            submitConsultation(e);
         };
 
         function checkAdmin() {
@@ -292,11 +330,9 @@
         let galleryData = [];
 
        function openGalleryModal() {
-            // 1. GitHub에서 불러온 exlux_cases 변수가 있는지 확인 (온라인 데이터)
             if (typeof exlux_cases !== 'undefined' && exlux_cases.length > 0) {
                 galleryData = exlux_cases;
             } 
-            // 2. 없다면 내 PC 브라우저 저장소 확인 (로컬 데이터)
             else {
                 galleryData = JSON.parse(localStorage.getItem('exlux_cases') || '[]');
             }
@@ -306,7 +342,6 @@
                 return;
             }
             
-            // 최신순 정렬 (ID가 큰 순서대로)
             galleryData.sort((a, b) => b.id - a.id);
             
             currentGalleryIndex = 0;
@@ -331,10 +366,8 @@
             const item = galleryData[index];
             const slideBox = document.getElementById('gallerySlideBox');
             
-            // 이름 마스킹 (이*기)
             const maskedName = item.name.length > 1 ? item.name[0] + "*" + item.name[item.name.length-1] : item.name;
             
-            // 나이 계산
             let age = "";
             if(item.birth) {
                 const birthParts = item.birth.split('.');
@@ -343,7 +376,6 @@
                 age = (new Date().getFullYear() - birthYear) + "세";
             }
 
-            // 사진 HTML 생성
             let photosHtml = '';
             if (item.photos && item.photos.length > 0) {
                 item.photos.forEach(src => { photosHtml += `<img src="${src}">`; });
@@ -351,7 +383,6 @@
                 photosHtml = `<img src="${item.photo}">`;
             }
 
-            // 포스터 HTML 구조 생성 (등록화면과 동일하게)
             slideBox.innerHTML = `
                 <div style="color:var(--primary); font-weight:bold; letter-spacing:1px; margin-bottom:10px;">OFFICIAL REPORT /// 2026</div>
                 <div class="g-title">익스럭스 리얼 체험 사례</div>
@@ -381,6 +412,3 @@
     </script>
 </body>
 </html>
-
-
-
