@@ -10,48 +10,71 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
-        /* --- 디자인 가이드: 한옥 + 병원 융합 컨셉 --- */
+        /* 디자인: 한옥(따뜻함) + 병원(전문성) */
         :root {
-            --bg-paper: #fdfcf8; --wood-warm: #8d6e63; --medical-white: #ffffff;
-            --clinic-teal: #6b8e8e; --accent-gold: #c5a028; --text-main: #2c2c2c; --danger: #d32f2f;
+            --bg-paper: #fdfcf8;
+            --wood-warm: #8d6e63;
+            --clinic-white: #ffffff;
+            --clinic-teal: #6b8e8e;
+            --text-main: #333333;
+            --danger: #d32f2f;
         }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Noto Sans KR', sans-serif; background-color: var(--bg-paper); color: var(--text-main); line-height: 1.8; word-break: keep-all; }
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: var(--bg-paper); color: var(--text-main); line-height: 1.6; word-break: keep-all; }
 
-        header { position: fixed; width: 100%; top: 0; z-index: 2000; background: rgba(255,255,255,0.97); border-bottom: 2px solid var(--wood-warm); box-shadow: 0 2px 15px rgba(0,0,0,0.05); }
+        /* 헤더 */
+        header { position: fixed; width: 100%; top: 0; z-index: 2000; background: rgba(255,255,255,0.98); border-bottom: 2px solid var(--wood-warm); }
         nav { max-width: 1200px; margin: 0 auto; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-family: 'Gowun Batang', serif; font-size: 1.6rem; font-weight: 700; color: var(--wood-warm); text-decoration: none; }
-        .nav-links a { margin-left: 15px; text-decoration: none; color: #555; font-weight: 500; font-size: 0.9rem; cursor: pointer; }
+        .logo { font-family: 'Gowun Batang', serif; font-size: 1.5rem; font-weight: 700; color: var(--wood-warm); text-decoration: none; }
+        .nav-links a { margin-left: 15px; text-decoration: none; color: #555; font-size: 0.9rem; font-weight: 500; cursor: pointer; }
 
+        /* 섹션 공통 */
         section { padding: 80px 20px; max-width: 1200px; margin: 0 auto; }
-        .section-title { text-align: center; margin-bottom: 50px; padding-top: 40px; }
-        .section-title h2 { font-family: 'Gowun Batang', serif; font-size: 2.3rem; color: var(--wood-brown); margin-bottom: 15px; }
-        .card { background: var(--medical-white); border-radius: 20px; padding: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.04); border-top: 6px solid var(--wood-warm); margin-bottom: 30px; }
-        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .section-title { text-align: center; margin-bottom: 40px; padding-top: 40px; }
+        .section-title h2 { font-family: 'Gowun Batang', serif; font-size: 2.2rem; color: var(--wood-warm); margin-bottom: 10px; }
+        .card { background: var(--clinic-white); border-radius: 15px; padding: 25px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); border-top: 5px solid var(--wood-warm); margin-bottom: 20px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
 
-        .booking-box { background: #f9f6f2; border: 1px solid #e0dcd0; padding: 40px 25px; border-radius: 30px; max-width: 600px; margin: 0 auto; }
-        input, select, textarea { width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 16px; box-sizing: border-box; background: #fff; }
-        .btn-main { background: var(--wood-warm); color: white; border: none; padding: 18px; width: 100%; border-radius: 50px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        /* 상담 예약 폼 */
+        .booking-box { background: #f9f6f2; border: 1px solid #e0dcd0; padding: 30px; border-radius: 20px; max-width: 600px; margin: 0 auto; }
+        input, select, textarea { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; background: #fff; }
+        .btn-main { background: var(--wood-warm); color: white; border: none; padding: 15px; width: 100%; border-radius: 50px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .btn-main:hover { background: var(--clinic-teal); }
 
-        #adminModal, #galleryModal { display:none; position:fixed; z-index:3000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.9); overflow-y: auto; padding: 30px 10px; }
-        .modal-content { background: white; max-width: 1000px; margin: 0 auto; border-radius: 25px; padding: 30px; position: relative; }
-        .tab-btn { padding: 12px 15px; cursor: pointer; border-bottom: 3px solid transparent; font-weight: bold; display: inline-block; margin-right: 10px; }
+        /* 모달 (관리자, 갤러리) */
+        #adminModal, #galleryModal { display:none; position:fixed; z-index:3000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.9); overflow-y: auto; padding: 20px; }
+        .modal-content { background: white; max-width: 900px; margin: 0 auto; border-radius: 15px; padding: 30px; position: relative; }
+        .close-btn { position: absolute; right: 20px; top: 15px; font-size: 28px; cursor: pointer; }
+        
+        /* 탭 버튼 */
+        .tab-menu { border-bottom: 2px solid #eee; margin-bottom: 20px; }
+        .tab-btn { display: inline-block; padding: 10px 20px; cursor: pointer; font-weight: bold; border-bottom: 3px solid transparent; }
         .tab-btn.active { border-color: var(--wood-warm); color: var(--wood-warm); }
 
-        .form-row { display: flex; gap: 15px; margin-bottom: 10px; flex-wrap: wrap; }
-        .form-row .col { flex: 1; min-width: 180px; }
-        .preview-container { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
-        .preview-box { width: 70px; height: 70px; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; position: relative; }
-        .preview-box img { width: 100%; height: 100%; object-fit: cover; }
-        .del-btn { position: absolute; top: 0; right: 0; background: red; color: white; border: none; padding: 2px 5px; font-size: 10px; cursor: pointer; }
+        /* 등록 폼 스타일 */
+        .form-row { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+        .col { flex: 1; min-width: 150px; }
+        label { display: block; font-weight: bold; font-size: 13px; margin-bottom: 5px; color: #555; }
+        
+        /* 사진 미리보기 */
+        .preview-area { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+        .p-box { width: 70px; height: 70px; border: 1px solid #ddd; border-radius: 5px; overflow: hidden; position: relative; }
+        .p-box img { width: 100%; height: 100%; object-fit: cover; }
+        .p-del { position: absolute; top:0; right:0; background:red; color:white; font-size:10px; border:none; padding:2px 5px; cursor:pointer; }
 
+        /* 포스터 캡처 영역 (숨김) */
         #posterArea { width: 210mm; background: white; padding: 20mm; display: none; margin: 0 auto; border-top: 20mm solid var(--wood-warm); font-family: 'Gowun Batang', serif; box-sizing: border-box; }
-        .p-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
-        .p-grid img { width: 100%; height: 160px; object-fit: cover; border-radius: 8px; }
+        .poster-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+        .poster-grid img { width: 100%; height: 180px; object-fit: cover; border-radius: 5px; border: 1px solid #eee; }
 
-        #floatingCall { position: fixed; bottom: 30px; right: 30px; background: #27ae60; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 26px; z-index: 1000; text-decoration: none; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        /* 모바일 전화 버튼 */
+        #floatingCall { position: fixed; bottom: 30px; right: 30px; background: #27ae60; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 26px; z-index: 1000; text-decoration: none; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
 
-        @media (max-width: 768px) { .section-title h2 { font-size: 1.8rem; } .form-row .col { min-width: 100%; } .nav-links a { margin-left: 8px; font-size: 0.8rem; } }
+        @media (max-width: 768px) {
+            .section-title h2 { font-size: 1.8rem; }
+            .form-row .col { min-width: 100%; }
+        }
     </style>
 </head>
 <body>
@@ -60,59 +83,56 @@
         <nav>
             <a href="#" class="logo">EXLUX 안산</a>
             <div class="nav-links">
-                <a href="#intro">스토리</a><a href="#tech">핵심기술</a><a href="#cases">사례</a><a href="#booking">예약</a>
+                <a href="#intro">스토리</a><a href="#tech">기술</a><a href="#cases">사례</a><a href="#booking">예약</a>
                 <a onclick="checkAdmin()" style="color:#ccc; font-size:11px;">Admin</a>
             </div>
         </nav>
     </header>
 
-    <section id="intro" style="padding-top: 150px; text-align: center;">
+    <section id="intro" style="padding-top: 140px; text-align: center;">
         <div class="section-title"><p>PREMIUM ENERGY CARE</p><h2>익스럭스 탄생 스토리</h2></div>
-        <div class="card"><p>"가장 소중한 사람의 아픔을 덜어주고 싶다"는 진심에서 시작되었습니다. NASA와 FDA가 인정한 기술력을 바탕으로 안산 체험관에서 기적의 치유 데이터를 나누고 있습니다.</p></div>
+        <div class="card"><p>"가장 소중한 사람의 아픔을 덜어주고 싶다"는 진심에서 시작되었습니다.<br>안산 체험관은 기적의 치유 데이터를 바탕으로 운영됩니다.</p></div>
     </section>
 
     <section id="tech">
-        <div class="section-title"><h2>검증된 과학, 핵심기술</h2><p>NASA와 FDA가 선택한 PEMF 기술</p></div>
+        <div class="section-title"><h2>검증된 과학, PEMF</h2><p>NASA와 FDA가 인정한 기술</p></div>
         <div class="grid-3">
-            <div class="card"><h3>NASA 우주 기술</h3><p>우주비행사의 세포 재생을 위해 도입된 자기장 파동 기술입니다.</p></div>
-            <div class="card"><h3>FDA 공식 승인</h3><p>통증 완화, 뼈 재생 등 안전성과 효과를 전 세계적으로 인정받았습니다.</p></div>
-            <div class="card"><h3>국내 대형 병원</h3><p>서울대병원 등 주요 의료기관에서 재활과 치료에 활발히 활용 중입니다.</p></div>
+            <div class="card"><h3>NASA 기술</h3><p>우주비행사의 세포 재생을 위한 자기장 파동 기술입니다.</p></div>
+            <div class="card"><h3>FDA 승인</h3><p>통증 완화, 뼈 재생 효과를 공식 인정받았습니다.</p></div>
+            <div class="card"><h3>병원 도입</h3><p>서울대병원 등에서 재활 치료에 사용 중입니다.</p></div>
         </div>
     </section>
 
     <section id="cases">
-        <div class="section-title"><h2>회복의 기록 (실시간 사례)</h2></div>
-        <div class="grid-3" id="mainCaseGrid">
-            <div class="card"><h4>30년 허리 통증 극복</h4><p style="color:#888;">60대 남성, 10회 집중 케어 후 일상 회복</p></div>
-            <div class="card"><h4>만성 무릎 관절염</h4><p style="color:#888;">50대 여성, 붓기 및 통증 소멸</p></div>
-            <div class="card"><h4>혈당 조절 성공</h4><p style="color:#888;">50대 남성, 사용 후 수치 정상화</p></div>
+        <div class="section-title"><h2>리얼 회복 사례</h2><p>매일 업데이트되는 기록</p></div>
+        <div class="grid-3" id="defaultCases">
+            <div class="card"><h4>30년 허리 통증</h4><p style="color:#888;">60대 남성, 10회 케어 후 회복</p></div>
+            <div class="card"><h4>만성 무릎 관절염</h4><p style="color:#888;">50대 여성, 붓기/통증 소멸</p></div>
+            <div class="card"><h4>혈당 조절 성공</h4><p style="color:#888;">50대 남성, 수치 정상화</p></div>
         </div>
-        <div style="text-align: center; margin-top: 40px;">
-            <button class="btn-main" style="width: auto; padding: 15px 40px;" onclick="openGallery()">체험사례 더 보러가기 (갤러리)</button>
+        <div style="text-align: center; margin-top: 30px;">
+            <button class="btn-main" style="width: auto; padding: 12px 40px;" onclick="openGallery()">체험사례 더 보러가기 (갤러리)</button>
         </div>
     </section>
 
-    <section id="booking" style="background: #fdfcf8;">
+    <section id="booking">
         <div class="booking-box">
-            <h2 style="text-align: center; margin-bottom: 25px;">📅 실시간 체험 예약</h2>
+            <h2 style="text-align: center; margin-bottom: 20px;">📅 실시간 체험 예약</h2>
             <form action="https://formspree.io/f/xnjbpvzl" method="POST">
                 <input type="text" name="name" placeholder="성함" required>
                 <input type="tel" name="tel" placeholder="연락처" required>
                 <textarea name="msg" rows="3" placeholder="불편하신 곳을 적어주세요"></textarea>
                 <button type="submit" class="btn-main">상담 신청 (지사장 즉시 알림)</button>
             </form>
-            <div style="text-align: center; margin-top: 20px;">
-                <a href="https://blog.naver.com/cellreturn7933" target="_blank" style="color:#2db400; text-decoration:none; font-weight:bold;"><i class="fa-solid fa-blog"></i> 공식 블로그 구경하기</a>
-            </div>
         </div>
     </section>
 
     <div id="adminModal">
         <div class="modal-content">
-            <span onclick="closeAdmin()" style="position:absolute; right:20px; top:15px; font-size:30px; cursor:pointer;">&times;</span>
-            <div style="border-bottom:2px solid #eee; margin-bottom:20px;">
-                <div class="tab-btn active" onclick="switchTab('reg')">체험사례 등록</div>
-                <div class="tab-btn" onclick="switchTab('list')">신청/사례 관리</div>
+            <span class="close-btn" onclick="closeAdmin()">&times;</span>
+            <div class="tab-menu">
+                <span class="tab-btn active" onclick="showTab('reg')">체험사례 등록</span>
+                <span class="tab-btn" onclick="showTab('list')">목록 관리</span>
             </div>
 
             <div id="tab-reg">
@@ -122,17 +142,17 @@
                     <div class="col"><label>성별</label><select id="regGender"><option>남</option><option>여</option></select></div>
                 </div>
                 <div class="form-row">
-                    <div class="col"><label>생년월일</label><div style="display:flex; gap:5px;"><select id="regBirthY" onchange="updateAge()"></select><select id="regBirthM"></select><select id="regBirthD"></select></div></div>
-                    <div class="col"><label>나이</label><input type="text" id="regAge" readonly style="background:#f5f5f5;"></div>
+                    <div class="col"><label>생년월일</label><div style="display:flex; gap:5px;"><select id="regY" onchange="calcAge()"></select><select id="regM"></select><select id="regD"></select></div></div>
+                    <div class="col"><label>나이</label><input type="text" id="regAge" readonly style="background:#eee;"></div>
                 </div>
                 <div class="form-row">
-                    <div class="col"><label>거주 시·도 (인구순 정렬)</label><select id="regArea1" onchange="updateArea2()"></select></div>
-                    <div class="col"><label>시·군·구 (가나다순 정렬)</label><select id="regArea2"></select></div>
+                    <div class="col"><label>시·도 (인구순)</label><select id="regSiDo" onchange="setSiGunGu()"></select></div>
+                    <div class="col"><label>시·군·구 (가나다순)</label><select id="regSiGunGu"></select></div>
                 </div>
                 <div class="form-row">
                     <div class="col">
-                        <label>통증/증상 선택</label>
-                        <select id="regSymSelect" onchange="toggleOtherSym()">
+                        <label>통증/증상</label>
+                        <select id="regSymSelect" onchange="checkOther()">
                             <option value="허리/디스크">허리/디스크</option>
                             <option value="어깨/목">어깨/목</option>
                             <option value="무릎/관절">무릎/관절</option>
@@ -140,29 +160,26 @@
                             <option value="기타">기타 (직접 입력)</option>
                         </select>
                     </div>
-                    <div class="col" id="otherSymBox" style="display:none;">
-                        <label>기타 증상 내용</label>
-                        <input type="text" id="regSymOther" placeholder="증상을 입력하세요">
-                    </div>
+                    <div class="col" id="otherInputBox" style="display:none;"><label>기타 내용</label><input type="text" id="regSymOther" placeholder="증상 입력"></div>
                 </div>
                 <div class="form-row">
-                    <div class="col"><label>사용 기간</label><select id="regPeriod"><option>10일</option><option>20일</option><option>30일 이상</option><option>계속사용중</option></select></div>
+                    <div class="col"><label>사용 기간</label><select id="regPeriod"><option>10일</option><option>20일</option><option>30일 이상</option><option>장기 사용</option></select></div>
                 </div>
-                <label>체험 전 구체적인 증상</label><textarea id="regDescPre" rows="2"></textarea>
-                <label>사용 후 변화 (기적의 결과)</label><textarea id="regDescPost" rows="2" style="color:red; font-weight:bold;"></textarea>
+                <label>체험 전 구체적인 증상</label><textarea id="descPre" rows="2"></textarea>
+                <label>사용 후 변화 (결과)</label><textarea id="descPost" rows="2" style="color:var(--danger); font-weight:bold;"></textarea>
                 
-                <label>📷 체험 사진 (최대 4장)</label>
-                <input type="file" id="photoInput" multiple accept="image/*" onchange="handlePhotos()">
-                <div id="previewContainer" class="preview-container"></div>
+                <label>📷 사진 (최대 4장)</label>
+                <input type="file" id="fileInput" multiple accept="image/*" onchange="addPhotos()">
+                <div id="previewArea" class="preview-area"></div>
                 
-                <button class="btn-main" style="margin-top:25px;" onclick="saveAndPoster()">저장하기 및 포스터 자동 생성</button>
+                <button class="btn-main" style="margin-top:20px;" onclick="saveDataAndPoster()">[저장하기] 및 포스터 자동 생성</button>
             </div>
 
             <div id="tab-list" style="display:none;">
-                <div style="display:flex; justify-content:space-between; margin-bottom:15px;"><h3>📋 리스트 관리</h3><button onclick="downloadExcel()">엑셀 다운로드</button></div>
-                <table style="width:100%; border-collapse: collapse; font-size:12px;">
-                    <thead><tr style="background:#f8f9fa;"><th>날짜</th><th>성함</th><th>증상</th><th>관리</th></tr></thead>
-                    <tbody id="caseTableBody"></tbody>
+                <h3>📋 등록 리스트</h3>
+                <table style="width:100%; font-size:13px; border-collapse: collapse; margin-top:10px;">
+                    <thead><tr style="background:#eee;"><th>날짜</th><th>성함</th><th>증상</th><th>관리</th></tr></thead>
+                    <tbody id="listBody"></tbody>
                 </table>
             </div>
         </div>
@@ -170,39 +187,39 @@
 
     <div id="galleryModal">
         <div class="modal-content">
-            <span onclick="closeGallery()" style="position:absolute; right:20px; top:15px; font-size:30px; cursor:pointer;">&times;</span>
-            <h2 style="text-align:center; margin-bottom:30px; font-family:'Gowun Batang';">익스럭스 리얼 체험 갤러리</h2>
-            <div id="galleryGrid" class="grid-3"></div>
+            <span class="close-btn" onclick="closeGallery()">&times;</span>
+            <h2 style="text-align:center; font-family:'Gowun Batang'; margin-bottom:20px;">체험 사례 갤러리</h2>
+            <div id="galleryContent" class="grid-3"></div>
         </div>
     </div>
 
     <div id="posterArea">
-        <div style="font-weight:bold; letter-spacing:1px; margin-bottom:10px; color:var(--wood-warm);">OFFICIAL REPORT /// 2026</div>
+        <div style="font-weight:bold; letter-spacing:1px; color:var(--wood-warm); margin-bottom:10px;">OFFICIAL REPORT /// 2026</div>
         <h1 style="font-size:32px; margin-bottom:15px;">익스럭스 리얼 체험 사례</h1>
-        <div id="p-info" style="font-size:18px; border-bottom:2px solid #333; padding-bottom:15px; margin-bottom:30px;">-</div>
-        <div style="margin-bottom:20px;"><span style="background:var(--wood-warm); color:white; padding:4px 10px; border-radius:4px; font-weight:bold;">증상</span><div id="p-sym" style="font-size:22px; font-weight:bold; margin-top:8px;">-</div></div>
-        <div style="margin-bottom:20px;"><label style="font-weight:bold;">체험 전:</label><p id="p-pre" style="white-space:pre-wrap;"></p></div>
-        <div style="margin-bottom:20px;"><label style="font-weight:bold; color:red;">사용 후:</label><p id="p-post" style="white-space:pre-wrap; font-weight:bold; color:red;"></p></div>
-        <div id="p-photos" class="p-grid"></div>
+        <div id="p-info" style="font-size:18px; border-bottom:2px solid #333; padding-bottom:15px; margin-bottom:20px;"></div>
+        <div style="margin-bottom:15px;"><span style="background:var(--wood-warm); color:white; padding:3px 8px; border-radius:4px;">증상</span><strong id="p-sym" style="font-size:22px; margin-left:10px;"></strong></div>
+        <div style="margin-bottom:15px;"><strong>체험 전:</strong><p id="p-pre" style="white-space:pre-wrap;"></p></div>
+        <div style="margin-bottom:15px; color:red;"><strong>사용 후:</strong><p id="p-post" style="white-space:pre-wrap; font-weight:bold;"></p></div>
+        <div id="p-imgs" class="poster-grid"></div>
         <div style="margin-top:40px; text-align:center; color:#888;">건강 에너지 충전소 | 익스럭스 안산 체험관</div>
     </div>
 
     <a href="tel:010-7932-9393" id="floatingCall"><i class="fa-solid fa-phone"></i></a>
 
     <script>
-        /* --- [완벽 지역 데이터: 시도 인구순 / 시군구 가나다순] --- */
-        const areaData = {
-            "경기도": ["가평군","고양시 덕양구","고양시 일산동구","고양시 일산서구","과천시","광명시","광주시","구리시","군포시","김포시","남양주시","동두천시","부천시","성남시 분당구","성남시 수정구","성남시 중원구","수원시 권선구","수원시 영통구","수원시 장안구","수원시 팔달구","시흥시","안산시 단원구","안산시 상록구","안성시","안양시 동안구","안양시 만안구","양주시","양평군","여주시","연천군","오산시","용인시 기흥구","용인시 수지구","용인시 처인구","의왕시","의정부시","이천시","파주시","평택시","포천시","하남시","화성시"],
+        // ★ 대한민국 17개 시도 인구순 (2024 통계청 기준) & 시군구 가나다순 데이터 ★
+        const koreaArea = {
+            "경기도": ["가평군","고양시","과천시","광명시","광주시","구리시","군포시","김포시","남양주시","동두천시","부천시","성남시","수원시","시흥시","안산시","안성시","안양시","양주시","양평군","여주시","연천군","오산시","용인시","의왕시","의정부시","이천시","파주시","평택시","포천시","하남시","화성시"],
             "서울특별시": ["강남구","강동구","강북구","강서구","관악구","광진구","구로구","금천구","노원구","도봉구","동대문구","동작구","마포구","서대문구","서초구","성동구","성북구","송파구","양천구","영등포구","용산구","은평구","종로구","중구","중랑구"],
             "부산광역시": ["강서구","금정구","기장군","남구","동구","동래구","부산진구","북구","사상구","사하구","서구","수영구","연제구","영도구","중구","해운대구"],
-            "경상남도": ["거제시","거창군","고성군","김해시","남해군","밀양시","사천시","산청군","양산시","의령군","진주시","창녕군","창원시 마산합포구","창원시 마산회원구","창원시 성산구","창원시 의창구","창원시 진해구","통영시","하동군","함안군","함양군","합천군"],
+            "경상남도": ["거제시","거창군","고성군","김해시","남해군","밀양시","사천시","산청군","양산시","의령군","진주시","창녕군","창원시","통영시","하동군","함안군","함양군","합천군"],
             "인천광역시": ["강화군","계양구","남동구","동구","미추홀구","부평구","서구","연수구","옹진군","중구"],
-            "경상북도": ["경산시","경주시","고령군","구미시","김천시","문경시","봉화군","상주시","성주군","안동시","영덕군","영양군","영주시","영천시","예천군","울릉군","울진군","의성군","청도군","청송군","칠곡군","포항시 남구","포항시 북구"],
+            "경상북도": ["경산시","경주시","고령군","구미시","김천시","문경시","봉화군","상주시","성주군","안동시","영덕군","영양군","영주시","영천시","예천군","울릉군","울진군","의성군","청도군","청송군","칠곡군","포항시"],
             "대구광역시": ["군위군","남구","달서구","달성군","동구","북구","서구","수성구","중구"],
-            "충청남도": ["계룡시","공주시","금산군","논산시","당진시","보령시","부여군","서산시","서천군","아산시","예산군","천안시 동남구","천안시 서북구","청양군","태안군","홍성군"],
+            "충청남도": ["계룡시","공주시","금산군","논산시","당진시","보령시","부여군","서산시","서천군","아산시","예산군","천안시","청양군","태안군","홍성군"],
             "전라남도": ["강진군","고흥군","곡성군","광양시","구례군","나주시","담양군","목포시","무안군","보성군","순천시","신안군","여수시","영광군","영암군","완도군","장성군","장흥군","진도군","함평군","해남군","화순군"],
-            "전북특별자치도": ["고창군","군산시","김제시","남원시","무주군","부안군","순창군","완주군","익산시","임실군","장수군","전주시 덕진구","전주시 완산구","정읍시","진안군"],
-            "충청북도": ["괴산군","단양군","보은군","영동군","옥천군","음성군","제천시","증평군","진천군","청주시 상당구","청주시 서원구","청주시 청원구","청주시 흥덕구","충주시"],
+            "전북특별자치도": ["고창군","군산시","김제시","남원시","무주군","부안군","순창군","완주군","익산시","임실군","장수군","전주시","정읍시","진안군"],
+            "충청북도": ["괴산군","단양군","보은군","영동군","옥천군","음성군","제천시","증평군","진천군","청주시","충주시"],
             "강원특별자치도": ["강릉시","고성군","동해시","삼척시","속초시","양구군","양양군","영월군","원주시","인제군","정선군","철원군","춘천시","태백시","평창군","홍천군","화천군","횡성군"],
             "대전광역시": ["대덕구","동구","서구","유성구","중구"],
             "광주광역시": ["광산구","남구","동구","북구","서구"],
@@ -211,123 +228,154 @@
             "세종특별자치시": ["세종특별자치시"]
         };
 
-        window.onload = function() { initRegSelects(); };
+        let photos = [];
 
-        function initRegSelects() {
-            const y = document.getElementById('regBirthY');
+        window.onload = function() {
+            initDateSelects();
+            initAreaSelects();
+        };
+
+        // 초기화: 날짜 및 지역
+        function initDateSelects() {
+            const y = document.getElementById('regY');
             for(let i=2026; i>=1930; i--) y.add(new Option(i+"년", i));
             y.value = 1963;
-            const m = document.getElementById('regBirthM');
+            const m = document.getElementById('regM');
             for(let i=1; i<=12; i++) m.add(new Option(i+"월", i<10?"0"+i:i));
-            const d = document.getElementById('regBirthD');
+            const d = document.getElementById('regD');
             for(let i=1; i<=31; i++) d.add(new Option(i+"일", i<10?"0"+i:i));
-            
-            const a1 = document.getElementById('regArea1');
-            a1.add(new Option("시·도 선택", ""));
-            // 인구순 정렬된 객체 순서대로 삽입
-            Object.keys(areaData).forEach(k => a1.add(new Option(k, k)));
-            updateAge();
+            calcAge();
         }
 
-        function updateArea2() {
-            const a1 = document.getElementById('regArea1').value;
-            const a2 = document.getElementById('regArea2');
-            a2.options.length = 0;
-            if(areaData[a1]) areaData[a1].sort().forEach(v => a2.add(new Option(v, v)));
+        function initAreaSelects() {
+            const s = document.getElementById('regSiDo');
+            s.add(new Option("시·도 선택", ""));
+            // 인구순 정렬된 객체 키 순서대로 주입
+            Object.keys(koreaArea).forEach(area => s.add(new Option(area, area)));
         }
 
-        function updateAge() { document.getElementById('regAge').value = "만 " + (2026 - document.getElementById('regBirthY').value) + "세"; }
-        
-        // ★ 기타 입력창 토글 함수 ★
-        function toggleOtherSym() {
-            const select = document.getElementById('regSymSelect');
-            const otherBox = document.getElementById('otherSymBox');
-            otherBox.style.display = (select.value === '기타' ? 'block' : 'none');
-        }
-
-        let currentPhotos = [];
-        function handlePhotos() {
-            const files = document.getElementById('photoInput').files;
-            if(currentPhotos.length + files.length > 4) return alert("최대 4장까지만 가능합니다.");
-            for(let file of files) {
-                const reader = new FileReader();
-                reader.onload = e => { currentPhotos.push(e.target.result); renderPreviews(); };
-                reader.readAsDataURL(file);
+        function setSiGunGu() {
+            const siDo = document.getElementById('regSiDo').value;
+            const target = document.getElementById('regSiGunGu');
+            target.options.length = 0;
+            if(koreaArea[siDo]) {
+                // 가나다순 정렬 적용
+                koreaArea[siDo].sort().forEach(gu => target.add(new Option(gu, gu)));
             }
         }
-        function renderPreviews() {
-            document.getElementById('previewContainer').innerHTML = currentPhotos.map((src, idx) => `
-                <div class="preview-box"><img src="${src}"><button class="del-btn" onclick="removePhoto(${idx})">X</button></div>
+
+        function calcAge() {
+            const y = document.getElementById('regY').value;
+            document.getElementById('regAge').value = "만 " + (2026 - y) + "세";
+        }
+
+        // 기타 증상 입력창 토글
+        function checkOther() {
+            const val = document.getElementById('regSymSelect').value;
+            document.getElementById('otherInputBox').style.display = (val === '기타' ? 'block' : 'none');
+        }
+
+        // 사진 처리
+        function addPhotos() {
+            const files = document.getElementById('fileInput').files;
+            if(photos.length + files.length > 4) return alert("최대 4장까지만 가능합니다.");
+            for(let f of files) {
+                const r = new FileReader();
+                r.onload = e => { photos.push(e.target.result); drawPreview(); };
+                r.readAsDataURL(f);
+            }
+        }
+        function drawPreview() {
+            document.getElementById('previewArea').innerHTML = photos.map((src, i) => `
+                <div class="p-box"><img src="${src}"><button class="p-del" onclick="delPhoto(${i})">X</button></div>
             `).join('');
         }
-        function removePhoto(idx) { currentPhotos.splice(idx, 1); renderPreviews(); }
+        function delPhoto(i) { photos.splice(i, 1); drawPreview(); }
 
-        function saveAndPoster() {
+        // 저장 및 포스터 생성
+        function saveDataAndPoster() {
             const name = document.getElementById('regName').value;
-            if(!name) return alert("성함을 입력하세요.");
-            
-            // 기타 증상 처리
-            const symSelect = document.getElementById('regSymSelect').value;
-            const symResult = (symSelect === '기타' ? document.getElementById('regSymOther').value : symSelect);
-            
-            const newCase = {
-                id: Date.now(), name, gender: document.getElementById('regGender').value,
+            if(!name) return alert("성함을 입력해주세요.");
+
+            // 증상 값 처리 (기타일 경우 입력값 사용)
+            let sym = document.getElementById('regSymSelect').value;
+            if(sym === '기타') sym = document.getElementById('regSymOther').value;
+
+            const newData = {
+                id: Date.now(),
+                date: new Date().toLocaleDateString(),
+                name,
+                gender: document.getElementById('regGender').value,
                 age: document.getElementById('regAge').value,
-                area: document.getElementById('regArea1').value + " " + document.getElementById('regArea2').value,
-                sym: symResult, pre: document.getElementById('regDescPre').value, post: document.getElementById('regDescPost').value,
-                photos: [...currentPhotos], date: new Date().toLocaleDateString()
+                area: document.getElementById('regSiDo').value + " " + (document.getElementById('regSiGunGu').value || ""),
+                sym,
+                period: document.getElementById('regPeriod').value,
+                pre: document.getElementById('descPre').value,
+                post: document.getElementById('descPost').value,
+                photos: [...photos]
             };
 
             let list = JSON.parse(localStorage.getItem('exlux_cases') || '[]');
-            list.push(newCase);
+            list.push(newData);
             localStorage.setItem('exlux_cases', JSON.stringify(list));
 
-            document.getElementById('p-info').innerText = `${name[0]}*${name[name.length-1]} 님 | ${newCase.age} | ${newCase.gender}성 | ${newCase.area}`;
-            document.getElementById('p-sym').innerText = symResult;
-            document.getElementById('p-pre').innerText = newCase.pre;
-            document.getElementById('p-post').innerText = newCase.post;
-            document.getElementById('p-photos').innerHTML = newCase.photos.map(s => `<img src="${s}">`).join('');
+            // 포스터 렌더링
+            document.getElementById('p-info').innerText = `${name[0]}*${name.slice(-1)} 님 | ${newData.age} | ${newData.gender} | ${newData.area}`;
+            document.getElementById('p-sym').innerText = sym;
+            document.getElementById('p-pre').innerText = newData.pre;
+            document.getElementById('p-post').innerText = newData.post;
+            document.getElementById('p-imgs').innerHTML = newData.photos.map(s => `<img src="${s}">`).join('');
 
+            // 캡처 및 다운로드
             const area = document.getElementById('posterArea');
             area.style.display = 'block';
-            html2canvas(area, {scale: 2}).then(canvas => {
-                const link = document.createElement('a');
-                link.download = `익스럭스_체험포스터_${name}.png`;
-                link.href = canvas.toDataURL();
-                link.click();
+            html2canvas(area, {scale: 2}).then(cvs => {
+                const a = document.createElement('a');
+                a.download = `익스럭스_${name}_체험사례.png`;
+                a.href = cvs.toDataURL();
+                a.click();
                 area.style.display = 'none';
-                alert("저장 완료 및 포스터 다운로드!");
+                alert("저장 및 포스터 다운로드 완료!");
+                showTab('list'); // 리스트로 이동
             });
         }
 
+        // 갤러리 열기
         function openGallery() {
             const list = JSON.parse(localStorage.getItem('exlux_cases') || '[]');
-            const grid = document.getElementById('galleryGrid');
-            grid.innerHTML = list.length === 0 ? '<p style="text-align:center; grid-column:span 3;">등록된 사례가 없습니다.</p>' :
+            const box = document.getElementById('galleryContent');
+            box.innerHTML = list.length === 0 ? "<p>등록된 사례가 없습니다.</p>" : 
                 list.reverse().map(i => `
-                    <div class="card" style="padding:15px; font-size:12px;">
-                        <div style="font-weight:bold; margin-bottom:10px; border-bottom:1px solid #eee;">${i.name[0]}*${i.name[i.name.length-1]} 님 (${i.area})</div>
-                        <p><strong>증상:</strong> ${i.sym}</p>
-                        <p style="color:red; font-weight:bold;">${i.post.substring(0, 40)}...</p>
-                        ${i.photos[0] ? `<img src="${i.photos[0]}" style="width:100%; height:80px; object-fit:cover; margin-top:10px; border-radius:8px;">` : ''}
+                    <div class="card" style="padding:15px; font-size:13px;">
+                        <div style="border-bottom:1px solid #eee; padding-bottom:5px; margin-bottom:5px; font-weight:bold;">${i.name.substring(0,1)}*${i.name.substring(i.name.length-1)} (${i.area})</div>
+                        <div><strong>증상:</strong> ${i.sym}</div>
+                        <div style="color:red; margin-top:5px;">${i.post.substring(0,30)}...</div>
+                        ${i.photos[0] ? `<img src="${i.photos[0]}" style="width:100%; height:100px; object-fit:cover; margin-top:10px; border-radius:5px;">` : ''}
                     </div>
                 `).join('');
             document.getElementById('galleryModal').style.display = 'block';
         }
 
-        function closeGallery() { document.getElementById('galleryModal').style.display = 'none'; }
-        function checkAdmin() { if(prompt("관리자 암호") === "exlux1234") document.getElementById('adminModal').style.display = 'block'; }
-        function closeAdmin() { document.getElementById('adminModal').style.display = 'none'; }
-        function switchTab(t) {
-            document.getElementById('tab-reg').style.display = (t === 'reg' ? 'block' : 'none');
-            document.getElementById('tab-list').style.display = (t === 'list' ? 'block' : 'none');
-            if(t==='list') loadAdminList();
+        function checkAdmin() { if(prompt("비밀번호")==="exlux1234") document.getElementById('adminModal').style.display='block'; }
+        function closeAdmin() { document.getElementById('adminModal').style.display='none'; }
+        function closeGallery() { document.getElementById('galleryModal').style.display='none'; }
+        
+        function showTab(t) {
+            document.getElementById('tab-reg').style.display = (t==='reg'?'block':'none');
+            document.getElementById('tab-list').style.display = (t==='list'?'block':'none');
+            if(t==='list') loadList();
         }
-        function loadAdminList() {
-            const data = JSON.parse(localStorage.getItem('exlux_cases') || '[]');
-            document.getElementById('caseTableBody').innerHTML = data.reverse().map((i, idx) => `
-                <tr style="border-bottom:1px solid #eee;"><td>${i.date}</td><td>${i.name}</td><td>${i.sym}</td><td><button onclick="deleteCase(${idx})">삭제</button></td></tr>
+        function loadList() {
+            const list = JSON.parse(localStorage.getItem('exlux_cases') || '[]');
+            document.getElementById('listBody').innerHTML = list.reverse().map((i,idx) => `
+                <tr style="border-bottom:1px solid #eee;"><td>${i.date}</td><td>${i.name}</td><td>${i.sym}</td><td><button onclick="delCase(${idx})">삭제</button></td></tr>
             `).join('');
+        }
+        function delCase(idx) {
+            let list = JSON.parse(localStorage.getItem('exlux_cases') || '[]');
+            list.reverse().splice(idx,1);
+            localStorage.setItem('exlux_cases', JSON.stringify(list.reverse()));
+            loadList();
         }
     </script>
 </body>
