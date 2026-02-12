@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>체험 사례 리스트</title>
+    <style>
+        :root { --primary: #2c3e50; --accent: #3498db; --success: #27ae60; --danger: #e74c3c; --bg: #f4f6f9; }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; padding: 20px; background-color: var(--bg); color: #333; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 15px; }
+        h2 { margin: 0; color: var(--primary); }
+        .top-buttons { display: flex; gap: 10px; }
+        .btn { padding: 10px 18px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 14px; cursor: pointer; border: none; color: white; transition: 0.2s; }
+        .btn:hover { opacity: 0.9; }
+        .btn-excel { background-color: var(--success); }
+        .btn-close { background-color: #7f8c8d; }
+        .btn-register { background-color: var(--accent); }
+        .search-box { margin-bottom: 15px; text-align: right; }
+        .search-box input { padding: 10px; width: 250px; border: 1px solid #ddd; border-radius: 6px; }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 900px; }
+        th, td { padding: 14px 10px; text-align: center; border-bottom: 1px solid #eee; }
+        thead tr { background-color: #f8f9fa; color: var(--primary); }
+        tbody tr:hover { background-color: #f1f7ff; }
+        .name-link { color: #3498db; text-decoration: underline; font-weight: bold; cursor: pointer; }
+        .btn-delete { padding: 6px 12px; background: white; border: 1px solid var(--danger); color: var(--danger); border-radius: 4px; cursor: pointer; }
+        .btn-delete:hover { background: var(--danger); color: white; }
+        .badge { padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: bold; background-color: #e8f8f5; color: #1abc9c; border: 1px solid #1abc9c; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h2>📋 체험 사례 리스트 <span style="font-size:0.6em; color:#888; font-weight:normal;">(총 <span id="totalCount">0</span>건)</span></h2>
+        <div class="top-buttons">
+            <button onclick="downloadExcel()" class="btn btn-excel">📥 엑셀 다운로드</button>
+            <button onclick="goToNew()" class="btn btn-register">+ 신규 등록</button>
+            <button onclick="window.close()" class="btn btn-close">✖ 닫기</button>
+        </div>
+    </div>
+    <div class="search-box">
+        <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="이름 또는 지역 검색...">
+    </div>
+    <div style="overflow-x:auto; border-top:2px solid var(--primary);">
+        <table>
+            <thead>
+                <tr>
+                    <th width="5%">번호</th><th width="10%">등록일</th><th width="12%">성함(상세보기)</th><th width="5%">성별</th>
+                    <th width="10%">생년월일</th><th width="15%">지역</th><th width="15%">통증/증상</th>
+                    <th width="10%">사용기간</th><th width="8%">상태</th><th width="10%">관리</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    let caseData = [];
+
+    window.onload = function() {
+        loadTableData();
+    };
+
+    function loadTableData() {
+        caseData = JSON.parse(localStorage.getItem('exlux_cases') || '[]');
+        renderTable(caseData);
+    }
+
+    function renderTable(data) {
+        const tbody = document.getElementById('tableBody');
+        document.getElementById('totalCount').innerText = data.length;
+        tbody.innerHTML = '';
+
+        if (data.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="10" style="padding:40px; color:#999;">등록된 데이터가 없습니다.<br>상단의 [+ 신규 등록] 버튼을 눌러보세요.</td></tr>';
+            return;
+        }
+
+        data.slice().reverse().forEach((item, index) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${data.length - index}</td>
+                <td>${item.date}</td>
+                <td onclick="goToEdit('${item.id}')" class="name-link">${item.name}</td>
+                <td>${item.gender}</td>
+                <td>${item.birth}</td>
+                <td>${item.region}</td>
+                <td>${item.symptom}</td>
+                <td>${item.period}</td>
+                <td><span class="badge">${item.note || '계속사용중'}</span></td>
+                <td><button class="btn-delete" onclick="deleteItem(event, '${item.id}')">삭제</button></td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
+    // [핵심] 신규 등록 시 기존 기억 삭제
+    function goToNew() {
+        localStorage.removeItem('edit_case_id'); // 편집 ID 삭제
+        localStorage.removeItem('show_poster_immediately'); // 포스터 신호 삭제
+        location.href = '체험사례등록.html'; // 이동
+    }
+
+    function goToEdit(id) {
+        localStorage.setItem('edit_case_id', id); 
+        localStorage.setItem('show_poster_immediately', 'true'); 
+        location.href = '체험사례등록.html';
+    }
+
+    function deleteItem(event, id) {
+        event.stopPropagation();
+        if (confirm("정말로 삭제하시겠습니까?")) {
+            caseData = caseData.filter(item => item.id != id);
+            localStorage.setItem('exlux_cases', JSON.stringify(caseData));
+            loadTableData();
+        }
+    }
+
+    function filterTable() {
+        const keyword = document.getElementById('searchInput').value.toUpperCase();
+        const filtered = caseData.filter(item => 
+            item.name.toUpperCase().includes(keyword) || 
+            item.region.toUpperCase().includes(keyword) ||
+            item.symptom.toUpperCase().includes(keyword)
+        );
+        renderTable(filtered);
+    }
+
+    function downloadExcel() {
+        if(caseData.length===0) return alert("데이터가 없습니다.");
+        let csv = "\uFEFF번호,등록일,성함,성별,생년월일,지역,증상,사용기간\n";
+        caseData.forEach((item, i) => {
+            csv += `${i+1},${item.date},${item.name},${item.gender},${item.birth},${item.region},${item.symptom},${item.period}\n`;
+        });
+        const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "익스럭스_체험사례.csv";
+        link.click();
+    }
+</script>
+</body>
+</html>
