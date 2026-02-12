@@ -147,6 +147,74 @@
             .footer-btn-wrapper { display: flex; flex-direction: column; gap: 10px; align-items: center; width: 100%; }
             .footer-btn-wrapper .cta-btn:last-child { margin-left: 0 !important; }
         }
+        /* ▼▼▼ 여기서부터 복사해서 붙여넣으세요 ▼▼▼ */
+
+    /* --- 모바일 전용 모달 수정 코드 (PC 영향 없음) --- */
+    @media (max-width: 768px) {
+        /* 1. 모달 전체 화면 꽉 차게 설정 */
+        #posterGalleryModal {
+            padding: 0 !important;
+            align-items: flex-start !important;
+        }
+
+        .gallery-container {
+            width: 100% !important;
+            height: 100% !important;
+            max-width: 100% !important;
+            border-radius: 0 !important;
+        }
+
+        /* 2. 흰색 내용 박스 스크롤 가능하게 설정 */
+        .gallery-slide {
+            width: 100% !important;
+            height: 100% !important;
+            max-height: 100% !important;
+            border-radius: 0 !important;
+            padding: 60px 20px 100px 20px !important;
+            overflow-y: auto !important;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* 3. 닫기 버튼(X) 잘 보이게 수정 */
+        #posterGalleryModal > button {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            font-size: 24px;
+            line-height: 35px;
+            padding: 0;
+            z-index: 3000;
+        }
+
+        /* 4. 화살표 버튼 위치 화면 하단으로 이동 */
+        .gallery-nav-btn {
+            top: auto !important;
+            bottom: 20px !important;
+            transform: none !important;
+            background: #002D5E !important;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            z-index: 2900;
+        }
+
+        .prev-btn { left: 20px !important; }
+        .next-btn { right: 20px !important; }
+
+        /* 5. 사진 크기 최적화 */
+        .g-grid { grid-template-columns: 1fr !important; gap: 15px !important; }
+        .g-grid img { height: auto !important; max-height: 300px; }
+    }
+    /* ▲▲▲ 여기까지 붙여넣으세요 ▲▲▲ */
     </style>
 </head>
 <body>
@@ -368,4 +436,5 @@
     </script>
 </body>
 </html>
+
 
