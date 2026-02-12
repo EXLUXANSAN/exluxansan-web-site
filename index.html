@@ -8,111 +8,162 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root {
-            --bg-bright: #fefdfb; /* 환한 한지 느낌 */
-            --point-wood: #a67c52; /* 따뜻한 우드 톤 */
-            --text-main: #2c2c2c;
+            --bg-bright: #fefdfb; --wood-warm: #a67c52; --medical-white: #ffffff;
+            --sage-green: #8da399; --text-dark: #2c2c2c;
         }
-        body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg-bright); color: var(--text-main); margin: 0; word-break: keep-all; }
+        body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg-bright); color: var(--text-dark); margin: 0; line-height: 1.6; }
         
-        header { 
-            background: #fff; padding: 60px 20px; text-align: center; 
-            border-bottom: 1px solid #f2ede4; box-shadow: 0 2px 10px rgba(0,0,0,0.02);
-        }
-        h1 { font-family: 'Gowun Batang', serif; color: var(--point-wood); font-size: 2.4rem; margin: 0; }
-        .sub-copy { font-size: 1.1rem; color: #777; margin-top: 10px; }
+        /* [디자인] 한옥+병원 컨셉 헤더 */
+        header { background: #fff; padding: 50px 20px; text-align: center; border-bottom: 1px solid #f2ede4; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+        h1 { font-family: 'Gowun Batang', serif; color: var(--wood-warm); font-size: 2.3rem; margin: 0; }
+        .nav-admin { position: absolute; top: 20px; right: 20px; font-size: 13px; color: #ccc; cursor: pointer; text-decoration: underline; }
 
-        .container { max-width: 850px; margin: 40px auto; padding: 0 20px; }
-        .card { 
-            background: #fff; border-radius: 20px; padding: 40px; 
-            box-shadow: 0 8px 30px rgba(0,0,0,0.04); margin-bottom: 30px; 
-            border: 1px solid #f0f0f0; 
-        }
-
-        /* 상담 신청 폼: 발급받은 Formspree ID 연결 */
+        .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+        .card { background: #fff; border-radius: 20px; padding: 35px; box-shadow: 0 8px 30px rgba(0,0,0,0.04); margin-bottom: 30px; border: 1px solid #f0f0f0; }
+        
+        /* 상담 예약 폼 */
         .booking-box { background: #f9f8f6; border: 1.5px solid #ece8df; }
-        input, select, textarea { 
-            width: 100%; padding: 15px; margin: 10px 0; border: 1px solid #ddd; 
-            border-radius: 10px; font-size: 16px; box-sizing: border-box; 
-        }
-        .btn-booking { 
-            background: var(--point-wood); color: white; border: none; padding: 20px; 
-            width: 100%; border-radius: 50px; font-weight: bold; cursor: pointer; 
-            font-size: 1.2rem; transition: 0.3s; margin-top: 10px;
-        }
-        .btn-booking:hover { background: #8d623a; transform: translateY(-2px); }
+        input, select, textarea { width: 100%; padding: 13px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; font-size: 15px; box-sizing: border-box; }
+        .btn-main { background: var(--wood-warm); color: white; border: none; padding: 18px; width: 100%; border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 1.1rem; transition: 0.3s; }
+        .btn-main:hover { background: #8d623a; }
 
-        /* 포스터 디자인 영역 */
-        #posterArea { 
-            width: 500px; background: #fff; padding: 50px; border: 20px solid var(--bg-bright); 
-            display: none; position: relative; font-family: 'Gowun Batang', serif;
-        }
+        /* [관리 기능] 섹션 숨김 처리 */
+        #adminSection { display: none; margin-top: 50px; border-top: 2px dashed var(--wood-warm); padding-top: 50px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 14px; }
+        th, td { border-bottom: 1px solid #eee; padding: 12px; text-align: center; }
+        th { background: #f8f9fa; color: var(--wood-warm); }
+
+        /* 포스터 디자인 */
+        #posterArea { width: 500px; background: #fff; padding: 50px; border: 20px solid var(--bg-bright); display: none; font-family: 'Gowun Batang', serif; }
     </style>
 </head>
 <body>
 
+<div class="nav-admin" onclick="checkAdmin()">관리자 로그인</div>
+
 <header>
     <h1>익스럭스(EXLUX) 안산 체험관</h1>
-    <p class="sub-copy">박미영 지사장이 전하는 세포 수준의 깊은 휴식</p>
+    <p style="color: #888;">PEMF 기술로 깨우는 우리 몸의 자연 회복력</p>
 </header>
 
 <div class="container">
     <div class="card">
-        <h2 style="font-family:'Gowun Batang'; color: var(--point-wood);">🌿 지사장 부부의 진정성 있는 약속</h2>
-        <p>나사(NASA)와 FDA가 인정한 PEMF 기술로 몸의 에너지를 깨웁니다. 30년 허리 통증, 고혈압, 당뇨 관리의 어려움을 직접 겪고 극복한 저희 부부의 치유 데이터를 바탕으로 진심을 다해 케어해 드립니다.</p>
+        <h2 style="font-family:'Gowun Batang'; color: var(--wood-warm);">🌿 박미영 지사장의 진심</h2>
+        <p>저희 부부가 직접 경험한 치유 데이터를 바탕으로 진심을 다해 케어해 드립니다. 30년 허리 통증, 당뇨 조절의 어려움을 딛고 일어선 기적을 이제 안산 체험관에서 직접 경험해 보세요.</p>
     </div>
 
     <div class="card booking-box">
-        <h2 style="font-family:'Gowun Batang'; margin-bottom: 25px;">📅 실시간 상담 및 체험 예약</h2>
+        <h2 style="font-family:'Gowun Batang';">📅 실시간 상담 및 체험 예약</h2>
         <form action="https://formspree.io/f/xnjbpvzl" method="POST">
             <input type="text" name="name" placeholder="성함" required>
             <input type="tel" name="phone" placeholder="연락처" required>
-            <select name="inquiry_type">
-                <option>1회 체험 예약 신청</option>
-                <option>기기 구매 및 임대 문의</option>
+            <select name="type">
+                <option>1회 체험 예약</option>
+                <option>기기 구매/임대 문의</option>
                 <option>전국 지사 개설 상담</option>
             </select>
-            <textarea name="message" rows="4" placeholder="불편하신 부위나 상담받고 싶으신 내용을 적어주세요."></textarea>
-            <button type="submit" class="btn-booking">상담 신청 (박미영 지사장님 즉시 전송)</button>
+            <textarea name="msg" rows="3" placeholder="불편하신 부위를 간단히 적어주세요."></textarea>
+            <button type="submit" class="btn-main">신청하기 (지사장 즉시 알림 전송)</button>
         </form>
     </div>
 
-    <div class="card" style="border: 1px dashed var(--point-wood);">
-        <h3 style="color: #999;">📊 체험 사례 이미지 제작 (관리자용)</h3>
-        <input type="text" id="regName" placeholder="고객 성함">
-        <input type="text" id="regSym" placeholder="주요 증상 (예: 당뇨 혈당 조절)">
-        <textarea id="regRes" rows="3" placeholder="호전 내용 및 변화된 점"></textarea>
-        <button onclick="makePoster()" class="btn-booking" style="background:#555; font-size:1rem; padding:12px;">사례 포스터 저장하기</button>
+    <div id="adminSection">
+        <h2 style="font-family:'Gowun Batang'; color: #555;">📊 체험 사례 관리 마스터</h2>
+        
+        <div class="card" style="border: 2px solid var(--wood-warm);">
+            <h3>📝 신규 체험 사례 등록</h3>
+            <input type="text" id="regName" placeholder="고객 성함">
+            <input type="text" id="regSym" placeholder="주요 증상">
+            <textarea id="regRes" rows="3" placeholder="호전 내용"></textarea>
+            <button onclick="saveAndPoster()" class="btn-main" style="background:#555;">저장 및 포스터 생성</button>
+        </div>
+
+        <div class="card">
+            <h3>📋 등록된 체험 사례 리스트</h3>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr><th>날짜</th><th>성함</th><th>증상</th><th>관리</th></tr>
+                    </thead>
+                    <tbody id="caseListBody">
+                        </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 
 <div id="posterArea">
-    <div style="background:var(--point-wood); color:#fff; padding:4px 12px; font-size:14px; margin-bottom:15px; display:inline-block;">OFFICIAL REPORT 2026</div>
-    <h2 style="font-size:32px; margin-bottom:10px;">익스럭스 리얼 체험 사례</h2>
-    <hr style="border: 1.5px solid #333; margin-bottom: 30px;">
-    <p style="font-size:19px;"><strong>성함:</strong> <span id="pName"></span> 님</p>
-    <p style="font-size:19px;"><strong>증상:</strong> <span id="pSym"></span></p>
-    <div style="background:#f8f8f8; padding:35px; border-radius:15px; margin-top:25px; border-left: 5px solid var(--point-wood);">
-        <p id="pRes" style="font-size:21px; line-height:1.7; color:#444;"></p>
+    <div style="background:var(--wood-warm); color:#fff; display:inline-block; padding:5px 15px; margin-bottom:15px;">OFFICIAL REPORT 2026</div>
+    <h2 style="font-size:32px; margin:10px 0;">익스럭스 리얼 체험 사례</h2>
+    <hr style="border: 1.5px solid #333;">
+    <p style="font-size:20px;">성함: <span id="pName"></span> 님</p>
+    <p style="font-size:20px;">증상: <span id="pSym"></span></p>
+    <div style="background:#f8f8f8; padding:30px; border-radius:15px; margin-top:20px; border-left: 5px solid var(--wood-brown);">
+        <p id="pRes" style="font-size:22px; line-height:1.6;"></p>
     </div>
-    <p style="text-align:center; margin-top:60px; color:#bbb; letter-spacing: 2px;">HEALTHCARE SOLUTION EXLUX ANSAN</p>
 </div>
 
 <script>
-    function makePoster() {
+    // 관리자 로그인 기능
+    function checkAdmin() {
+        if(prompt("관리자 암호를 입력하세요.") === "exlux1234") {
+            document.getElementById('adminSection').style.display = 'block';
+            loadCases();
+            window.scrollTo(0, document.body.scrollHeight);
+        } else { alert("암호가 틀렸습니다."); }
+    }
+
+    // 데이터 저장 및 포스터 생성
+    function saveAndPoster() {
         const name = document.getElementById('regName').value;
-        if(!name) return alert("성함을 입력해 주세요.");
+        const sym = document.getElementById('regSym').value;
+        const res = document.getElementById('regRes').value;
+        if(!name || !res) return alert("내용을 입력해주세요.");
+
+        // 로컬 저장소에 저장 (기존 db 로직 유지)
+        const newCase = { id: Date.now(), date: new Date().toLocaleDateString(), name, sym, res };
+        let cases = JSON.parse(localStorage.getItem('exlux_cases') || '[]');
+        cases.push(newCase);
+        localStorage.setItem('exlux_cases', JSON.stringify(cases));
+
+        // 포스터 생성
         document.getElementById('pName').innerText = name[0] + "*" + (name[name.length-1] || "");
-        document.getElementById('pSym').innerText = document.getElementById('regSym').value;
-        document.getElementById('pRes').innerText = document.getElementById('regRes').value;
+        document.getElementById('pSym').innerText = sym;
+        document.getElementById('pRes').innerText = res;
         const area = document.getElementById('posterArea');
         area.style.display = 'block';
-        html2canvas(area, { scale: 2 }).then(canvas => {
+        html2canvas(area).then(canvas => {
             const link = document.createElement('a');
-            link.download = `익스럭스_체험사례_${name}.png`;
-            link.href = canvas.toDataURL("image/png");
+            link.download = `익스럭스_사례_${name}.png`;
+            link.href = canvas.toDataURL();
             link.click();
             area.style.display = 'none';
+            loadCases();
         });
+    }
+
+    // 리스트 불러오기
+    function loadCases() {
+        const cases = JSON.parse(localStorage.getItem('exlux_cases') || '[]');
+        const body = document.getElementById('caseListBody');
+        body.innerHTML = cases.map((item, idx) => `
+            <tr>
+                <td>${item.date}</td>
+                <td>${item.name}</td>
+                <td>${item.sym}</td>
+                <td><button onclick="deleteCase(${idx})" style="color:red; border:none; background:none; cursor:pointer;">삭제</button></td>
+            </tr>
+        `).join('');
+    }
+
+    function deleteCase(idx) {
+        if(confirm("삭제하시겠습니까?")) {
+            let cases = JSON.parse(localStorage.getItem('exlux_cases') || '[]');
+            cases.splice(idx, 1);
+            localStorage.setItem('exlux_cases', JSON.stringify(cases));
+            loadCases();
+        }
     }
 </script>
 </body>
