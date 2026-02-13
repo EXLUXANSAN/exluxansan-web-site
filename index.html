@@ -3,435 +3,644 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>익스럭스(EXLUX) 안산 체험관 | 내 몸을 위한 에너지 충전소</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    
+    <title>익스럭스(EXLUX) - 내 몸을 위한 에너지 충전소</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <style>
-        /* --- 디자인: 한옥의 따뜻함 + 병원의 전문성 --- */
-        :root {
-            --bg-paper: #fdfcf8;      /* 한지 배경 */
-            --wood-warm: #8d6e63;     /* 서까래 갈색 */
-            --clinic-white: #ffffff;  /* 병원 흰색 */
-            --clinic-teal: #6b8e8e;   /* 전문성 청록 */
-            --text-main: #333333;
-            --danger: #d32f2f;
+        body { font-family: 'Noto Sans KR', sans-serif; word-break: keep-all; }
+        .hero-bg {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1519824141121-99767218abb2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Noto Sans KR', sans-serif; background-color: var(--bg-paper); color: var(--text-main); line-height: 1.7; word-break: keep-all; }
-
-        /* 헤더 */
-        header { position: fixed; width: 100%; top: 0; z-index: 2000; background: rgba(255,255,255,0.98); border-bottom: 2px solid var(--wood-warm); box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        nav { max-width: 1200px; margin: 0 auto; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-family: 'Gowun Batang', serif; font-size: 1.6rem; font-weight: 700; color: var(--wood-warm); text-decoration: none; }
-        .nav-links a { margin-left: 15px; text-decoration: none; color: #555; font-size: 0.95rem; font-weight: 500; cursor: pointer; }
-
-        /* 섹션 공통 */
-        section { padding: 100px 20px; max-width: 1200px; margin: 0 auto; }
-        .section-title { text-align: center; margin-bottom: 60px; padding-top: 40px; }
-        .section-title h2 { font-family: 'Gowun Batang', serif; font-size: 2.5rem; color: var(--wood-warm); margin-bottom: 15px; }
-        .section-title p { color: var(--clinic-teal); font-weight: 700; letter-spacing: 2px; }
-
-        /* 카드 그리드 */
-        .card { background: var(--clinic-white); border-radius: 20px; padding: 35px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); border-top: 6px solid var(--wood-warm); margin-bottom: 30px; }
-        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
-
-        /* 예약 폼 */
-        .booking-box { background: #f9f6f2; border: 1px solid #e0dcd0; padding: 45px 30px; border-radius: 30px; max-width: 600px; margin: 0 auto; }
-        input, select, textarea { width: 100%; padding: 14px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 16px; background: #fff; box-sizing: border-box; }
-        .btn-main { background: var(--wood-warm); color: white; border: none; padding: 18px; width: 100%; border-radius: 50px; font-size: 1.2rem; font-weight: 700; cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(141, 110, 99, 0.3); display: block; margin: 0 auto; }
-        .btn-main:hover { background: var(--clinic-teal); transform: translateY(-2px); }
-
-        /* 모달 (관리자/갤러리) */
-        #adminModal, #galleryModal { display:none; position:fixed; z-index:3000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.9); overflow-y: auto; padding: 30px 10px; }
-        .modal-content { background: white; max-width: 1000px; margin: 0 auto; border-radius: 25px; padding: 35px; position: relative; border: 8px solid var(--bg-paper); }
-        .close-btn { position: absolute; right: 25px; top: 20px; font-size: 32px; cursor: pointer; color: #999; }
-        
-        /* 폼 로우 */
-        .form-row { display: flex; gap: 15px; margin-bottom: 12px; flex-wrap: wrap; }
-        .col { flex: 1; min-width: 180px; }
-        label { display: block; font-weight: 700; font-size: 14px; margin-bottom: 8px; color: #555; }
-        
-        /* 사진 미리보기 */
-        .preview-area { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
-        .p-box { width: 80px; height: 80px; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; position: relative; }
-        .p-box img { width: 100%; height: 100%; object-fit: cover; }
-        .p-del { position: absolute; top:0; right:0; background:red; color:white; font-size:10px; border:none; padding:3px 6px; cursor:pointer; }
-
-        /* 포스터 캡처 영역 (평소 숨김) */
-        #posterArea { width: 210mm; background: white; padding: 20mm; display: none; margin: 0 auto; border-top: 20mm solid var(--wood-warm); font-family: 'Gowun Batang', serif; box-sizing: border-box; }
-        .p-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 25px; }
-        .p-grid img { width: 100%; height: 180px; object-fit: cover; border-radius: 10px; border: 1px solid #eee; }
-
-        /* 모바일 전화 버튼 */
-        #floatingCall { position: fixed; bottom: 30px; right: 30px; background: #27ae60; color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 28px; z-index: 1000; text-decoration: none; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-
-        @media (max-width: 768px) {
-            .section-title h2 { font-size: 1.8rem; line-height: 1.4; }
-            .form-row .col { min-width: 100%; }
-            .nav-links a { margin-left: 10px; font-size: 0.85rem; }
-        }
+        .text-shadow { text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .scroll-mt { scroll-margin-top: 100px; }
     </style>
 </head>
-<body>
+<body class="bg-gray-50 text-gray-800">
 
-    <header>
-        <nav>
-            <a href="#" class="logo">EXLUX 안산</a>
-            <div class="nav-links">
-                <a href="#about">브랜드</a><a href="#tech">기술</a><a href="#ansan">체험관</a><a href="#cases">사례</a>
-                <a onclick="checkAdmin()" style="color:#ccc; font-size:11px; margin-left:20px;">Admin</a>
+    <button onclick="toggleMode()" class="fixed bottom-5 left-5 z-50 bg-gray-900 text-white px-4 py-2 rounded-full text-xs shadow-lg hover:bg-black transition">
+        <i class="fas fa-sync-alt mr-2"></i><span id="modeText">관리자 모드 전환</span>
+    </button>
+
+    <div id="clientView">
+
+        <a href="tel:031-8042-3693" class="fixed bottom-8 right-6 z-50 bg-green-500 text-white w-16 h-16 rounded-full flex items-center justify-center shadow-lg hover:bg-green-600 transition md:hidden animate-bounce">
+            <i class="fas fa-phone-alt text-2xl"></i>
+        </a>
+
+        <nav class="bg-white/95 backdrop-blur-sm shadow-md fixed w-full top-0 z-40">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="flex justify-between h-20 items-center">
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl font-black text-blue-900 tracking-tighter">EXLUX</span>
+                        <span class="text-sm text-gray-500 font-bold mt-1">익스럭스</span>
+                    </div>
+                    <div class="hidden md:flex space-x-8 font-medium text-gray-700">
+                        <a href="#brand" class="hover:text-blue-900 transition">브랜드</a>
+                        <a href="#tech" class="hover:text-blue-900 transition">핵심기술</a>
+                        <a href="#story" class="hover:text-blue-900 transition">탄생스토리</a>
+                        <a href="#cases" class="hover:text-blue-900 transition">체험사례</a>
+                        <button onclick="openConsultModal()" class="bg-blue-900 text-white px-5 py-2 rounded-full hover:bg-blue-800 transition shadow-lg">상담예약</button>
+                    </div>
+                </div>
             </div>
         </nav>
-    </header>
 
-    <section id="about" style="padding-top: 180px; text-align: center;">
-        <div class="section-title"><p>PREMIUM ENERGY CARE</p><h2>익스럭스 탄생 스토리</h2></div>
-        <div class="card">
-            <p style="font-size: 1.2rem; margin-bottom: 20px;"><strong>"가장 소중한 사람의 아픔을 덜어주고 싶다"</strong>는 진심에서 시작되었습니다.</p>
-            <p>익스럭스(Extra Luxury Energy)는 병원에서만 접하던 고귀한 PEMF 기술력을 소형화하여 일상에서 누릴 수 있도록 한 프리미엄 헬스케어 브랜드입니다. 인체 본연의 회복력을 깨워드리는 <strong>'내 몸을 위한 에너지 충전소'</strong>입니다.</p>
-        </div>
-    </section>
-
-    <section id="tech" style="background: #fdfdfd;">
-        <div class="section-title"><h2>검증된 과학, PEMF</h2><p>NASA와 FDA가 인정한 치유의 파동</p></div>
-        <div class="grid-3">
-            <div class="card"><h3>NASA 우주 기술</h3><p>우주비행사의 근육 위축과 골밀도 감소 해결을 위해 NASA에서 도입한 자기장 파동 기술입니다.</p></div>
-            <div class="card"><h3>FDA 공식 승인</h3><p>뼈 재생(1979), 통증 완화(1998), 우울증 치료 등 전 세계적으로 안전성과 효과를 공식 인정받았습니다.</p></div>
-            <div class="card"><h3>국내 대형 병원 도입</h3><p>서울대병원, 세브란스 등 국내 주요 의료기관에서 재활과 난치성 통증 관리에 활용 중입니다.</p></div>
-        </div>
-    </section>
-
-    <section id="ansan">
-        <div class="section-title"><h2>국내 1호 안산 체험관</h2><p>기적의 데이터를 나누는 공간</p></div>
-        <div class="grid-3">
-            <div class="card" style="grid-column: span 2;">
-                <h3>탄생 배경</h3>
-                <p>박미영 지사장 부부가 직접 경험한 당뇨 수치 조절과 만성 통증 회복 데이터를 바탕으로 세워졌습니다. 본인들이 직접 겪은 치유의 확신을 지역 주민들과 진성 케어로 나누고 있습니다.</p>
+        <header id="brand" class="hero-bg h-screen flex items-center justify-center text-center text-white px-4 pt-20">
+            <div class="max-w-4xl animate-fade-in-up">
+                <p class="text-blue-300 font-bold tracking-[0.2em] mb-4 text-lg">PREMIUM HEALTHCARE DEVICE</p>
+                <h1 class="text-4xl md:text-6xl font-black mb-6 leading-tight text-shadow">
+                    내 몸을 위한<br>에너지 충전소
+                </h1>
+                <div class="space-y-4 text-lg md:text-xl text-gray-100 font-light mb-10 leading-relaxed">
+                    <p>
+                        "익스럭스는 <strong class="font-bold text-white">PEMF(펄스자기장)</strong> 기술을 통해<br class="hidden md:block">
+                        인체 본연의 회복력을 깨우는 프리미엄 건강 관리 디바이스입니다."
+                    </p>
+                    <p class="text-base md:text-lg opacity-90">
+                        세포 수준의 에너지를 충전하여 현대인의 만성 통증과 피로를<br class="hidden md:block">
+                        근본적으로 관리하는 <strong>'내 몸을 위한 에너지 충전소'</strong>입니다.
+                    </p>
+                </div>
             </div>
-            <div class="card">
-                <h3>체험관 장점</h3>
-                <ul style="padding-left: 15px;">
-                    <li>1:1 맞춤형 임상 데이터 가이드</li>
-                    <li>지사장 부부의 직접 케어</li>
-                    <li>편안한 건강 사랑방 공동체</li>
-                </ul>
-            </div>
-        </div>
-    </section>
+        </header>
 
-    <section id="cases" style="background: #f9f6f2;">
-        <div class="section-title"><h2>회복의 기록 (9대 체험사례)</h2></div>
-        <div class="grid-3" id="legacyCaseGrid">
-            </div>
-        <div style="text-align: center; margin-top: 50px;">
-            <button class="btn-main" style="width: auto; padding: 15px 50px;" onclick="openGallery()">실시간 체험 포스터 갤러리 전체보기</button>
-        </div>
-    </section>
+        <section id="tech" class="py-20 bg-white scroll-mt">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">왜 "PEMF" 인가요?</h2>
+                    <p class="text-gray-600 text-lg">NASA 기술부터 FDA 승인까지, 과학으로 증명된 치유의 기술입니다.</p>
+                </div>
 
-    <section id="needed">
-        <div class="section-title"><h2>익스럭스가 꼭 필요한 분들</h2></div>
-        <div class="grid-3">
-            <div class="card"><h3>[만성 통증 케어]</h3><p>어깨, 허리, 무릎 등 고질적인 통증으로 일상이 힘드신 분</p></div>
-            <div class="card"><h3>[순환 및 혈행 개선]</h3><p>손발 저림, 부종 등 혈액순환 장애로 고생하시는 분</p></div>
-            <div class="card"><h3>[신경계 케어]</h3><p>불면증, 극심한 스트레스, 시니어 인지 기능 관리가 필요한 분</p></div>
-        </div>
-    </section>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="bg-slate-50 p-8 rounded-2xl border border-slate-100 hover:shadow-xl transition group">
+                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6 text-blue-900 text-3xl group-hover:bg-blue-900 group-hover:text-white transition">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4 text-blue-900">NASA가 선택한 우주 기술</h3>
+                        <p class="text-sm font-bold text-gray-700 mb-2">"지구가 내뿜는 자연적인 자기장 파동을 모사"</p>
+                        <div class="text-gray-600 text-sm space-y-3 leading-relaxed">
+                            <p><span class="font-bold text-slate-800">우주비행사의 생존 기술:</span> NASA는 우주비행사들이 무중력 상태에서 겪는 골밀도 급감, 근육 위축, 우울감을 해결하기 위해 PEMF 기술을 도입했습니다.</p>
+                            <p><span class="font-bold text-slate-800">세포 재생의 핵심:</span> NASA 연구에 따르면 특정 PEMF 파동은 세포 재생 속도를 최대 4배까지 촉진시킬 수 있음이 증명되었습니다.</p>
+                        </div>
+                    </div>
 
-    <section id="faq" style="background: #fdfdfd;">
-        <div class="section-title"><h2>이용안내 & FAQ</h2></div>
-        <div class="grid-3">
-            <div class="card">
-                <h3>이용 요금</h3>
-                <p>10회 체험권: 100,000원</p>
-                <p>20회 체험권: 180,000원 (10% 할인)</p>
-                <p>30회 체험권: 240,000원 (20% 할인)</p>
-                <p>1개월 임대: 300,000원</p>
-            </div>
-            <div class="card" style="background: #fff4f4; border: 1px solid #ffcccc;">
-                <h4 style="color:var(--danger); margin-bottom:10px;">[주의사항]</h4>
-                <p>심박 조율기 착용자 사용 금지.<br>임산부 및 영유아 전문의 상담 필요.</p>
-            </div>
-            <div class="card">
-                <h3>자주 묻는 질문</h3>
-                <p>Q. 옷을 벗나요? <br>A. 아니요, 편안한 일상복으로 사용 가능합니다.</p>
-            </div>
-        </div>
-    </section>
+                    <div class="bg-slate-50 p-8 rounded-2xl border border-slate-100 hover:shadow-xl transition group">
+                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6 text-blue-900 text-3xl group-hover:bg-blue-900 group-hover:text-white transition">
+                            <i class="fas fa-certificate"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4 text-blue-900">미국 FDA 승인 사례</h3>
+                        <p class="text-sm font-bold text-gray-700 mb-4">"안전성과 효과의 상징"</p>
+                        <ul class="space-y-3 text-sm text-gray-600">
+                            <li class="flex gap-3"><span class="font-bold text-blue-800 min-w-[50px]">1979</span> <span>골절 부위 뼈 재생 촉진 치료 승인</span></li>
+                            <li class="flex gap-3"><span class="font-bold text-blue-800 min-w-[50px]">1998</span> <span>근육 및 관절 통증 완화 및 근육 자극 승인</span></li>
+                            <li class="flex gap-3"><span class="font-bold text-blue-800 min-w-[50px]">2011</span> <span>약물 저항성 우울증(뇌신경 자극) 치료 승인</span></li>
+                            <li class="flex gap-3"><span class="font-bold text-blue-800 min-w-[50px]">2015</span> <span>뇌종양 치료의 보조 수단 승인</span></li>
+                        </ul>
+                    </div>
 
-    <section id="booking">
-        <div class="booking-box">
-            <h2 style="text-align: center; margin-bottom: 30px;">📅 실시간 상담 및 체험 예약</h2>
-            <form id="mainBookingForm">
-                <input type="text" id="bookName" placeholder="성함" required>
-                <input type="tel" id="bookTel" placeholder="연락처 (010-0000-0000)" required>
-                <textarea id="bookMsg" rows="4" placeholder="불편하신 부위나 고민을 남겨주세요."></textarea>
-                <button type="button" class="btn-main" onclick="handleBooking()">상담 신청하기 (지사장 즉시 알림)</button>
-            </form>
-            <div style="text-align: center; margin-top: 25px;">
-                <a href="https://blog.naver.com/cellreturn7933" target="_blank" style="color:#2db400; text-decoration:none; font-weight:bold;"><i class="fa-solid fa-blog"></i> 공식 블로그 구경하기</a>
+                    <div class="bg-slate-50 p-8 rounded-2xl border border-slate-100 hover:shadow-xl transition group">
+                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6 text-blue-900 text-3xl group-hover:bg-blue-900 group-hover:text-white transition">
+                            <i class="fas fa-hospital-user"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4 text-blue-900">국내 메이저 병원 도입</h3>
+                        <div class="space-y-4 text-sm text-gray-600 leading-relaxed">
+                            <p><span class="font-bold text-slate-800">서울대병원, 신촌세브란스:</span><br>난치성 통증 및 재활 의학 분야 활용</p>
+                            <p><span class="font-bold text-slate-800">고려대병원, 경희대병원:</span><br>뇌신경 자극을 통한 불면증 및 통증 센터 운영</p>
+                            <p><span class="font-bold text-slate-800">스포츠 재활:</span><br>국가대표 및 프로 구단 선수들의 부상 방지 및 빠른 회복 프로그램 도입</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <div id="adminModal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeAdmin()">&times;</span>
-            <h3 style="margin-bottom:25px; color:var(--wood-warm); border-bottom:3px solid var(--wood-warm); padding-bottom:10px;">📊 통합 관리 마스터</h3>
-            
-            <div style="margin-bottom: 40px;">
-                <h4 style="margin-bottom:15px;">📥 실시간 상담 예약 접수 현황</h4>
-                <div style="overflow-x:auto;">
-                    <table style="width:100%; border-collapse: collapse; font-size:13px;">
-                        <thead><tr style="background:#f8f9fa;"><th>날짜</th><th>성함</th><th>연락처</th><th>내용</th><th>관리</th></tr></thead>
-                        <tbody id="bookListBody"></tbody>
+        <section id="story" class="py-20 bg-blue-900 text-white scroll-mt">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="flex flex-col md:flex-row gap-16">
+                    <div class="md:w-1/2">
+                        <span class="text-blue-300 font-bold tracking-widest text-sm mb-2 block">BRAND STORY</span>
+                        <h2 class="text-3xl font-bold mb-6">"병원에서만 접하던 고귀한 기술을..."</h2>
+                        <p class="text-blue-100 mb-6 leading-relaxed">
+                            익스럭스(Extra Luxury Energy)는 <strong>"가장 소중한 사람의 아픔을 덜어주고 싶다"</strong>는 진심에서 시작되었습니다.
+                            고가의 PEMF 장비 기술력을 유지하면서도 소형화·최적화에 성공하여 세포 수준의 진보된 휴식을 선사합니다.
+                        </p>
+                        
+                        <div class="mt-10 p-6 bg-blue-800 rounded-xl border border-blue-700">
+                            <h3 class="text-xl font-bold mb-4 text-white">⑦ 익스럭스, 이런 분께 꼭 필요합니다</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <h4 class="font-bold text-blue-300 mb-1">[통증 케어 및 신체 회복]</h4>
+                                    <ul class="text-sm text-blue-100 list-disc list-inside space-y-1">
+                                        <li>만성 통증: 어깨, 허리, 무릎 등 고질적 통증</li>
+                                        <li>혈행 개선: 손발 저림, 부종, 순환 장애</li>
+                                        <li>운동 회복: 고강도 운동 후 빠른 근육 회복</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-blue-300 mb-1">[신경계 및 심리 케어]</h4>
+                                    <ul class="text-sm text-blue-100 list-disc list-inside space-y-1">
+                                        <li>불면증, 우울증, 극심한 스트레스로 고통받는 분</li>
+                                        <li>치매 및 인지 기능 저하 우려되는 시니어님들</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="md:w-1/2">
+                        <span class="text-blue-300 font-bold tracking-widest text-sm mb-2 block">ANSAN BRANCH STORY</span>
+                        <h2 class="text-3xl font-bold mb-6">국내 1호 안산체험관<br>"두 부부의 절실함이 기적이 되기까지"</h2>
+                        <div class="space-y-6 text-gray-200 leading-relaxed">
+                            <p>
+                                국내 1호 안산체험관은 단순한 비즈니스 모델이 아닌, 부부의 직접적인 건강 회복 경험이라는 단단한 믿음 위에 세워졌습니다.
+                            </p>
+                            <div class="bg-white/10 p-4 rounded-lg">
+                                <strong class="text-white block mb-1">남편(이성기)의 변화:</strong>
+                                고혈압, 당뇨, 고지혈증 등 대사 질환과 혈당 수치 조절에 어려움을 겪고, 전립선 문제로 일상이 불편했으나 익스럭스(EXLUX) 체험 후 혈액순환 개선과 수치 정상화를 경험했습니다.
+                            </div>
+                            <div class="bg-white/10 p-4 rounded-lg">
+                                <strong class="text-white block mb-1">아내(박미영)의 변화:</strong>
+                                밤마다 잠을 설치게 했던 고질적인 다리 저림, 만성적인 위장병, 그리고 몸 곳곳의 만성 통증으로부터 자유로워졌습니다.
+                            </div>
+                            <p class="font-medium text-white">
+                                "이 놀라운 기적을 우리 가족만 누릴 수 없다는 확신으로, 지역 주민들의 건강 사랑방 역할을 하고 있습니다."
+                            </p>
+                        </div>
+                        
+                        <div class="mt-8 grid grid-cols-2 gap-4 text-sm">
+                            <div class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-2"></i><span>1호점만의 풍부한 임상 데이터 보유</span></div>
+                            <div class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-2"></i><span>개별 건강 상태 최적의 맞춤형 컨설팅</span></div>
+                            <div class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-2"></i><span>전문적인 사후 관리 서비스 제공</span></div>
+                            <div class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-2"></i><span>데이터 기반 체계적인 체험 설계</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="cases" class="py-20 bg-gray-100 scroll-mt">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">단 한 번의 체험으로 증명된<br>놀라운 회복력</h2>
+                    <p class="text-gray-600">최신 등록된 9건의 실제 사례입니다.</p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
+                        <div class="text-blue-600 font-bold text-sm mb-2">CASE 1. 만성 통증/급성 근육통</div>
+                        <h3 class="font-bold text-lg mb-1">50대 여성 (식당 운영)</h3>
+                        <hr class="my-3 border-gray-100">
+                        <div class="space-y-2 text-sm">
+                            <p><span class="bg-red-100 text-red-800 px-2 py-0.5 rounded text-xs font-bold">상황</span> 식당 수리로 하루 종일 페인트칠 후, 전신에 가게 문을 못 열 정도의 극심한 통증 발생.</p>
+                            <p><span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded text-xs font-bold">결과</span> 2시간 집중 케어 후, 다음 날 통증이 씻은 듯 사라져 직접 추천 글까지 남김.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
+                        <div class="text-blue-600 font-bold text-sm mb-2">CASE 2. 허리 통증 해방</div>
+                        <h3 class="font-bold text-lg mb-1">60대 남성</h3>
+                        <hr class="my-3 border-gray-100">
+                        <div class="space-y-2 text-sm">
+                            <p><span class="bg-red-100 text-red-800 px-2 py-0.5 rounded text-xs font-bold">상황</span> 수십 년간 다양한 치료에도 차도가 없던 만성 허리 통증.</p>
+                            <p><span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded text-xs font-bold">결과</span> 안산 체험관 10회 집중 케어 후, 일상생활에 지장 없을 정도로 허리가 놀랍도록 가벼워짐.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
+                        <div class="text-blue-600 font-bold text-sm mb-2">CASE 3. 순환 장애 및 수면</div>
+                        <h3 class="font-bold text-lg mb-1">50대 여성</h3>
+                        <hr class="my-3 border-gray-100">
+                        <div class="space-y-2 text-sm">
+                            <p><span class="bg-red-100 text-red-800 px-2 py-0.5 rounded text-xs font-bold">상황</span> 손발이 차고 다리가 저려 밤잠을 설치던 불면증 호소.</p>
+                            <p><span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded text-xs font-bold">결과</span> 정기 케어로 온기가 돌며 저림 증상이 완화되어 깊은 숙면(꿀잠)을 자게 됨.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
+                        <div class="text-blue-600 font-bold text-sm mb-2">CASE 4. 빠른 근육 회복</div>
+                        <h3 class="font-bold text-lg mb-1">30대 직장인</h3>
+                        <hr class="my-3 border-gray-100">
+                        <div class="space-y-2 text-sm">
+                            <p><span class="bg-red-100 text-red-800 px-2 py-0.5 rounded text-xs font-bold">상황</span> 고강도 웨이트 후 발생하는 지연성 근육통으로 업무 집중 저하.</p>
+                            <p><span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded text-xs font-bold">결과</span> 운동 직후 사용 시, 물리치료 수준의 빠른 회복으로 최상의 컨디션 유지.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
+                        <div class="text-blue-600 font-bold text-sm mb-2">CASE 5. 관절염 통증 완화</div>
+                        <h3 class="font-bold text-lg mb-1">농사일 평생 하신 분</h3>
+                        <hr class="my-3 border-gray-100">
+                        <div class="space-y-2 text-sm">
+                            <p><span class="bg-red-100 text-red-800 px-2 py-0.5 rounded text-xs font-bold">상황</span> 손가락, 무릎의 심한 관절염과 장마철 통증으로 약도 효과 없던 상태.</p>
+                            <p><span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded text-xs font-bold">결과</span> 2주 후부터 붓기와 통증이 눈에 띄게 줄었으며, 자극 없는 사용감에 대만족.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
+                        <div class="text-blue-600 font-bold text-sm mb-2">CASE 6. 오십견 극복</div>
+                        <h3 class="font-bold text-lg mb-1">60대 환갑 주부</h3>
+                        <hr class="my-3 border-gray-100">
+                        <div class="space-y-2 text-sm">
+                            <p><span class="bg-red-100 text-red-800 px-2 py-0.5 rounded text-xs font-bold">상황</span> 밤마다 어깨가 쑤셔 깨고, 주사 치료에도 반복되는 통증에 일상생활이 지친 상태.</p>
+                            <p><span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded text-xs font-bold">결과</span> 1달 사용 후 어깨가 부드러워지고 팔이 잘 올라가며, 밤에 깨지 않고 푹 자게 됨.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
+                        <div class="text-blue-600 font-bold text-sm mb-2">CASE 7. 야간 다리 쥐(경련)</div>
+                        <h3 class="font-bold text-lg mb-1">30대 남성 (자전거)</h3>
+                        <hr class="my-3 border-gray-100">
+                        <div class="space-y-2 text-sm">
+                            <p><span class="bg-red-100 text-red-800 px-2 py-0.5 rounded text-xs font-bold">상황</span> 운동 후 밤마다 다리에 쥐가 나고, 심할 땐 3일간 계단도 못 갈 정도.</p>
+                            <p><span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded text-xs font-bold">결과</span> 사용 당일부터 쥐가 사라지고, 일주일 후엔 근육통 없이 수면의 질이 대폭 상승함.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
+                        <div class="text-blue-600 font-bold text-sm mb-2">CASE 8. 족저근막염</div>
+                        <h3 class="font-bold text-lg mb-1">50대 자영업</h3>
+                        <hr class="my-3 border-gray-100">
+                        <div class="space-y-2 text-sm">
+                            <p><span class="bg-red-100 text-red-800 px-2 py-0.5 rounded text-xs font-bold">상황</span> 종일 서서 일해 아침 첫발 디딜 때 극심한 발뒤꿈치 통증.</p>
+                            <p><span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded text-xs font-bold">결과</span> 4주 후 찌릿한 증상이 사라져, 종일 서 있어도 편안하고 다시 운동을 시작함.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
+                        <div class="text-blue-600 font-bold text-sm mb-2">CASE 9. 만성 방광염 재발</div>
+                        <h3 class="font-bold text-lg mb-1">만성 재발 환자</h3>
+                        <hr class="my-3 border-gray-100">
+                        <div class="space-y-2 text-sm">
+                            <p><span class="bg-red-100 text-red-800 px-2 py-0.5 rounded text-xs font-bold">상황</span> 약물과 생활 습관 개선에도 계속 재발하여 수년간 고생함.</p>
+                            <p><span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded text-xs font-bold">결과</span> 하복부 집중 케어 3주 만에 잔뇨감과 통증이 감소하고 재발 없이 정상 생활 회복.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-12 bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+                    <p class="text-xl font-bold mb-2">"이 외에도 수많은 회복 사례가 매일 쏟아지고 있습니다."</p>
+                    <p class="text-gray-600 mb-6">안산 체험관에 방문하시면 더 많은 실제 후기를 눈으로 직접 확인하실 수 있습니다.</p>
+                    <a href="#reservation" class="inline-block bg-gray-800 text-white px-8 py-3 rounded-full hover:bg-black transition font-bold">
+                        체험 사례 직접 확인하러 가기
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 bg-white">
+            <div class="max-w-6xl mx-auto px-4">
+                <div class="flex flex-col md:flex-row gap-12">
+                    <div class="md:w-1/2">
+                        <h2 class="text-2xl font-bold mb-6">이용 안내 및 가격</h2>
+                        <div class="bg-blue-50 border-2 border-blue-100 rounded-2xl overflow-hidden">
+                            <div class="p-6 bg-blue-600 text-white text-center">
+                                <h3 class="font-bold text-xl">합리적인 에너지 충전</h3>
+                            </div>
+                            <div class="p-6">
+                                <ul class="space-y-4">
+                                    <li class="flex justify-between items-center border-b pb-2">
+                                        <span class="text-gray-700">10회 체험권</span>
+                                        <span class="font-bold">100,000원</span>
+                                    </li>
+                                    <li class="flex justify-between items-center border-b pb-2">
+                                        <span class="text-gray-700">20회 체험권 (10% 할인)</span>
+                                        <span class="font-bold">180,000원</span>
+                                    </li>
+                                    <li class="flex justify-between items-center border-b pb-2">
+                                        <span class="text-gray-700">30회 체험권 (20% 할인)</span>
+                                        <span class="font-bold">240,000원</span>
+                                    </li>
+                                    <li class="flex justify-between items-center pt-2">
+                                        <span class="text-gray-700 font-bold">1개월 임대 (홈케어)</span>
+                                        <span class="font-bold text-blue-600 text-lg">300,000원</span>
+                                    </li>
+                                    <li class="flex justify-between items-center pt-2 bg-gray-100 p-3 rounded">
+                                        <span class="text-gray-700 font-bold">익스럭스 제품 구매</span>
+                                        <span class="font-bold text-black text-lg">4,290,000원</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="md:w-1/2">
+                        <h2 class="text-2xl font-bold mb-6">안전 가이드 & FAQ</h2>
+                        <div class="bg-gray-50 p-6 rounded-2xl border border-gray-200 h-full">
+                            <div class="mb-6">
+                                <strong class="text-red-500 block mb-2"><i class="fas fa-exclamation-triangle mr-2"></i>이용 시 필수 주의사항</strong>
+                                <p class="text-sm text-gray-700">심박 조율기 착용자 사용 엄금, 임산부 및 영유아 전문의 상담 필요, 급성 출혈 환자 사용 자제.</p>
+                            </div>
+                            <div class="space-y-4 text-sm">
+                                <div>
+                                    <p class="font-bold mb-1">Q. 몸에 금속(임플란트 등)이 있는데 괜찮나요?</p>
+                                    <p class="text-gray-600">A: 네, 비열성 파동이므로 금속 가열 없이 100mm 깊이까지 안전하게 케어 가능합니다.</p>
+                                </div>
+                                <div>
+                                    <p class="font-bold mb-1">Q. 전용 복장이 필요한가요?</p>
+                                    <p class="text-gray-600">A: 아니요, 일상복 차림으로 앉거나 누워 에너지를 충전하세요.</p>
+                                </div>
+                                <div>
+                                    <p class="font-bold mb-1">Q. 매일 사용해도 부작용이 없나요?</p>
+                                    <p class="text-gray-600">A: 익스럭스는 약물을 사용하지 않는 비침습적 솔루션으로 부작용 걱정이 거의 없습니다. 오히려 꾸준한 사용은 세포 전위를 정상화하고 손상된 조직 회복을 돕습니다.</p>
+                                </div>
+                                <div>
+                                    <p class="font-bold mb-1">Q. 병원 치료와 병행해도 되나요?</p>
+                                    <p class="text-gray-600">A: 이미 많은 메이저 병원, 한의원에서 보조 요법으로 사용 중입니다. 약물/물리치료와 병행 시 시너지 효과를 기대할 수 있습니다.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="reservation" class="py-20 bg-gray-950 text-white scroll-mt">
+            <div class="max-w-4xl mx-auto px-4 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-10">익스럭스(EXLUX) 안산 체험관</h2>
+
+                <div class="space-y-4 mb-10 text-lg">
+                    <p class="font-bold">지사장 : 박미영</p>
+                    <p>주소: 경기도 안산시 단원구 광덕4로 144, 트윈타운 A동 608호</p>
+                    <p class="text-2xl font-bold text-blue-400 mt-2">전화: 031-8042-3693</p>
+                </div>
+
+                <p class="text-gray-400 mb-12">방문 고객 편의성 극대화! 편안한 체험을 위해 미리 연락주세요.</p>
+
+                <div class="flex flex-col md:flex-row justify-center gap-6">
+                    <button onclick="openConsultModal()" class="bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-4 px-10 rounded-full shadow-lg transition text-lg flex items-center justify-center">
+                        실시간 예약 및 상담하기
+                    </button>
+                    <a href="https://blog.naver.com/cellreturn7933" target="_blank" class="bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-10 rounded-full shadow-lg transition text-lg flex items-center justify-center">
+                        <i class="fas fa-blog mr-2"></i>공식 블로그 구경하기
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <footer class="bg-gray-900 text-gray-500 py-10 text-center text-sm">
+            <p>&copy; 2024 EXLUX Ansan. All rights reserved.</p>
+        </footer>
+    </div>
+
+
+    <div id="adminView" class="hidden flex min-h-screen bg-gray-100">
+        <aside class="w-64 bg-slate-800 text-white flex-shrink-0 hidden md:block">
+            <div class="p-6 font-bold text-2xl border-b border-slate-700 tracking-tighter">EXLUX Admin</div>
+            <nav class="mt-6 text-sm">
+                <a onclick="showAdminTab('dash')" class="block py-3 px-6 hover:bg-slate-700 cursor-pointer border-l-4 border-transparent hover:border-blue-400 transition"><i class="fas fa-chart-line w-6"></i> 대시보드</a>
+                <a onclick="showAdminTab('list')" class="block py-3 px-6 hover:bg-slate-700 cursor-pointer border-l-4 border-transparent hover:border-blue-400 transition"><i class="fas fa-list w-6"></i> 체험사례 리스트</a>
+                <a onclick="showAdminTab('register')" class="block py-3 px-6 hover:bg-slate-700 cursor-pointer border-l-4 border-transparent hover:border-blue-400 transition"><i class="fas fa-edit w-6"></i> 체험사례 등록</a>
+            </nav>
+        </aside>
+
+        <main class="flex-1 p-8 overflow-y-auto h-screen">
+            <div id="tab-dash">
+                <h2 class="text-2xl font-bold mb-6 text-gray-800">📅 예약 및 상담 접수 현황</h2>
+                <div class="bg-white rounded-lg shadow overflow-hidden">
+                    <table class="w-full text-sm text-left">
+                        <thead class="bg-gray-50 text-gray-700 border-b">
+                            <tr>
+                                <th class="p-4">번호</th>
+                                <th class="p-4">등록일</th>
+                                <th class="p-4">성함</th>
+                                <th class="p-4">연락처</th>
+                                <th class="p-4">유형</th>
+                                <th class="p-4">문의 내용</th>
+                                <th class="p-4">삭제</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b hover:bg-gray-50">
+                                <td class="p-4">1</td>
+                                <td class="p-4">2024-05-20</td>
+                                <td class="p-4">홍길동</td>
+                                <td class="p-4">010-1234-1234</td>
+                                <td class="p-4"><span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-bold">체험예약</span></td>
+                                <td class="p-4 text-gray-500">허리 통증 상담</td>
+                                <td class="p-4"><button class="text-red-400 hover:text-red-600"><i class="fas fa-trash"></i></button></td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
             </div>
 
-            <div class="card" style="border-top:none; background:#fcfcfc;">
-                <h4>📝 신규 체험 사례 정밀 등록</h4>
-                <div class="form-row">
-                    <div class="col"><label>성함</label><input type="text" id="regName"></div>
-                    <div class="col"><label>성별</label><select id="regGender"><option value="남">남성</option><option value="여">여성</option></select></div>
+            <div id="tab-list" class="hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">📝 체험 사례 관리</h2>
+                    <div>
+                        <button onclick="showAdminTab('register')" class="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700 mr-2"><i class="fas fa-plus mr-2"></i>신규 등록</button>
+                        <button class="bg-green-600 text-white px-4 py-2 rounded text-sm hover:bg-green-700"><i class="fas fa-file-excel mr-2"></i>엑셀 다운로드</button>
+                    </div>
                 </div>
-                <div class="form-row">
-                    <div class="col"><label>생년월일</label><div style="display:flex; gap:5px;"><select id="regY" onchange="calcAge()"></select><select id="regM"></select><select id="regD"></select></div></div>
-                    <div class="col"><label>만 나이</label><input type="text" id="regAge" readonly style="background:#eee;"></div>
-                </div>
-                <div class="form-row">
-                    <div class="col"><label>거주 시·도 (인구순)</label><select id="regSiDo" onchange="setSiGunGu()"></select></div>
-                    <div class="col"><label>시·군·구 (가나다순)</label><select id="regSiGunGu"></select></div>
-                </div>
-                <div class="form-row">
-                    <div class="col"><label>증상 선택</label><select id="regSymSelect" onchange="checkOther()"><option value="허리/디스크">허리/디스크</option><option value="어깨/목">어깨/목</option><option value="무릎/관절">무릎/관절</option><option value="혈당/혈압">혈당/혈압</option><option value="기타">기타 (직접 입력)</option></select></div>
-                    <div id="otherInputBox" class="col" style="display:none;"><label>기타 증상 입력</label><input type="text" id="regSymOther"></div>
-                </div>
-                <div class="form-row">
-                    <div class="col"><label>사용 기간</label><select id="regPeriod"><option>10일</option><option>20일</option><option>30일 이상</option><option>계속 사용중</option></select></div>
-                </div>
-                <label>체험 전 구체적인 증상</label><textarea id="descPre" rows="2" placeholder="기존 불편함"></textarea>
-                <label>사용 후 기적의 변화</label><textarea id="descPost" rows="2" style="color:var(--danger); font-weight:bold;" placeholder="개선 결과"></textarea>
                 
-                <label>📷 사진 (최대 4장)</label>
-                <input type="file" id="fileInput" multiple accept="image/*" onchange="addPhotos()">
-                <div id="previewArea" class="preview-area"></div>
-                
-                <button class="btn-main" style="margin-top:25px; background:var(--clinic-teal);" onclick="saveDataAndPoster()">[저장하기] 및 포스터 PNG 자동 저장</button>
+                <div class="bg-white p-4 rounded shadow mb-4 flex gap-2">
+                    <input type="text" placeholder="이름 / 지역 / 증상 검색" class="border p-2 rounded flex-1 focus:outline-none focus:border-blue-500">
+                    <button class="bg-gray-800 text-white px-6 rounded hover:bg-black">검색</button>
+                </div>
+
+                <div class="bg-white rounded shadow overflow-hidden">
+                    <table class="w-full text-sm text-left">
+                        <thead class="bg-gray-50 text-gray-700 border-b">
+                            <tr>
+                                <th class="p-4">번호</th>
+                                <th class="p-4">성함</th>
+                                <th class="p-4">지역</th>
+                                <th class="p-4">증상</th>
+                                <th class="p-4">사용기간</th>
+                                <th class="p-4">기능</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b hover:bg-gray-50 transition">
+                                <td class="p-4">9</td>
+                                <td class="p-4 font-bold">만성 재발 환자</td>
+                                <td class="p-4">-</td>
+                                <td class="p-4">방광염</td>
+                                <td class="p-4">3주</td>
+                                <td class="p-4">
+                                    <button onclick="openModal('만성 재발 환자', '방광염', '3주', '잔뇨감과 통증 감소, 정상 생활 회복')" class="text-blue-600 font-bold mr-3 hover:underline">포스터 보기</button>
+                                    <button class="text-red-400 hover:text-red-600"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            </tbody>
+                    </table>
+                </div>
             </div>
 
-            <h4>📋 등록된 사례 리스트</h4>
-            <table style="width:100%; border-collapse: collapse; font-size:13px;">
-                <thead><tr style="background:#eee;"><th>날짜</th><th>성함</th><th>증상</th><th>관리</th></tr></thead>
-                <tbody id="caseListBody"></tbody>
-            </table>
+            <div id="tab-register" class="hidden">
+                <h2 class="text-2xl font-bold mb-6 text-gray-800">✍️ 신규 사례 등록</h2>
+                <div class="bg-white p-8 rounded-lg shadow-lg max-w-3xl">
+                    <h3 class="font-bold text-lg mb-4 border-b pb-2">① 기본 정보 입력</h3>
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <input type="text" placeholder="성함" class="border p-3 rounded bg-gray-50">
+                        <div class="grid grid-cols-2 gap-2">
+                            <input type="text" placeholder="생년월일 (ex. 800101)" class="border p-3 rounded bg-gray-50">
+                            <select class="border p-3 rounded bg-gray-50"><option>성별</option><option>남</option><option>여</option></select>
+                        </div>
+                        <input type="text" placeholder="지역 (시/도 시/군/구)" class="border p-3 rounded bg-gray-50 col-span-2">
+                    </div>
+
+                    <h3 class="font-bold text-lg mb-4 border-b pb-2">② 증상 및 사용 정보</h3>
+                    <div class="mb-4">
+                        <label class="block text-sm font-bold mb-2 text-gray-600">주요 증상 선택</label>
+                        <div class="flex flex-wrap gap-4 bg-gray-50 p-3 rounded border">
+                            <label class="flex items-center"><input type="checkbox" class="mr-2"> 허리통증</label>
+                            <label class="flex items-center"><input type="checkbox" class="mr-2"> 목/어깨</label>
+                            <label class="flex items-center"><input type="checkbox" class="mr-2"> 무릎/관절</label>
+                            <label class="flex items-center"><input type="checkbox" class="mr-2"> 혈당/혈압</label>
+                            <label class="flex items-center"><input type="checkbox" class="mr-2"> 불면/우울/기타</label>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <select class="w-full border p-3 rounded bg-gray-50">
+                            <option>사용 기간 선택</option>
+                            <option>10일 이하</option>
+                            <option>10일 이상</option>
+                            <option>20일 이상</option>
+                            <option>30일 이상</option>
+                            <option>계속 사용 중</option>
+                        </select>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4 mb-6">
+                        <textarea placeholder="구체적 증상 입력" class="w-full border p-3 rounded bg-gray-50 h-32"></textarea>
+                        <textarea placeholder="사용 후 변화 입력" class="w-full border p-3 rounded bg-gray-50 h-32"></textarea>
+                    </div>
+
+                    <h3 class="font-bold text-lg mb-4 border-b pb-2">③ 사진 업로드</h3>
+                    <div class="mb-8">
+                        <input type="file" multiple class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:bg-blue-50 file:text-blue-700 border p-2 rounded cursor-pointer hover:file:bg-blue-100">
+                        <p class="text-xs text-gray-400 mt-1">* 최대 4장, 자동 압축 기능 적용됨</p>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <button onclick="alert('갤러리에 저장되었습니다.'); showAdminTab('list');" class="flex-1 bg-blue-600 text-white py-4 rounded-lg font-bold hover:bg-blue-700 transition">갤러리 저장하기</button>
+                        <button onclick="openModal('미리보기', '증상', '기간', '결과')" class="flex-1 bg-gray-800 text-white py-4 rounded-lg font-bold hover:bg-black transition">포스터 미리보기</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="posterModal" class="fixed inset-0 bg-black/80 hidden z-[9999] flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-xl shadow-2xl max-w-md w-full overflow-hidden transform scale-95 transition-transform duration-300" id="modalContent">
+            <div class="bg-blue-900 text-white p-4 flex justify-between items-center">
+                <span class="font-bold text-lg"><i class="fas fa-image mr-2"></i>체험 사례 포스터</span>
+                <button onclick="closeModal()" class="text-white hover:text-gray-300"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            <div class="p-6 text-center bg-white relative">
+                <div class="border-[6px] border-double border-blue-900 p-6 rounded-lg bg-gray-50">
+                    <div class="text-blue-600 font-bold tracking-widest mb-1 text-sm">EXLUX SUCCESS STORY</div>
+                    <h3 class="text-3xl font-black text-gray-900 mb-2" id="mName">고객명</h3>
+                    <p class="text-gray-600 font-bold mb-6 pb-4 border-b border-gray-300" id="mInfo">증상 / 기간</p>
+                    
+                    <div class="grid grid-cols-2 gap-2 mb-6">
+                        <div class="aspect-square bg-gray-300 flex items-center justify-center text-gray-500 font-bold rounded-lg">BEFORE</div>
+                        <div class="aspect-square bg-blue-100 flex items-center justify-center text-blue-600 font-bold rounded-lg border-2 border-blue-200">AFTER</div>
+                    </div>
+                    
+                    <div class="bg-blue-600 text-white p-4 rounded-xl shadow-lg relative">
+                        <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-yellow-400 text-black text-xs font-bold px-3 py-1 rounded-full">AMAZING RESULT</div>
+                        <p class="text-lg font-bold leading-relaxed" id="mResult">"결과 텍스트"</p>
+                    </div>
+                </div>
+                
+                <div class="mt-6 flex gap-2">
+                    <button class="flex-1 bg-gray-900 text-white py-3 rounded-lg font-bold hover:bg-black transition"><i class="fas fa-download mr-2"></i>PNG 다운로드</button>
+                    <button onclick="closeModal()" class="flex-1 border border-gray-300 py-3 rounded-lg font-bold hover:bg-gray-100 transition">닫기</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div id="posterArea">
-        <div style="font-weight:bold; letter-spacing:2px; color:var(--wood-warm); margin-bottom:12px;">OFFICIAL REPORT /// 2026</div>
-        <h1 style="font-size:34px; margin-bottom:15px;">익스럭스 리얼 체험 사례</h1>
-        <div id="p-info" style="font-size:18px; border-bottom:2px solid #333; padding-bottom:15px; margin-bottom:25px;"></div>
-        <div style="margin-bottom:18px;"><span style="background:var(--wood-warm); color:white; padding:4px 12px; border-radius:4px; font-weight:bold;">증상</span><div id="p-sym" style="font-size:22px; font-weight:bold; margin-top:10px;"></div></div>
-        <div style="margin-bottom:18px;"><label style="font-weight:bold;">체험 전:</label><p id="p-pre" style="white-space:pre-wrap;"></p></div>
-        <div style="margin-bottom:18px; color:red;"><label style="font-weight:bold;">사용 후 변화:</label><p id="p-post" style="white-space:pre-wrap; font-weight:bold;"></p></div>
-        <div id="p-imgs" class="p-grid"></div>
-        <div style="margin-top:50px; text-align:center; color:#888; border-top:1px solid #eee; padding-top:25px;">건강 에너지 충전소 | 익스럭스 안산 체험관</div>
-    </div>
-
-    <div id="galleryModal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeGallery()">&times;</span>
-            <h2 style="text-align:center; font-family:'Gowun Batang'; margin-bottom:30px;">익스럭스 실시간 체험 갤러리</h2>
-            <div id="galleryContent" class="grid-3"></div>
+    <div id="consultModal" class="fixed inset-0 bg-black/80 hidden z-[9999] flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-xl shadow-2xl max-w-md w-full overflow-hidden transform scale-95 transition-transform duration-300" id="consultContent">
+            <div class="bg-blue-900 text-white p-4 flex justify-between items-center">
+                <span class="font-bold text-lg"><i class="fas fa-calendar-check mr-2"></i>실시간 예약 및 상담</span>
+                <button onclick="closeConsultModal()" class="text-white hover:text-gray-300"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            <div class="p-6 bg-white">
+                <form class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-bold mb-1 text-gray-700">성명</label>
+                        <input type="text" class="w-full border p-3 rounded bg-gray-50 focus:outline-none focus:border-blue-500" placeholder="홍길동">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-1 text-gray-700">연락처</label>
+                        <input type="text" class="w-full border p-3 rounded bg-gray-50 focus:outline-none focus:border-blue-500" placeholder="010-0000-0000">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-1 text-gray-700">상담 유형</label>
+                        <select class="w-full border p-3 rounded bg-gray-50 focus:outline-none focus:border-blue-500">
+                            <option>체험예약</option>
+                            <option>구매문의</option>
+                            <option>대리점상담</option>
+                            <option>체험관(자사)상담</option>
+                            <option>기타 상담</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-1 text-gray-700">기타 상담 내용</label>
+                        <textarea class="w-full border p-3 rounded bg-gray-50 h-24 focus:outline-none focus:border-blue-500" placeholder="기타 상담 시 내용을 기록해 주세요."></textarea>
+                    </div>
+                    <button type="button" onclick="alert('신청이 완료되었습니다.'); closeConsultModal();" class="w-full bg-blue-700 text-white font-bold py-4 rounded-lg hover:bg-blue-800 transition text-lg mt-2">
+                        신청하기
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
-
-    <a href="tel:010-7932-9393" id="floatingCall"><i class="fa-solid fa-phone"></i></a>
 
     <script>
-        /* --- 1. 데이터 정의 --- */
-        const legacyCases = [{t:"30년 허리 통증 해방", d:"60대 남성, 10회 집중 케어 후 일상 회복"}, {t:"만성 관절염", d:"50대 여성, 통증 소멸"}, {t:"혈당 수치 정상화", d:"50대 남성, 수치 안정"}, {t:"오십견 어깨 회복", d:"60대 주부, 팔 가동 범위 개선"}, {t:"다리 저림 해결", d:"40대 사무직, 하체 순환 개선"}, {t:"운동 후 근육 회복", d:"30대 직장인, 피로 해소"}, {t:"방광염 개선", d:"만성 재발 환자"}, {t:"족저근막염 해결", d:"4주 사용 후 완치"}, {t:"불면증 숙면", d:"손발 온기 회복 후 숙면"}];
-
-        // 17개 시도 (인구순) & 시군구 (가나다순)
-        const koreaArea = {
-            "경기": ["가평군","고양시 덕양구","고양시 일산동구","고양시 일산서구","과천시","광명시","광주시","구리시","군포시","김포시","남양주시","동두천시","부천시","성남시 분당구","성남시 수정구","성남시 중원구","수원시 권선구","수원시 영통구","수원시 장안구","수원시 팔달구","시흥시","안산시 단원구","안산시 상록구","안성시","안양시 동안구","안양시 만안구","양주시","양평군","여주시","연천군","오산시","용인시 기흥구","용인시 수지구","용인시 처인구","의왕시","의정부시","이천시","파주시","평택시","포천시","하남시","화성시"],
-            "서울": ["강남구","강동구","강북구","강서구","관악구","광진구","구로구","금천구","노원구","도봉구","동대문구","동작구","마포구","서대문구","서초구","성동구","성북구","송파구","양천구","영등포구","용산구","은평구","종로구","중구","중랑구"],
-            "부산": ["강서구","금정구","기장군","남구","동구","동래구","부산진구","북구","사상구","사하구","서구","수영구","연제구","영도구","중구","해운대구"],
-            "경남": ["거제시","거창군","고성군","김해시","남해군","밀양시","사천시","산청군","양산시","의령군","진주시","창녕군","창원시 마산합포구","창원시 마산회원구","창원시 성산구","창원시 의창구","창원시 진해구","통영시","하동군","함안군","함양군","합천군"],
-            "인천": ["강화군","계양구","남동구","동구","미추홀구","부평구","서구","연수구","옹진군","중구"],
-            "경북": ["경산시","경주시","고령군","구미시","김천시","문경시","봉화군","상주시","성주군","안동시","영덕군","영양군","영주시","영천시","예천군","울릉군","울진군","의성군","청도군","청송군","칠곡군","포항시 남구","포항시 북구"],
-            "대구": ["군위군","남구","달서구","달성군","동구","북구","서구","수성구","중구"],
-            "충남": ["계룡시","공주시","금산군","논산시","당진시","보령시","부여군","서산시","서천군","아산시","예산군","천안시 동남구","천안시 서북구","청양군","태안군","홍성군"],
-            "전남": ["강진군","고흥군","곡성군","광양시","구례군","나주시","담양군","목포시","무안군","보성군","순천시","신안군","여수시","영광군","영암군","완도군","장성군","장흥군","진도군","함평군","해남군","화순군"],
-            "전북": ["고창군","군산시","김제시","남원시","무주군","부안군","순창군","완주군","익산시","임실군","장수군","전주시 덕진구","전주시 완산구","정읍시","진안군"],
-            "충북": ["괴산군","단양군","보은군","영동군","옥천군","음성군","제천시","증평군","진천군","청주시 상당구","청주시 서원구","청주시 청원구","청주시 흥덕구","충주시"],
-            "강원": ["강릉시","고성군","동해시","삼척시","속초시","양구군","양양군","영월군","원주시","인제군","정선군","철원군","춘천시","태백시","평창군","홍천군","화천군","횡성군"],
-            "대전": ["대덕구","동구","서구","유성구","중구"],
-            "광주": ["광산구","남구","동구","북구","서구"],
-            "울산": ["남구","동구","북구","울주군","중구"],
-            "제주": ["서귀포시","제주시"],
-            "세종": ["세종특별자치시"]
-        };
-
-        window.onload = function() { renderLegacyGrid(); initRegSystem(); };
-
-        /* --- 2. 초기 렌더링 & 예약 로직 --- */
-        function renderLegacyGrid() {
-            document.getElementById('legacyCaseGrid').innerHTML = legacyCases.map(i => `<div class="card"><h4>${i.t}</h4><p style="color:#888; margin-top:10px;">${i.d}</p></div>`).join('');
-        }
-
-        function handleBooking() {
-            const name = document.getElementById('bookName').value;
-            const tel = document.getElementById('bookTel').value;
-            if(!name || !tel) return alert("성함과 연락처는 필수입니다.");
-            const newData = { date: new Date().toLocaleString(), name, tel, msg: document.getElementById('bookMsg').value };
-            let list = JSON.parse(localStorage.getItem('exlux_requests') || '[]');
-            list.push(newData);
-            localStorage.setItem('exlux_requests', JSON.stringify(list));
-            alert("접수되었습니다! 지사장님께 메일이 전송됩니다.");
-            document.getElementById('mainBookingForm').reset();
-        }
-
-        /* --- 3. 관리자 모드 로직 --- */
-        function checkAdmin() {
-            if(prompt("관리자 암호: 1234") === "1234") {
-                document.getElementById('adminModal').style.display = 'block';
-                loadBookList();
-                loadCaseList();
-            }
-        }
-
-        function loadBookList() {
-            const list = JSON.parse(localStorage.getItem('exlux_requests') || '[]');
-            document.getElementById('bookListBody').innerHTML = list.reverse().map((i, idx) => `
-                <tr style="border-bottom:1px solid #eee;"><td>${i.date}</td><td><b>${i.name}</b></td><td>${i.tel}</td><td>${i.msg}</td><td><button onclick="delBook(${idx})" style="color:red; border:none; background:none; cursor:pointer;">삭제</button></td></tr>
-            `).join('');
-        }
-        function delBook(idx) {
-            if(confirm("삭제하시겠습니까?")) {
-                let list = JSON.parse(localStorage.getItem('exlux_requests') || '[]');
-                list.reverse().splice(idx, 1);
-                localStorage.setItem('exlux_requests', JSON.stringify(list.reverse()));
-                loadBookList();
-            }
-        }
-
-        /* --- 4. 사례 등록 시스템 --- */
-        function initRegSystem() {
-            const y = document.getElementById('regY');
-            for(let i=2026; i>=1930; i--) y.add(new Option(i+"년", i));
-            y.value = 1963;
-            const s = document.getElementById('regSiDo');
-            s.add(new Option("시·도 선택", ""));
-            Object.keys(koreaArea).forEach(a => s.add(new Option(a, a)));
-            const m = document.getElementById('regM');
-            for(let i=1; i<=12; i++) m.add(new Option(i+"월", i<10?"0"+i:i));
-            const d = document.getElementById('regD');
-            for(let i=1; i<=31; i++) d.add(new Option(i+"일", i<10?"0"+i:i));
-            calcAge();
-        }
-
-        function setSiGunGu() {
-            const siDo = document.getElementById('regSiDo').value;
-            const target = document.getElementById('regSiGunGu');
-            target.options.length = 0;
-            if(koreaArea[siDo]) koreaArea[siDo].sort().forEach(gu => target.add(new Option(gu, gu)));
-        }
-
-        function calcAge() { document.getElementById('regAge').value = "만 " + (2026 - document.getElementById('regY').value) + "세"; }
-        function checkOther() { document.getElementById('otherInputBox').style.display = (document.getElementById('regSymSelect').value === '기타' ? 'block' : 'none'); }
-
-        let photos = [];
-        function addPhotos() {
-            const files = document.getElementById('fileInput').files;
-            if(photos.length + files.length > 4) return alert("최대 4장까지만 가능합니다.");
-            for(let f of files) {
-                const r = new FileReader();
-                r.onload = e => { photos.push(e.target.result); drawPreview(); };
-                r.readAsDataURL(f);
-            }
-        }
-        function drawPreview() {
-            document.getElementById('previewArea').innerHTML = photos.map((src, i) => `<div class="p-box"><img src="${src}"><button class="p-del" onclick="photos.splice(${i},1);drawPreview();">X</button></div>`).join('');
-        }
-
-        /* --- 5. 저장 및 포스터 자동 생성 --- */
-        function saveDataAndPoster() {
-            const name = document.getElementById('regName').value;
-            if(!name) return alert("성함을 입력해주세요.");
-
-            let sym = document.getElementById('regSymSelect').value;
-            if(sym === '기타') sym = document.getElementById('regSymOther').value;
-
-            const newData = {
-                id: Date.now(), date: new Date().toLocaleDateString(), name,
-                gender: document.getElementById('regGender').value, age: document.getElementById('regAge').value,
-                area: document.getElementById('regSiDo').value + " " + (document.getElementById('regSiGunGu').value || ""),
-                sym, pre: document.getElementById('descPre').value, post: document.getElementById('descPost').value,
-                photos: [...photos]
-            };
-
-            let list = JSON.parse(localStorage.getItem('exlux_cases') || '[]');
-            list.push(newData);
-            localStorage.setItem('exlux_cases', JSON.stringify(list));
-
-            // 포스터 데이터 주입
-            document.getElementById('p-info').innerText = `${name[0]}*${name.slice(-1)} 님 | ${newData.age} | ${newData.gender} | ${newData.area}`;
-            document.getElementById('p-sym').innerText = sym;
-            document.getElementById('p-pre').innerText = newData.pre;
-            document.getElementById('p-post').innerText = newData.post;
-            document.getElementById('p-imgs').innerHTML = newData.photos.map(s => `<img src="${s}">`).join('');
+        function toggleMode() {
+            const client = document.getElementById('clientView');
+            const admin = document.getElementById('adminView');
+            const btnText = document.getElementById('modeText');
             
-            // 캡처 및 자동 다운로드
-            const area = document.getElementById('posterArea');
-            area.style.display = 'block';
-            setTimeout(() => {
-                html2canvas(area, {scale: 2, useCORS: true}).then(cvs => {
-                    const link = document.createElement('a');
-                    link.download = `익스럭스_${name}_체험리포트.png`;
-                    link.href = cvs.toDataURL("image/png");
-                    link.click();
-                    area.style.display = 'none';
-                    alert("저장 완료! 포스터 이미지가 자동으로 다운로드 되었습니다.");
-                    loadCaseList();
-                });
-            }, 600);
-        }
-
-        function loadCaseList() {
-            const list = JSON.parse(localStorage.getItem('exlux_cases') || '[]');
-            document.getElementById('caseListBody').innerHTML = list.reverse().map((i,idx) => `
-                <tr style="border-bottom:1px solid #eee;"><td>${i.date}</td><td style="font-weight:bold;">${i.name}</td><td>${i.sym}</td><td><button onclick="delCase(${idx})" style="color:red; border:none; cursor:pointer;">삭제</button></td></tr>
-            `).join('');
-        }
-        function delCase(idx) {
-            if(confirm("삭제하시겠습니까?")) {
-                let list = JSON.parse(localStorage.getItem('exlux_cases') || '[]');
-                list.reverse().splice(idx,1);
-                localStorage.setItem('exlux_cases', JSON.stringify(list.reverse()));
-                loadCaseList();
+            if(client.style.display !== 'none') {
+                const pw = prompt('관리자 비밀번호를 입력하세요 (데모: 1234)');
+                if(pw === '1234') {
+                    client.style.display = 'none';
+                    admin.classList.remove('hidden');
+                    btnText.innerText = '소비자 모드 전환';
+                }
+            } else {
+                client.style.display = 'block';
+                admin.classList.add('hidden');
+                btnText.innerText = '관리자 모드 전환';
             }
         }
 
-        function openGallery() {
-            const list = JSON.parse(localStorage.getItem('exlux_cases') || '[]');
-            document.getElementById('galleryContent').innerHTML = list.length === 0 ? "<p style='padding:50px; grid-column:span 3; text-align:center;'>등록된 사례가 없습니다.</p>" : 
-                list.reverse().map(i => `
-                    <div class="card" style="padding:15px; font-size:13px; text-align:left;">
-                        <div style="font-weight:bold; border-bottom:1px solid #eee; margin-bottom:8px; padding-bottom:5px;">${i.name[0]}*${i.name.slice(-1)} (${i.area})</div>
-                        <div style="margin-bottom:5px;"><strong>증상:</strong> ${i.sym}</div>
-                        <div style="color:red; margin-top:5px; font-weight:bold;">${i.post.substring(0,40)}...</div>
-                        ${i.photos[0] ? `<img src="${i.photos[0]}" style="width:100%; height:120px; object-fit:cover; margin-top:10px; border-radius:8px;">` : ''}
-                    </div>
-                `).join('');
-            document.getElementById('galleryModal').style.display = 'block';
+        function showAdminTab(id) {
+            ['dash','list','register'].forEach(t => document.getElementById('tab-'+t).classList.add('hidden'));
+            document.getElementById('tab-'+id).classList.remove('hidden');
         }
 
-        function closeAdmin() { document.getElementById('adminModal').style.display = 'none'; }
-        function closeGallery() { document.getElementById('galleryModal').style.display = 'none'; }
+        /* 포스터 모달 관련 */
+        function openModal(name, sym, per, res) {
+            document.getElementById('mName').innerText = name;
+            document.getElementById('mInfo').innerText = `${sym} | ${per}`;
+            if(res) document.getElementById('mResult').innerText = `"${res}"`;
+            document.getElementById('posterModal').classList.remove('hidden');
+            setTimeout(() => document.getElementById('modalContent').classList.remove('scale-95'), 10);
+        }
+
+        function closeModal() {
+            document.getElementById('modalContent').classList.add('scale-95');
+            setTimeout(() => document.getElementById('posterModal').classList.add('hidden'), 200);
+        }
+
+        /* 상담 예약 모달 관련 (NEW) */
+        function openConsultModal() {
+            document.getElementById('consultModal').classList.remove('hidden');
+            setTimeout(() => document.getElementById('consultContent').classList.remove('scale-95'), 10);
+        }
+
+        function closeConsultModal() {
+            document.getElementById('consultContent').classList.add('scale-95');
+            setTimeout(() => document.getElementById('consultModal').classList.add('hidden'), 200);
+        }
     </script>
 </body>
 </html>
