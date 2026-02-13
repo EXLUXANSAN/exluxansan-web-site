@@ -12,10 +12,10 @@
         .tab-content { animation: fadeIn 0.3s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         .wrap-text { word-break: break-all; overflow-wrap: break-word; white-space: normal; line-height: 1.5; }
+        /* 스크롤바 커스텀 */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         ::-webkit-scrollbar-thumb { background: #888; border-radius: 10px; }
-        /* 로그인 화면 스타일 */
         #login-overlay { position: fixed; inset: 0; background: #0f172a; z-index: 9999; display: flex; align-items: center; justify-content: center; }
     </style>
 </head>
@@ -40,7 +40,6 @@
     </aside>
 
     <main class="flex-1 overflow-y-auto p-8">
-        
         <div id="tab-dash" class="tab-content hidden">
             <h2 class="text-2xl font-bold mb-6 text-gray-800">📊 관리 통계</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -73,8 +72,7 @@
                             <th class="p-4">기능</th>
                         </tr>
                     </thead>
-                    <tbody id="caseTableBody">
-                        </tbody>
+                    <tbody id="caseTableBody"></tbody>
                 </table>
             </div>
         </div>
@@ -83,7 +81,8 @@
             <h2 class="text-2xl font-bold mb-6 text-gray-800"><i class="fas fa-pen-fancy mr-2 text-blue-600"></i> 체험 사례 등록 및 수정</h2>
             <div class="max-w-4xl bg-white p-8 rounded-xl shadow-lg border border-gray-200">
                 <form id="registerForm" class="space-y-6">
-                    <input type="hidden" id="reg-id"> <div class="border-b pb-4">
+                    <input type="hidden" id="reg-id">
+                    <div class="border-b pb-4">
                         <h3 class="font-bold text-lg text-blue-900 mb-4">① 기본 정보 입력</h3>
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                             <input type="text" id="reg-name" placeholder="성함" class="border p-3 rounded focus:border-blue-500 outline-none shadow-sm">
@@ -135,7 +134,7 @@
                                 <input type="file" id="fileInput" class="hidden" accept="image/*" multiple onchange="handleFiles(this.files)">
                             </label>
                         </div>
-                        <p class="text-xs text-red-500 mt-2 font-bold">* 사진 용량 주의: 사진이 많으면 저장이 안 될 수 있습니다. (장당 1MB 권장)</p>
+                        <p class="text-xs text-blue-600 mt-2 font-bold">* 권장 용량: 1장 2MB 미만 / 전체 8MB 미만 (스마트폰 사진 가능)</p>
                     </div>
 
                     <div class="flex gap-4">
@@ -197,10 +196,9 @@
             "세종": ["세종시"]
         };
 
-        // [추가] 관리자 체크 함수
         function checkAdmin() {
             const pass = document.getElementById('adminPassword').value;
-            if(pass === "1204") { // 비밀번호를 성기님 아파트 호수인 1204로 임시 설정했습니다.
+            if(pass === "1204") {
                 document.getElementById('login-overlay').style.display = 'none';
                 refreshAllViews();
             } else {
@@ -208,10 +206,9 @@
             }
         }
 
-        // [추가] 데이터 추출 함수 (이걸 복사해서 exlux_db.js에 붙여넣으시면 됩니다)
         function exportData() {
             const cases = loadCases();
-            const dataStr = "const EXLUX_DATA = " + JSON.stringify(cases, null, 2) + ";";
+            const dataStr = "const exlux_cases = " + JSON.stringify(cases, null, 2) + ";";
             const blob = new Blob([dataStr], {type: "text/javascript"});
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -257,10 +254,18 @@
         }
 
         function handleFiles(files) {
+            const MAX_SINGLE_SIZE = 2 * 1024 * 1024; // 개별 2MB
             Array.from(files).forEach(file => {
                 if(fileDataUrls.length < 4) {
+                    if(file.size > MAX_SINGLE_SIZE) {
+                        alert(`${file.name}의 용량이 2MB를 초과합니다.`);
+                        return;
+                    }
                     const reader = new FileReader();
-                    reader.onload = (e) => { fileDataUrls.push(e.target.result); renderPreviews(); };
+                    reader.onload = (e) => {
+                        fileDataUrls.push(e.target.result);
+                        renderPreviews();
+                    };
                     reader.readAsDataURL(file);
                 }
             });
@@ -289,57 +294,26 @@
             etcInput.style.display = etcCheck.checked ? 'inline-block' : 'none';
         }
 
-        function editCase(id) {
-            const cases = loadCases();
-            const data = cases.find(c => c.id === id);
-            if(!data) return;
-            showTab('register');
-            document.getElementById('reg-id').value = data.id;
-            document.getElementById('reg-name').value = data.name;
-            document.getElementById('reg-gender').value = data.gender;
-            if (data.region) {
-                const regionParts = data.region.split(' ');
-                document.getElementById('reg-sido').value = regionParts[0];
-                updateSigungu();
-                if (regionParts[1]) document.getElementById('reg-sigungu').value = regionParts[1];
-            }
-            if(data.date) {
-                const dateStr = data.date.replace(/[^0-9\s]/g, '').trim(); 
-                const dateParts = dateStr.split(/\s+/); 
-                if(dateParts.length >= 3) {
-                    document.getElementById('reg-year').value = dateParts[0];
-                    document.getElementById('reg-month').value = parseInt(dateParts[1]);
-                    document.getElementById('reg-day').value = parseInt(dateParts[2]);
-                }
-            }
-            const symArr = data.symptoms ? data.symptoms.split(', ') : [];
-            document.querySelectorAll('input[name="symptom"]').forEach(cb => {
-                cb.checked = symArr.includes(cb.value);
-            });
-            const etcVal = symArr.find(s => !['허리통증', '목/어깨', '무릎/관절', '혈당/혈압', '불면/우울'].includes(s));
-            if(etcVal) {
-                document.getElementById('etc-check').checked = true;
-                document.getElementById('etc-input').value = etcVal;
-                toggleEtcInput();
-            }
-            document.getElementById('reg-period').value = data.period || "계속 사용 중";
-            document.getElementById('reg-desc-symptom').value = data.descSymptom || "";
-            document.getElementById('reg-desc-change').value = data.descChange || "";
-            fileDataUrls = data.photos || [];
-            renderPreviews();
-        }
-
         function saveCase() {
             if(!document.getElementById('reg-name').value) {
                 alert("성함을 입력해주세요.");
                 return;
             }
+
+            // 전체 용량 체크 (8MB)
+            const totalSize = JSON.stringify(fileDataUrls).length;
+            if(totalSize > 8 * 1024 * 1024) {
+                alert("전체 사진 용량이 8MB를 초과하여 저장이 불가능합니다.");
+                return;
+            }
+
             const regId = document.getElementById('reg-id').value;
             let symptomsList = Array.from(document.querySelectorAll('input[name="symptom"]:checked')).map(c => c.value);
             if(document.getElementById('etc-check').checked) {
                 const etcVal = document.getElementById('etc-input').value.trim();
                 if(etcVal) symptomsList.push(etcVal);
             }
+
             const data = {
                 id: regId ? parseInt(regId) : Date.now(),
                 date: new Date().toLocaleDateString(),
@@ -353,6 +327,7 @@
                 descChange: document.getElementById('reg-desc-change').value,
                 photos: fileDataUrls
             };
+
             let cases = loadCases();
             if(regId) {
                 const index = cases.findIndex(c => c.id == regId);
@@ -360,15 +335,15 @@
             } else {
                 cases.unshift(data);
             }
+
             try {
                 localStorage.setItem('exlux_cases', JSON.stringify(cases));
                 alert(regId ? '수정이 완료되었습니다!' : '신규 등록이 완료되었습니다!');
-                initRegisterMode(false); 
+                initRegisterMode(false);
                 refreshAllViews();
                 showTab('list');
             } catch (e) {
-                alert("⚠️ 저장 실패! 사진 용량을 줄여주세요.");
-                return; 
+                alert("⚠️ 저장 실패! 사진 용량이 너무 큽니다.");
             }
         }
 
@@ -405,18 +380,39 @@
             }
         }
 
+        function editCase(id) {
+            const cases = loadCases();
+            const data = cases.find(c => c.id === id);
+            if(!data) return;
+            showTab('register');
+            document.getElementById('reg-id').value = data.id;
+            document.getElementById('reg-name').value = data.name;
+            document.getElementById('reg-gender').value = data.gender;
+            if (data.region) {
+                const regionParts = data.region.split(' ');
+                document.getElementById('reg-sido').value = regionParts[0];
+                updateSigungu();
+                if (regionParts[1]) document.getElementById('reg-sigungu').value = regionParts[1];
+            }
+            document.getElementById('reg-period').value = data.period || "계속 사용 중";
+            document.getElementById('reg-desc-symptom').value = data.descSymptom || "";
+            document.getElementById('reg-desc-change').value = data.descChange || "";
+            fileDataUrls = data.photos || [];
+            renderPreviews();
+        }
+
         function initRegisterMode(moveTab = true) {
             document.getElementById('registerForm').reset();
-            document.getElementById('reg-id').value = ""; 
+            document.getElementById('reg-id').value = "";
             document.getElementById('etc-input').style.display = 'none';
             fileDataUrls = [];
             renderPreviews();
             if(moveTab) showTab('register');
         }
 
-        function showTab(id) { 
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden')); 
-            document.getElementById('tab-'+id).classList.remove('hidden'); 
+        function showTab(id) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
+            document.getElementById('tab-'+id).classList.remove('hidden');
             refreshAllViews();
             ['dash', 'list', 'register'].forEach(nav => {
                 const el = document.getElementById('nav-' + nav);
@@ -428,10 +424,8 @@
         function openPosterModal() {
             const name = document.getElementById('reg-name').value;
             const maskedName = name.length > 2 ? name[0] + "*" + name[name.length-1] : (name.length === 2 ? name[0] + "*" : name);
-            const symptoms = Array.from(document.querySelectorAll('input[name="symptom"]:checked')).map(c => c.value);
-            if(document.getElementById('etc-check').checked) symptoms.push(document.getElementById('etc-input').value);
             document.getElementById('modal-name').innerText = maskedName + " 고객님";
-            document.getElementById('modal-meta').innerText = `${getAge()} | ${document.getElementById('reg-gender').value} | ${symptoms.join(', ')}`;
+            document.getElementById('modal-meta').innerText = `${getAge()} | ${document.getElementById('reg-gender').value}`;
             document.getElementById('modal-desc-symptom').innerText = document.getElementById('reg-desc-symptom').value || "상세 증상 미입력";
             document.getElementById('modal-desc-change').innerText = `"${document.getElementById('reg-desc-change').value || "사용 후 결과 미입력"}"`;
             const grid = document.getElementById('modal-photo-grid');
@@ -448,7 +442,6 @@
         function clearData() { if(confirm('모든 데이터를 삭제하시겠습니까?')) { localStorage.removeItem('exlux_cases'); refreshAllViews(); } }
 
         initForm();
-        // 초기화면은 로그인 창이 띄워지도록 탭 설정 제거
     </script>
 </body>
 </html>
