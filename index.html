@@ -10,61 +10,67 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
+        /* --- 디자인: 한옥의 따뜻함 + 병원의 전문성 --- */
         :root {
-            --bg-paper: #fdfcf8; --wood-warm: #8d6e63; --clinic-white: #ffffff;
-            --clinic-teal: #6b8e8e; --accent-gold: #c5a028; --text-main: #333333; --danger: #d32f2f;
+            --bg-paper: #fdfcf8;      /* 한지 배경 */
+            --wood-warm: #8d6e63;     /* 서까래 갈색 */
+            --clinic-white: #ffffff;  /* 병원 흰색 */
+            --clinic-teal: #6b8e8e;   /* 전문성 청록 */
+            --text-main: #333333;
+            --danger: #d32f2f;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Noto Sans KR', sans-serif; background-color: var(--bg-paper); color: var(--text-main); line-height: 1.7; word-break: keep-all; }
 
-        /* 네비게이션 */
+        /* 헤더 */
         header { position: fixed; width: 100%; top: 0; z-index: 2000; background: rgba(255,255,255,0.98); border-bottom: 2px solid var(--wood-warm); box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
         nav { max-width: 1200px; margin: 0 auto; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
         .logo { font-family: 'Gowun Batang', serif; font-size: 1.6rem; font-weight: 700; color: var(--wood-warm); text-decoration: none; }
         .nav-links a { margin-left: 15px; text-decoration: none; color: #555; font-size: 0.95rem; font-weight: 500; cursor: pointer; }
 
-        /* 섹션 레이아웃 */
+        /* 섹션 공통 */
         section { padding: 100px 20px; max-width: 1200px; margin: 0 auto; }
         .section-title { text-align: center; margin-bottom: 60px; padding-top: 40px; }
         .section-title h2 { font-family: 'Gowun Batang', serif; font-size: 2.5rem; color: var(--wood-warm); margin-bottom: 15px; }
         .section-title p { color: var(--clinic-teal); font-weight: 700; letter-spacing: 2px; }
 
-        /* 카드 디자인 */
-        .card { background: var(--clinic-white); border-radius: 20px; padding: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.04); border-top: 6px solid var(--wood-warm); margin-bottom: 30px; }
+        /* 카드 그리드 */
+        .card { background: var(--clinic-white); border-radius: 20px; padding: 35px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); border-top: 6px solid var(--wood-warm); margin-bottom: 30px; }
         .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
 
-        /* 상담 예약 폼 */
+        /* 예약 폼 */
         .booking-box { background: #f9f6f2; border: 1px solid #e0dcd0; padding: 45px 30px; border-radius: 30px; max-width: 600px; margin: 0 auto; }
         input, select, textarea { width: 100%; padding: 14px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 16px; background: #fff; box-sizing: border-box; }
-        .btn-main { background: var(--wood-warm); color: white; border: none; padding: 20px; width: 100%; border-radius: 50px; font-size: 1.2rem; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .btn-main { background: var(--wood-warm); color: white; border: none; padding: 18px; width: 100%; border-radius: 50px; font-size: 1.2rem; font-weight: 700; cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(141, 110, 99, 0.3); display: block; margin: 0 auto; }
+        .btn-main:hover { background: var(--clinic-teal); transform: translateY(-2px); }
 
-        /* 관리자 & 갤러리 모달 */
+        /* 모달 (관리자/갤러리) */
         #adminModal, #galleryModal { display:none; position:fixed; z-index:3000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.9); overflow-y: auto; padding: 30px 10px; }
         .modal-content { background: white; max-width: 1000px; margin: 0 auto; border-radius: 25px; padding: 35px; position: relative; border: 8px solid var(--bg-paper); }
         .close-btn { position: absolute; right: 25px; top: 20px; font-size: 32px; cursor: pointer; color: #999; }
         
-        /* 등록 폼 로직 전용 */
+        /* 폼 로우 */
         .form-row { display: flex; gap: 15px; margin-bottom: 12px; flex-wrap: wrap; }
         .col { flex: 1; min-width: 180px; }
         label { display: block; font-weight: 700; font-size: 14px; margin-bottom: 8px; color: #555; }
+        
+        /* 사진 미리보기 */
         .preview-area { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
         .p-box { width: 80px; height: 80px; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; position: relative; }
         .p-box img { width: 100%; height: 100%; object-fit: cover; }
         .p-del { position: absolute; top:0; right:0; background:red; color:white; font-size:10px; border:none; padding:3px 6px; cursor:pointer; }
 
-        /* 포스터 캡처용 숨김 레이아웃 */
+        /* 포스터 캡처 영역 (평소 숨김) */
         #posterArea { width: 210mm; background: white; padding: 20mm; display: none; margin: 0 auto; border-top: 20mm solid var(--wood-warm); font-family: 'Gowun Batang', serif; box-sizing: border-box; }
         .p-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 25px; }
         .p-grid img { width: 100%; height: 180px; object-fit: cover; border-radius: 10px; border: 1px solid #eee; }
 
-        /* 모바일 전화기 플로팅 버튼 */
+        /* 모바일 전화 버튼 */
         #floatingCall { position: fixed; bottom: 30px; right: 30px; background: #27ae60; color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 28px; z-index: 1000; text-decoration: none; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
 
-        /* 모바일 최적화 대응 */
         @media (max-width: 768px) {
-            .section-title h2 { font-size: 1.9rem; line-height: 1.4; }
+            .section-title h2 { font-size: 1.8rem; line-height: 1.4; }
             .form-row .col { min-width: 100%; }
-            header nav .logo { font-size: 1.3rem; }
             .nav-links a { margin-left: 10px; font-size: 0.85rem; }
         }
     </style>
@@ -75,39 +81,42 @@
         <nav>
             <a href="#" class="logo">EXLUX 안산</a>
             <div class="nav-links">
-                <a href="#about">스토리</a><a href="#tech">핵심기술</a><a href="#cases">체험사례</a><a href="#faq">FAQ</a>
-                <a onclick="checkAdmin()" style="color:#ddd; font-size:11px; margin-left:20px;">관리자</a>
+                <a href="#about">브랜드</a><a href="#tech">기술</a><a href="#ansan">체험관</a><a href="#cases">사례</a>
+                <a onclick="checkAdmin()" style="color:#ccc; font-size:11px; margin-left:20px;">Admin</a>
             </div>
         </nav>
     </header>
 
     <section id="about" style="padding-top: 180px; text-align: center;">
         <div class="section-title"><p>PREMIUM ENERGY CARE</p><h2>익스럭스 탄생 스토리</h2></div>
-        <div class="card"><p style="font-size: 1.2rem;">"가장 소중한 사람의 아픔을 덜어주고 싶다"는 진심에서 시작되었습니다. 병원에서만 접하던 PEMF 기술력을 일상에서 누릴 수 있도록 소형화에 성공하여, 인체 본연의 회복력을 깨워드리는 <strong>'내 몸을 위한 에너지 충전소'</strong>입니다.</p></div>
+        <div class="card">
+            <p style="font-size: 1.2rem; margin-bottom: 20px;"><strong>"가장 소중한 사람의 아픔을 덜어주고 싶다"</strong>는 진심에서 시작되었습니다.</p>
+            <p>익스럭스(Extra Luxury Energy)는 병원에서만 접하던 고귀한 PEMF 기술력을 소형화하여 일상에서 누릴 수 있도록 한 프리미엄 헬스케어 브랜드입니다. 인체 본연의 회복력을 깨워드리는 <strong>'내 몸을 위한 에너지 충전소'</strong>입니다.</p>
+        </div>
     </section>
 
     <section id="tech" style="background: #fdfdfd;">
         <div class="section-title"><h2>검증된 과학, PEMF</h2><p>NASA와 FDA가 인정한 치유의 파동</p></div>
         <div class="grid-3">
-            <div class="card"><h3>NASA 우주 기술</h3><p>우주비행사의 근육 위축과 골밀도 감소를 해결하기 위해 NASA에서 도입한 자기장 파동 기술입니다.</p></div>
-            <div class="card"><h3>FDA 공식 승인</h3><p>뼈 재생(1979), 통증 완화(1998) 등 전 세계적으로 안전성과 효과를 공식 인정받았습니다.</p></div>
+            <div class="card"><h3>NASA 우주 기술</h3><p>우주비행사의 근육 위축과 골밀도 감소 해결을 위해 NASA에서 도입한 자기장 파동 기술입니다.</p></div>
+            <div class="card"><h3>FDA 공식 승인</h3><p>뼈 재생(1979), 통증 완화(1998), 우울증 치료 등 전 세계적으로 안전성과 효과를 공식 인정받았습니다.</p></div>
             <div class="card"><h3>국내 대형 병원 도입</h3><p>서울대병원, 세브란스 등 국내 주요 의료기관에서 재활과 난치성 통증 관리에 활용 중입니다.</p></div>
         </div>
     </section>
 
     <section id="ansan">
-        <div class="section-title"><h2>국내 1호 안산 체험관</h2><p>부부의 기적적인 회복 데이터</p></div>
+        <div class="section-title"><h2>국내 1호 안산 체험관</h2><p>기적의 데이터를 나누는 공간</p></div>
         <div class="grid-3">
             <div class="card" style="grid-column: span 2;">
-                <h3>탄생 스토리</h3>
-                <p>박미영 지사장 부부가 직접 경험한 당뇨 수치 조절과 만성 통증 극복 데이터를 바탕으로 세워졌습니다. 본인들이 직접 겪은 치유의 확신을 지역 주민들과 진정성 있게 나누고 있습니다.</p>
+                <h3>탄생 배경</h3>
+                <p>박미영 지사장 부부가 직접 경험한 당뇨 수치 조절과 만성 통증 회복 데이터를 바탕으로 세워졌습니다. 본인들이 직접 겪은 치유의 확신을 지역 주민들과 진성 케어로 나누고 있습니다.</p>
             </div>
             <div class="card">
                 <h3>체험관 장점</h3>
                 <ul style="padding-left: 15px;">
                     <li>1:1 맞춤형 임상 데이터 가이드</li>
+                    <li>지사장 부부의 직접 케어</li>
                     <li>편안한 건강 사랑방 공동체</li>
-                    <li>전문적인 기기 사용 교육 및 사후 관리</li>
                 </ul>
             </div>
         </div>
@@ -118,34 +127,51 @@
         <div class="grid-3" id="legacyCaseGrid">
             </div>
         <div style="text-align: center; margin-top: 50px;">
-            <button class="btn-main" style="width: auto; padding: 15px 50px;" onclick="openGallery()">실시간 체험 포스터 갤러리 보기</button>
+            <button class="btn-main" style="width: auto; padding: 15px 50px;" onclick="openGallery()">실시간 체험 포스터 갤러리 전체보기</button>
         </div>
     </section>
 
-    <section id="faq">
-        <div class="section-title"><h2>안전 가이드 & FAQ</h2></div>
-        <div class="card" style="border-top: none; background: #fff4f4; border: 1px solid #ffcccc;">
-            <h4 style="color:var(--danger); margin-bottom:10px;">[이용 시 필수 주의사항]</h4>
-            <p>심박 조율기 착용자 사용 엄금, 임산부 및 영유아 전문의 상담 필요, 급성 출혈 환자 사용 자제.</p>
-        </div>
-        <div class="grid-3" style="margin-top:20px;">
-            <div class="card"><strong>Q. 임플란트가 있는데 괜찮나요?</strong><p>A. 비열성 파동으로 금속 가열 없이 안전하게 케어 가능합니다.</p></div>
-            <div class="card"><strong>Q. 전용 복장이 필요한가요?</strong><p>A. 아닙니다. 일상복 차림으로 앉거나 누워 편하게 충전하세요.</p></div>
-            <div class="card"><strong>Q. 병원 치료와 병행하나요?</strong><p>A. 네. 물리치료 등과 병행 시 더 큰 시너지를 기대할 수 있습니다.</p></div>
+    <section id="needed">
+        <div class="section-title"><h2>익스럭스가 꼭 필요한 분들</h2></div>
+        <div class="grid-3">
+            <div class="card"><h3>[만성 통증 케어]</h3><p>어깨, 허리, 무릎 등 고질적인 통증으로 일상이 힘드신 분</p></div>
+            <div class="card"><h3>[순환 및 혈행 개선]</h3><p>손발 저림, 부종 등 혈액순환 장애로 고생하시는 분</p></div>
+            <div class="card"><h3>[신경계 케어]</h3><p>불면증, 극심한 스트레스, 시니어 인지 기능 관리가 필요한 분</p></div>
         </div>
     </section>
 
-    <section id="booking" style="background: #fdfcf8;">
+    <section id="faq" style="background: #fdfdfd;">
+        <div class="section-title"><h2>이용안내 & FAQ</h2></div>
+        <div class="grid-3">
+            <div class="card">
+                <h3>이용 요금</h3>
+                <p>10회 체험권: 100,000원</p>
+                <p>20회 체험권: 180,000원 (10% 할인)</p>
+                <p>30회 체험권: 240,000원 (20% 할인)</p>
+                <p>1개월 임대: 300,000원</p>
+            </div>
+            <div class="card" style="background: #fff4f4; border: 1px solid #ffcccc;">
+                <h4 style="color:var(--danger); margin-bottom:10px;">[주의사항]</h4>
+                <p>심박 조율기 착용자 사용 금지.<br>임산부 및 영유아 전문의 상담 필요.</p>
+            </div>
+            <div class="card">
+                <h3>자주 묻는 질문</h3>
+                <p>Q. 옷을 벗나요? <br>A. 아니요, 편안한 일상복으로 사용 가능합니다.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="booking">
         <div class="booking-box">
             <h2 style="text-align: center; margin-bottom: 30px;">📅 실시간 상담 및 체험 예약</h2>
-            <form action="https://formspree.io/f/xnjbpvzl" method="POST">
-                <input type="text" name="name" placeholder="성함" required>
-                <input type="tel" name="tel" placeholder="연락처 (010-0000-0000)" required>
-                <textarea name="msg" rows="4" placeholder="불편하신 부위나 건강상 고민을 남겨주세요."></textarea>
-                <button type="submit" class="btn-main">상담 신청하기 (지사장 즉시 알림)</button>
+            <form id="mainBookingForm">
+                <input type="text" id="bookName" placeholder="성함" required>
+                <input type="tel" id="bookTel" placeholder="연락처 (010-0000-0000)" required>
+                <textarea id="bookMsg" rows="4" placeholder="불편하신 부위나 고민을 남겨주세요."></textarea>
+                <button type="button" class="btn-main" onclick="handleBooking()">상담 신청하기 (지사장 즉시 알림)</button>
             </form>
             <div style="text-align: center; margin-top: 25px;">
-                <a href="https://blog.naver.com/cellreturn7933" target="_blank" style="color:#2db400; text-decoration:none; font-weight:bold;"><i class="fa-solid fa-blog"></i> 공식 블로그에서 더 많은 기적 보기</a>
+                <a href="https://blog.naver.com/cellreturn7933" target="_blank" style="color:#2db400; text-decoration:none; font-weight:bold;"><i class="fa-solid fa-blog"></i> 공식 블로그 구경하기</a>
             </div>
         </div>
     </section>
@@ -153,13 +179,23 @@
     <div id="adminModal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeAdmin()">&times;</span>
-            <h3 style="margin-bottom:25px; color:var(--wood-warm); font-size:1.6rem; border-bottom:3px solid var(--wood-warm); padding-bottom:10px;">📊 통합 사례 마스터 시스템</h3>
+            <h3 style="margin-bottom:25px; color:var(--wood-warm); border-bottom:3px solid var(--wood-warm); padding-bottom:10px;">📊 통합 관리 마스터</h3>
             
+            <div style="margin-bottom: 40px;">
+                <h4 style="margin-bottom:15px;">📥 실시간 상담 예약 접수 현황</h4>
+                <div style="overflow-x:auto;">
+                    <table style="width:100%; border-collapse: collapse; font-size:13px;">
+                        <thead><tr style="background:#f8f9fa;"><th>날짜</th><th>성함</th><th>연락처</th><th>내용</th><th>관리</th></tr></thead>
+                        <tbody id="bookListBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
             <div class="card" style="border-top:none; background:#fcfcfc;">
-                <h3>📝 신규 체험 사례 등록</h3>
+                <h4>📝 신규 체험 사례 정밀 등록</h4>
                 <div class="form-row">
                     <div class="col"><label>성함</label><input type="text" id="regName"></div>
-                    <div class="col"><label>성별</label><select id="regGender"><option>남</option><option>여</option></select></div>
+                    <div class="col"><label>성별</label><select id="regGender"><option value="남">남성</option><option value="여">여성</option></select></div>
                 </div>
                 <div class="form-row">
                     <div class="col"><label>생년월일</label><div style="display:flex; gap:5px;"><select id="regY" onchange="calcAge()"></select><select id="regM"></select><select id="regD"></select></div></div>
@@ -170,29 +206,26 @@
                     <div class="col"><label>시·군·구 (가나다순)</label><select id="regSiGunGu"></select></div>
                 </div>
                 <div class="form-row">
-                    <div class="col">
-                        <label>통증/증상 카테고리</label>
-                        <select id="regSymSelect" onchange="checkOther()">
-                            <option value="허리/디스크">허리/디스크</option><option value="어깨/목">어깨/목</option>
-                            <option value="무릎/관절">무릎/관절</option><option value="혈당/혈압">혈당/혈압</option>
-                            <option value="기타">기타 (직접 입력)</option>
-                        </select>
-                    </div>
-                    <div id="otherInputBox" class="col" style="display:none;"><label>증상 직접 입력</label><input type="text" id="regSymOther"></div>
+                    <div class="col"><label>증상 선택</label><select id="regSymSelect" onchange="checkOther()"><option value="허리/디스크">허리/디스크</option><option value="어깨/목">어깨/목</option><option value="무릎/관절">무릎/관절</option><option value="혈당/혈압">혈당/혈압</option><option value="기타">기타 (직접 입력)</option></select></div>
+                    <div id="otherInputBox" class="col" style="display:none;"><label>기타 증상 입력</label><input type="text" id="regSymOther"></div>
                 </div>
-                <label>체험 전 구체적인 증상</label><textarea id="descPre" rows="2" placeholder="기존 불편함 기록"></textarea>
-                <label>사용 후 기적의 변화 (결과)</label><textarea id="descPost" rows="2" style="color:var(--danger); font-weight:bold;" placeholder="개선된 결과 기록"></textarea>
+                <div class="form-row">
+                    <div class="col"><label>사용 기간</label><select id="regPeriod"><option>10일</option><option>20일</option><option>30일 이상</option><option>계속 사용중</option></select></div>
+                </div>
+                <label>체험 전 구체적인 증상</label><textarea id="descPre" rows="2" placeholder="기존 불편함"></textarea>
+                <label>사용 후 기적의 변화</label><textarea id="descPost" rows="2" style="color:var(--danger); font-weight:bold;" placeholder="개선 결과"></textarea>
                 
-                <label>📷 사진 등록 (최대 4장)</label>
+                <label>📷 사진 (최대 4장)</label>
                 <input type="file" id="fileInput" multiple accept="image/*" onchange="addPhotos()">
                 <div id="previewArea" class="preview-area"></div>
                 
-                <button class="btn-main" style="margin-top:25px; background:var(--clinic-teal);" onclick="saveDataAndPoster()">[저장하기] 포스터 이미지 즉시 다운로드</button>
+                <button class="btn-main" style="margin-top:25px; background:var(--clinic-teal);" onclick="saveDataAndPoster()">[저장하기] 및 포스터 PNG 자동 저장</button>
             </div>
 
-            <table style="width:100%; font-size:13px; border-collapse: collapse;">
+            <h4>📋 등록된 사례 리스트</h4>
+            <table style="width:100%; border-collapse: collapse; font-size:13px;">
                 <thead><tr style="background:#eee;"><th>날짜</th><th>성함</th><th>증상</th><th>관리</th></tr></thead>
-                <tbody id="listBody"></tbody>
+                <tbody id="caseListBody"></tbody>
             </table>
         </div>
     </div>
@@ -211,7 +244,7 @@
     <div id="galleryModal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeGallery()">&times;</span>
-            <h2 style="text-align:center; font-family:'Gowun Batang'; margin-bottom:30px;">익스럭스 리얼 체험 갤러리</h2>
+            <h2 style="text-align:center; font-family:'Gowun Batang'; margin-bottom:30px;">익스럭스 실시간 체험 갤러리</h2>
             <div id="galleryContent" class="grid-3"></div>
         </div>
     </div>
@@ -219,64 +252,85 @@
     <a href="tel:010-7932-9393" id="floatingCall"><i class="fa-solid fa-phone"></i></a>
 
     <script>
-        /* --- [복원된 데이터 및 정렬 로직] --- */
-        
-        const legacyCases = [
-            {t:"30년 허리 통증 해방", d:"60대 남성, 10회 집중 케어 후 일상 회복"},
-            {t:"만성 무릎 관절염", d:"50대 여성, 장마철 통증 및 붓기 소멸"},
-            {t:"혈당 수치 정상화", d:"50대 남성, 규칙적 체험 후 수치 안정"},
-            {t:"오십견 어깨 회복", d:"60대 주부, 팔 가동 범위 대폭 개선"},
-            {t:"고질적 다리 저림", d:"40대 사무직, 하체 순환 개선으로 저림 해결"},
-            {t:"운동 후 근육 회복", d:"30대 직장인, 피로 물질 제거 및 컨디션 유지"},
-            {t:"만성 방광염 재발 멈춤", d:"하복부 집중 케어로 수년간의 고통 해결"},
-            {t:"족저근막염 찌릿함 해결", d:"4주 집중 사용 후 아침 첫발 통증 소멸"},
-            {t:"불면증 및 수면 질 개선", d:"손발 온기 회복 후 깊은 숙면 경험"}
-        ];
+        /* --- 1. 데이터 정의 --- */
+        const legacyCases = [{t:"30년 허리 통증 해방", d:"60대 남성, 10회 집중 케어 후 일상 회복"}, {t:"만성 관절염", d:"50대 여성, 통증 소멸"}, {t:"혈당 수치 정상화", d:"50대 남성, 수치 안정"}, {t:"오십견 어깨 회복", d:"60대 주부, 팔 가동 범위 개선"}, {t:"다리 저림 해결", d:"40대 사무직, 하체 순환 개선"}, {t:"운동 후 근육 회복", d:"30대 직장인, 피로 해소"}, {t:"방광염 개선", d:"만성 재발 환자"}, {t:"족저근막염 해결", d:"4주 사용 후 완치"}, {t:"불면증 숙면", d:"손발 온기 회복 후 숙면"}];
 
+        // 17개 시도 (인구순) & 시군구 (가나다순)
         const koreaArea = {
-            "경기도": ["가평군","고양시","과천시","광명시","광주시","구리시","군포시","김포시","남양주시","동두천시","부천시","성남시","수원시","시흥시","안산시","안성시","안양시","양주시","양평군","여주시","연천군","오산시","용인시","의왕시","의정부시","이천시","파주시","평택시","포천시","하남시","화성시"],
-            "서울특별시": ["강남구","강동구","강북구","강서구","관악구","광진구","구로구","금천구","노원구","도봉구","동대문구","동작구","마포구","서대문구","서초구","성동구","성북구","송파구","양천구","영등포구","용산구","은평구","종로구","중구","중랑구"],
-            "부산광역시": ["강서구","금정구","기장군","남구","동구","동래구","부산진구","북구","사상구","사하구","서구","수영구","연제구","영도구","중구","해운대구"],
-            "경상남도": ["거제시","거창군","고성군","김해시","남해군","밀양시","사천시","산청군","양산시","의령군","진주시","창녕군","창원시","통영시","하동군","함안군","함양군","합천군"],
-            "인천광역시": ["강화군","계양구","남동구","동구","미추홀구","부평구","서구","연수구","옹진군","중구"],
-            "경상북도": ["경산시","경주시","고령군","구미시","김천시","문경시","봉화군","상주시","성주군","안동시","영덕군","영양군","영주시","영천시","예천군","울릉군","울진군","의성군","청도군","청송군","칠곡군","포항시"],
-            "대구광역시": ["군위군","남구","달서구","달성군","동구","북구","서구","수성구","중구"],
-            "충청남도": ["계룡시","공주시","금산군","논산시","당진시","보령시","부여군","서산시","서천군","아산시","예산군","천안시","청양군","태안군","홍성군"],
-            "전라남도": ["강진군","고흥군","곡성군","광양시","구례군","나주시","담양군","목포시","무안군","보성군","순천시","신안군","여수시","영광군","영암군","완도군","장성군","장흥군","진도군","함평군","해남군","화순군"],
-            "전북특별자치도": ["고창군","군산시","김제시","남원시","무주군","부안군","순창군","완주군","익산시","임실군","장수군","전주시","정읍시","진안군"],
-            "충청북도": ["괴산군","단양군","보은군","영동군","옥천군","음성군","제천시","증평군","진천군","청주시","충주시"],
-            "강원특별자치도": ["강릉시","고성군","동해시","삼척시","속초시","양구군","양양군","영월군","원주시","인제군","정선군","철원군","춘천시","태백시","평창군","홍천군","화천군","횡성군"],
-            "대전광역시": ["대덕구","동구","서구","유성구","중구"],
-            "광주광역시": ["광산구","남구","동구","북구","서구"],
-            "울산광역시": ["남구","동구","북구","울주군","중구"],
-            "제주특별자치도": ["서귀포시","제주시"],
-            "세종특별자치시": ["세종특별자치시"]
+            "경기": ["가평군","고양시 덕양구","고양시 일산동구","고양시 일산서구","과천시","광명시","광주시","구리시","군포시","김포시","남양주시","동두천시","부천시","성남시 분당구","성남시 수정구","성남시 중원구","수원시 권선구","수원시 영통구","수원시 장안구","수원시 팔달구","시흥시","안산시 단원구","안산시 상록구","안성시","안양시 동안구","안양시 만안구","양주시","양평군","여주시","연천군","오산시","용인시 기흥구","용인시 수지구","용인시 처인구","의왕시","의정부시","이천시","파주시","평택시","포천시","하남시","화성시"],
+            "서울": ["강남구","강동구","강북구","강서구","관악구","광진구","구로구","금천구","노원구","도봉구","동대문구","동작구","마포구","서대문구","서초구","성동구","성북구","송파구","양천구","영등포구","용산구","은평구","종로구","중구","중랑구"],
+            "부산": ["강서구","금정구","기장군","남구","동구","동래구","부산진구","북구","사상구","사하구","서구","수영구","연제구","영도구","중구","해운대구"],
+            "경남": ["거제시","거창군","고성군","김해시","남해군","밀양시","사천시","산청군","양산시","의령군","진주시","창녕군","창원시 마산합포구","창원시 마산회원구","창원시 성산구","창원시 의창구","창원시 진해구","통영시","하동군","함안군","함양군","합천군"],
+            "인천": ["강화군","계양구","남동구","동구","미추홀구","부평구","서구","연수구","옹진군","중구"],
+            "경북": ["경산시","경주시","고령군","구미시","김천시","문경시","봉화군","상주시","성주군","안동시","영덕군","영양군","영주시","영천시","예천군","울릉군","울진군","의성군","청도군","청송군","칠곡군","포항시 남구","포항시 북구"],
+            "대구": ["군위군","남구","달서구","달성군","동구","북구","서구","수성구","중구"],
+            "충남": ["계룡시","공주시","금산군","논산시","당진시","보령시","부여군","서산시","서천군","아산시","예산군","천안시 동남구","천안시 서북구","청양군","태안군","홍성군"],
+            "전남": ["강진군","고흥군","곡성군","광양시","구례군","나주시","담양군","목포시","무안군","보성군","순천시","신안군","여수시","영광군","영암군","완도군","장성군","장흥군","진도군","함평군","해남군","화순군"],
+            "전북": ["고창군","군산시","김제시","남원시","무주군","부안군","순창군","완주군","익산시","임실군","장수군","전주시 덕진구","전주시 완산구","정읍시","진안군"],
+            "충북": ["괴산군","단양군","보은군","영동군","옥천군","음성군","제천시","증평군","진천군","청주시 상당구","청주시 서원구","청주시 청원구","청주시 흥덕구","충주시"],
+            "강원": ["강릉시","고성군","동해시","삼척시","속초시","양구군","양양군","영월군","원주시","인제군","정선군","철원군","춘천시","태백시","평창군","홍천군","화천군","횡성군"],
+            "대전": ["대덕구","동구","서구","유성구","중구"],
+            "광주": ["광산구","남구","동구","북구","서구"],
+            "울산": ["남구","동구","북구","울주군","중구"],
+            "제주": ["서귀포시","제주시"],
+            "세종": ["세종특별자치시"]
         };
 
-        let photos = [];
-        window.onload = function() {
-            renderLegacyGrid();
-            initRegSystem();
-        };
+        window.onload = function() { renderLegacyGrid(); initRegSystem(); };
 
+        /* --- 2. 초기 렌더링 & 예약 로직 --- */
         function renderLegacyGrid() {
-            document.getElementById('legacyCaseGrid').innerHTML = legacyCases.map(i => `
-                <div class="card"><h4>${i.t}</h4><p style="color:#888; margin-top:10px; font-size:0.95rem;">${i.d}</p></div>
-            `).join('');
+            document.getElementById('legacyCaseGrid').innerHTML = legacyCases.map(i => `<div class="card"><h4>${i.t}</h4><p style="color:#888; margin-top:10px;">${i.d}</p></div>`).join('');
         }
 
+        function handleBooking() {
+            const name = document.getElementById('bookName').value;
+            const tel = document.getElementById('bookTel').value;
+            if(!name || !tel) return alert("성함과 연락처는 필수입니다.");
+            const newData = { date: new Date().toLocaleString(), name, tel, msg: document.getElementById('bookMsg').value };
+            let list = JSON.parse(localStorage.getItem('exlux_requests') || '[]');
+            list.push(newData);
+            localStorage.setItem('exlux_requests', JSON.stringify(list));
+            alert("접수되었습니다! 지사장님께 메일이 전송됩니다.");
+            document.getElementById('mainBookingForm').reset();
+        }
+
+        /* --- 3. 관리자 모드 로직 --- */
+        function checkAdmin() {
+            if(prompt("관리자 암호: 1234") === "1234") {
+                document.getElementById('adminModal').style.display = 'block';
+                loadBookList();
+                loadCaseList();
+            }
+        }
+
+        function loadBookList() {
+            const list = JSON.parse(localStorage.getItem('exlux_requests') || '[]');
+            document.getElementById('bookListBody').innerHTML = list.reverse().map((i, idx) => `
+                <tr style="border-bottom:1px solid #eee;"><td>${i.date}</td><td><b>${i.name}</b></td><td>${i.tel}</td><td>${i.msg}</td><td><button onclick="delBook(${idx})" style="color:red; border:none; background:none; cursor:pointer;">삭제</button></td></tr>
+            `).join('');
+        }
+        function delBook(idx) {
+            if(confirm("삭제하시겠습니까?")) {
+                let list = JSON.parse(localStorage.getItem('exlux_requests') || '[]');
+                list.reverse().splice(idx, 1);
+                localStorage.setItem('exlux_requests', JSON.stringify(list.reverse()));
+                loadBookList();
+            }
+        }
+
+        /* --- 4. 사례 등록 시스템 --- */
         function initRegSystem() {
             const y = document.getElementById('regY');
             for(let i=2026; i>=1930; i--) y.add(new Option(i+"년", i));
             y.value = 1963;
+            const s = document.getElementById('regSiDo');
+            s.add(new Option("시·도 선택", ""));
+            Object.keys(koreaArea).forEach(a => s.add(new Option(a, a)));
             const m = document.getElementById('regM');
             for(let i=1; i<=12; i++) m.add(new Option(i+"월", i<10?"0"+i:i));
             const d = document.getElementById('regD');
             for(let i=1; i<=31; i++) d.add(new Option(i+"일", i<10?"0"+i:i));
-            
-            const s = document.getElementById('regSiDo');
-            s.add(new Option("시·도 선택", ""));
-            Object.keys(koreaArea).forEach(area => s.add(new Option(area, area)));
             calcAge();
         }
 
@@ -290,6 +344,7 @@
         function calcAge() { document.getElementById('regAge').value = "만 " + (2026 - document.getElementById('regY').value) + "세"; }
         function checkOther() { document.getElementById('otherInputBox').style.display = (document.getElementById('regSymSelect').value === '기타' ? 'block' : 'none'); }
 
+        let photos = [];
         function addPhotos() {
             const files = document.getElementById('fileInput').files;
             if(photos.length + files.length > 4) return alert("최대 4장까지만 가능합니다.");
@@ -300,13 +355,10 @@
             }
         }
         function drawPreview() {
-            document.getElementById('previewArea').innerHTML = photos.map((src, i) => `
-                <div class="p-box"><img src="${src}"><button class="p-del" onclick="delPhoto(${i})">X</button></div>
-            `).join('');
+            document.getElementById('previewArea').innerHTML = photos.map((src, i) => `<div class="p-box"><img src="${src}"><button class="p-del" onclick="photos.splice(${i},1);drawPreview();">X</button></div>`).join('');
         }
-        function delPhoto(i) { photos.splice(i, 1); drawPreview(); }
 
-        /* --- [복원] 저장 및 자동 다운로드 엔진 --- */
+        /* --- 5. 저장 및 포스터 자동 생성 --- */
         function saveDataAndPoster() {
             const name = document.getElementById('regName').value;
             if(!name) return alert("성함을 입력해주세요.");
@@ -332,10 +384,10 @@
             document.getElementById('p-pre').innerText = newData.pre;
             document.getElementById('p-post').innerText = newData.post;
             document.getElementById('p-imgs').innerHTML = newData.photos.map(s => `<img src="${s}">`).join('');
-
+            
+            // 캡처 및 자동 다운로드
             const area = document.getElementById('posterArea');
             area.style.display = 'block';
-            
             setTimeout(() => {
                 html2canvas(area, {scale: 2, useCORS: true}).then(cvs => {
                     const link = document.createElement('a');
@@ -343,38 +395,43 @@
                     link.href = cvs.toDataURL("image/png");
                     link.click();
                     area.style.display = 'none';
-                    alert("성공적으로 저장되었습니다! 포스터 이미지가 자동 다운로드됩니다.");
-                    loadList();
+                    alert("저장 완료! 포스터 이미지가 자동으로 다운로드 되었습니다.");
+                    loadCaseList();
                 });
-            }, 700);
+            }, 600);
+        }
+
+        function loadCaseList() {
+            const list = JSON.parse(localStorage.getItem('exlux_cases') || '[]');
+            document.getElementById('caseListBody').innerHTML = list.reverse().map((i,idx) => `
+                <tr style="border-bottom:1px solid #eee;"><td>${i.date}</td><td style="font-weight:bold;">${i.name}</td><td>${i.sym}</td><td><button onclick="delCase(${idx})" style="color:red; border:none; cursor:pointer;">삭제</button></td></tr>
+            `).join('');
+        }
+        function delCase(idx) {
+            if(confirm("삭제하시겠습니까?")) {
+                let list = JSON.parse(localStorage.getItem('exlux_cases') || '[]');
+                list.reverse().splice(idx,1);
+                localStorage.setItem('exlux_cases', JSON.stringify(list.reverse()));
+                loadCaseList();
+            }
         }
 
         function openGallery() {
             const list = JSON.parse(localStorage.getItem('exlux_cases') || '[]');
-            const box = document.getElementById('galleryContent');
-            box.innerHTML = list.length === 0 ? "<p style='text-align:center; grid-column:span 3; padding:50px;'>등록된 기적의 사례가 아직 없습니다.</p>" : 
+            document.getElementById('galleryContent').innerHTML = list.length === 0 ? "<p style='padding:50px; grid-column:span 3; text-align:center;'>등록된 사례가 없습니다.</p>" : 
                 list.reverse().map(i => `
                     <div class="card" style="padding:15px; font-size:13px; text-align:left;">
-                        <div style="border-bottom:1px solid #eee; padding-bottom:5px; margin-bottom:8px; font-weight:bold; color:var(--wood-warm);">${i.name.substring(0,1)}*${i.name.substring(i.name.length-1)} 님 (${i.area})</div>
+                        <div style="font-weight:bold; border-bottom:1px solid #eee; margin-bottom:8px; padding-bottom:5px;">${i.name[0]}*${i.name.slice(-1)} (${i.area})</div>
                         <div style="margin-bottom:5px;"><strong>증상:</strong> ${i.sym}</div>
-                        <div style="color:var(--danger); line-height:1.4;"><strong>결과:</strong> ${i.post.substring(0,45)}...</div>
-                        ${i.photos[0] ? `<img src="${i.photos[0]}" style="width:100%; height:130px; object-fit:cover; margin-top:12px; border-radius:8px;">` : ''}
+                        <div style="color:red; margin-top:5px; font-weight:bold;">${i.post.substring(0,40)}...</div>
+                        ${i.photos[0] ? `<img src="${i.photos[0]}" style="width:100%; height:120px; object-fit:cover; margin-top:10px; border-radius:8px;">` : ''}
                     </div>
                 `).join('');
             document.getElementById('galleryModal').style.display = 'block';
         }
 
-        function checkAdmin() { if(prompt("암호: exlux1234")==="exlux1234") { document.getElementById('adminModal').style.display='block'; loadList(); } }
-        function closeAdmin() { document.getElementById('adminModal').style.display='none'; }
-        function closeGallery() { document.getElementById('galleryModal').style.display='none'; }
-        
-        function loadList() {
-            const list = JSON.parse(localStorage.getItem('exlux_cases') || '[]');
-            document.getElementById('listBody').innerHTML = list.reverse().map((i,idx) => `
-                <tr style="border-bottom:1px solid #eee;"><td>${i.date}</td><td style="font-weight:bold;">${i.name}</td><td>${i.sym}</td><td><button onclick="delCase(${idx})" style="color:red; border:none; background:none; cursor:pointer;">삭제</button></td></tr>
-            `).join('');
-        }
-        function delCase(idx) { if(confirm("삭제하시겠습니까?")) { let list = JSON.parse(localStorage.getItem('exlux_cases') || '[]'); list.reverse().splice(idx,1); localStorage.setItem('exlux_cases', JSON.stringify(list.reverse())); loadList(); } }
+        function closeAdmin() { document.getElementById('adminModal').style.display = 'none'; }
+        function closeGallery() { document.getElementById('galleryModal').style.display = 'none'; }
     </script>
 </body>
 </html>
