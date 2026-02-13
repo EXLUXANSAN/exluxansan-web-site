@@ -12,15 +12,14 @@
         .tab-content { animation: fadeIn 0.3s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         .wrap-text { word-break: break-all; overflow-wrap: break-word; white-space: normal; line-height: 1.5; }
-        select, input, textarea { font-size: 14px !important; }
-        /* 포스터 마스킹 등 추가 스타일 */
-        .poster-bg { background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%); }
+        /* 입력창 포커스 시 테두리 강조 */
+        input:focus, select:focus, textarea:focus { border-color: #2563eb !important; ring: 2px #3b82f6; }
     </style>
 </head>
 <body class="bg-gray-100 flex h-screen overflow-hidden">
 
     <aside class="w-64 bg-slate-900 text-white flex-shrink-0 flex flex-col">
-        <div class="p-6 font-black text-2xl border-b border-slate-700 text-center uppercase tracking-tighter">EXLUX Admin</div>
+        <div class="p-6 font-black text-2xl border-b border-slate-700 text-center uppercase tracking-tighter italic">EXLUX Admin</div>
         <nav class="flex-1 mt-6 text-sm">
             <a onclick="showTab('dash')" id="nav-dash" class="block py-4 px-6 hover:bg-slate-800 cursor-pointer border-l-4 border-transparent transition"><i class="fas fa-chart-line w-6"></i> 대시보드</a>
             <a onclick="showTab('list')" id="nav-list" class="block py-4 px-6 hover:bg-slate-800 cursor-pointer border-l-4 border-transparent transition"><i class="fas fa-list w-6"></i> 체험사례 리스트</a>
@@ -30,96 +29,97 @@
 
     <main class="flex-1 overflow-y-auto p-8">
         <div id="tab-dash" class="tab-content hidden">
-            <h2 class="text-2xl font-bold mb-6">📊 관리 통계</h2>
-            <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-blue-500 w-64">
-                <p class="text-gray-500 text-sm font-bold">전체 등록 사례</p>
-                <p id="stat-total" class="text-3xl font-bold mt-2">0건</p>
+            <h2 class="text-2xl font-bold mb-6 text-gray-800">📊 관리 통계</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-blue-500">
+                    <p class="text-gray-500 text-sm font-bold">전체 등록 사례</p>
+                    <p id="stat-total" class="text-3xl font-bold mt-2 text-blue-600">0건</p>
+                </div>
             </div>
         </div>
 
         <div id="tab-list" class="tab-content hidden">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-bold text-gray-800">📝 체험 사례 리스트</h2>
-                <button onclick="clearAllData()" class="text-xs text-gray-400 hover:text-red-500 underline">데이터 초기화</button>
+                <button onclick="clearData()" class="text-xs text-gray-400 hover:text-red-500 underline">전체 데이터 초기화</button>
             </div>
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                 <table class="w-full text-sm text-left">
-                    <thead class="bg-gray-50 border-b">
+                    <thead class="bg-gray-50 border-b text-gray-700">
                         <tr>
-                            <th class="p-4">No</th><th class="p-4">등록일</th><th class="p-4">성함</th>
+                            <th class="p-4">No</th><th class="p-4">등록일</th><th class="p-4">성함 (수정)</th>
                             <th class="p-4">나이/성별</th><th class="p-4">지역</th><th class="p-4">기능</th>
                         </tr>
                     </thead>
-                    <tbody id="caseTableBody"></tbody>
+                    <tbody id="caseTableBody">
+                        </tbody>
                 </table>
             </div>
         </div>
 
         <div id="tab-register" class="tab-content">
             <h2 class="text-2xl font-bold mb-6 text-gray-800"><i class="fas fa-pen-fancy mr-2 text-blue-600"></i> 체험 사례 등록 및 수정</h2>
+            
             <div class="max-w-4xl bg-white p-8 rounded-xl shadow-lg border border-gray-200">
                 <form id="registerForm" class="space-y-8">
                     <input type="hidden" id="reg-id">
                     
                     <div>
-                        <h3 class="font-bold text-lg text-blue-900 mb-4 flex items-center border-b pb-2">
-                            <span class="bg-blue-900 text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-xs mr-2">1</span> 기본 정보 입력
-                        </h3>
+                        <h3 class="font-bold text-lg text-blue-900 mb-4 border-b pb-2">① 기본 정보 입력</h3>
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                            <input type="text" id="reg-name" placeholder="성함" class="border p-3 rounded-lg bg-gray-50 outline-none focus:ring-2 focus:ring-blue-500">
-                            <select id="reg-year" class="border p-3 rounded-lg bg-gray-50"></select>
-                            <select id="reg-month" class="border p-3 rounded-lg bg-gray-50"></select>
-                            <select id="reg-day" class="border p-3 rounded-lg bg-gray-50"></select>
-                            <select id="reg-gender" class="border p-3 rounded-lg bg-gray-50">
+                            <input type="text" id="reg-name" placeholder="성함" class="w-full border p-3 rounded-lg bg-white outline-none">
+                            <select id="reg-year" class="w-full border p-3 rounded-lg bg-white outline-none"></select>
+                            <select id="reg-month" class="w-full border p-3 rounded-lg bg-white outline-none"></select>
+                            <select id="reg-day" class="w-full border p-3 rounded-lg bg-white outline-none"></select>
+                            
+                            <select id="reg-gender" class="w-full border p-3 rounded-lg bg-white outline-none">
                                 <option value="남">남성</option><option value="여">여성</option>
                             </select>
-                            <select id="reg-sido" class="border p-3 rounded-lg bg-gray-50" onchange="updateSigungu()"></select>
-                            <select id="reg-sigungu" class="border p-3 rounded-lg bg-gray-50 md:col-span-2"></select>
+                            <select id="reg-sido" class="w-full border p-3 rounded-lg bg-white outline-none" onchange="updateSigungu()"></select>
+                            <select id="reg-sigungu" class="w-full border p-3 rounded-lg bg-white outline-none md:col-span-2"></select>
                         </div>
                     </div>
 
                     <div>
-                        <h3 class="font-bold text-lg text-blue-900 mb-4 flex items-center border-b pb-2">
-                            <span class="bg-blue-900 text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-xs mr-2">2</span> 증상 및 사용 정보
-                        </h3>
-                        <div class="bg-gray-50 p-4 rounded-lg border flex flex-wrap gap-4 text-sm mb-4">
-                            <label><input type="checkbox" name="symptom" value="허리통증"> 허리통증</label>
-                            <label><input type="checkbox" name="symptom" value="목/어깨"> 목/어깨</label>
-                            <label><input type="checkbox" name="symptom" value="무릎/관절"> 무릎/관절</label>
-                            <label><input type="checkbox" name="symptom" value="혈당/혈압"> 혈당/혈압</label>
-                            <label><input type="checkbox" name="symptom" value="불면/우울"> 불면/우울</label>
-                            <div class="flex items-center gap-2 border-l pl-4">
-                                <label class="font-bold text-blue-600"><input type="checkbox" id="etc-check" onchange="toggleEtcInput()"> 기타</label>
-                                <input type="text" id="etc-input" placeholder="직접 입력" class="hidden border-b border-blue-400 bg-transparent outline-none">
+                        <h3 class="font-bold text-lg text-blue-900 mb-4 border-b pb-2">② 증상 및 사용 정보</h3>
+                        <div class="bg-gray-50 p-4 rounded-lg border mb-4">
+                            <div class="flex flex-wrap gap-4 text-sm font-medium">
+                                <label class="flex items-center"><input type="checkbox" name="symptom" value="허리통증" class="mr-2">허리통증</label>
+                                <label class="flex items-center"><input type="checkbox" name="symptom" value="목/어깨" class="mr-2">목/어깨</label>
+                                <label class="flex items-center"><input type="checkbox" name="symptom" value="무릎/관절" class="mr-2">무릎/관절</label>
+                                <label class="flex items-center"><input type="checkbox" name="symptom" value="혈당/혈압" class="mr-2">혈당/혈압</label>
+                                <label class="flex items-center"><input type="checkbox" name="symptom" value="불면/우울" class="mr-2">불면/우울</label>
+                                <label class="flex items-center text-blue-600 font-bold"><input type="checkbox" id="etc-check" onchange="toggleEtcInput()" class="mr-2">기타</label>
+                                <input type="text" id="etc-input" placeholder="직접 입력" class="hidden border-b border-blue-400 outline-none px-1 bg-transparent">
                             </div>
                         </div>
-                        <select id="reg-period" class="w-full border p-3 rounded-lg mb-4 bg-gray-50">
+                        <select id="reg-period" class="w-full border p-3 rounded-lg mb-4 bg-white">
                             <option value="10일 이하">10일 이하 사용</option>
                             <option value="10일 이상">10일 이상 사용</option>
+                            <option value="20일 이상">20일 이상 사용</option>
                             <option value="계속 사용 중">계속 사용 중</option>
                         </select>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <textarea id="reg-desc-symptom" placeholder="사용 전 구체적 증상" class="border p-4 rounded-lg h-32 resize-none outline-none focus:ring-2 focus:ring-blue-500"></textarea>
-                            <textarea id="reg-desc-change" placeholder="사용 후 변화(결과)" class="border p-4 rounded-lg h-32 resize-none outline-none focus:ring-2 focus:ring-green-500"></textarea>
+                            <textarea id="reg-desc-symptom" placeholder="구체적 증상 내용" class="w-full border p-4 rounded-lg h-32 resize-none focus:ring-2 focus:ring-blue-200 outline-none"></textarea>
+                            <textarea id="reg-desc-change" placeholder="사용 후 변화 (결과)" class="w-full border p-4 rounded-lg h-32 resize-none focus:ring-2 focus:ring-green-200 outline-none"></textarea>
                         </div>
                     </div>
 
                     <div>
-                        <h3 class="font-bold text-lg text-blue-900 mb-4 flex items-center border-b pb-2">
-                            <span class="bg-blue-900 text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-xs mr-2">3</span> 사진 첨부 (최대 4장)
-                        </h3>
+                        <h3 class="font-bold text-lg text-blue-900 mb-4 border-b pb-2">③ 사진 첨부 (최대 4장)</h3>
                         <div class="flex gap-4 items-center">
                             <div id="previewGrid" class="grid grid-cols-4 gap-2 flex-grow"></div>
-                            <label id="uploadLabel" class="w-24 h-24 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:bg-gray-100">
+                            <label id="uploadLabel" class="w-24 h-24 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:bg-gray-100 transition">
                                 <i class="fas fa-camera text-gray-400 text-2xl"></i>
+                                <span class="text-[10px] text-gray-500 mt-1 font-bold">사진 추가</span>
                                 <input type="file" id="fileInput" class="hidden" accept="image/*" multiple onchange="handleFiles(this.files)">
                             </label>
                         </div>
                     </div>
 
-                    <div class="flex gap-4">
-                        <button type="button" onclick="openPosterModal()" class="flex-1 bg-slate-800 text-white py-4 rounded-xl font-bold shadow-md hover:bg-black transition"><i class="fas fa-eye mr-2"></i>포스터 미리보기</button>
-                        <button type="button" onclick="saveCase()" class="flex-1 bg-blue-600 text-white py-4 rounded-xl font-bold shadow-md hover:bg-blue-700 transition"><i class="fas fa-save mr-2"></i>갤러리 저장하기</button>
+                    <div class="flex gap-4 pt-4">
+                        <button type="button" onclick="openPosterModal()" class="flex-1 bg-slate-800 text-white py-4 rounded-xl font-bold shadow-lg hover:bg-black transition flex items-center justify-center gap-2"><i class="fas fa-eye"></i> 포스터 미리보기</button>
+                        <button type="button" onclick="saveCase()" class="flex-1 bg-blue-600 text-white py-4 rounded-xl font-bold shadow-lg hover:bg-blue-700 transition flex items-center justify-center gap-2"><i class="fas fa-save"></i> 갤러리 저장하기</button>
                     </div>
                 </form>
             </div>
@@ -129,50 +129,79 @@
     <div id="posterModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closePoster()"></div>
         <div class="relative bg-white rounded-2xl max-w-md w-full overflow-hidden shadow-2xl">
-            <div class="bg-blue-900 text-white p-4 flex justify-between items-center font-bold">
-                <span>EXLUX Success Story</span>
-                <button onclick="closePoster()" class="text-2xl">&times;</button>
+            <div class="bg-blue-900 text-white p-4 flex justify-between items-center">
+                <span class="font-bold">EXLUX SUCCESS STORY</span>
+                <button onclick="closePoster()" class="text-2xl font-bold">&times;</button>
             </div>
             <div class="p-6 text-center">
                 <div class="border-4 border-double border-blue-900 p-4 rounded-lg bg-gray-50 mb-4">
-                    <h3 id="modal-name" class="text-2xl font-black mb-1 text-gray-900">고객님</h3>
-                    <p id="modal-meta" class="text-xs font-bold text-gray-600 border-t pt-2 mt-2"></p>
+                    <h3 id="modal-name" class="text-2xl font-black text-gray-900">고객님</h3>
+                    <p id="modal-meta" class="text-xs font-bold text-gray-500 mt-2 border-t pt-2"></p>
                 </div>
-                <div class="bg-yellow-50 p-3 rounded border border-yellow-100 mb-4 italic text-sm text-gray-700" id="modal-desc-symptom"></div>
+                <div class="bg-yellow-50 p-3 rounded border border-yellow-100 mb-4 text-sm text-gray-700 italic" id="modal-desc-symptom"></div>
                 <div id="modal-photo-grid" class="grid grid-cols-2 gap-2 h-48 mb-4"></div>
-                <div class="bg-blue-600 text-white p-4 rounded-xl font-bold text-lg shadow-lg" id="modal-desc-change"></div>
+                <div class="bg-blue-600 text-white p-4 rounded-xl font-bold shadow-lg" id="modal-desc-change"></div>
             </div>
-            <div class="p-4 bg-gray-100 text-center font-black text-blue-900">"익스럭스로 건강을 찾으신 것을 축하합니다"</div>
+            <div class="p-4 bg-gray-100 text-center font-bold text-blue-900 border-t">"익스럭스로 건강을 찾으신 것을 축하드립니다"</div>
         </div>
     </div>
 
     <script>
+        // 전역 변수 및 데이터 (최신 지역 데이터 포함)
         let fileDataUrls = [];
         const regionData = {
-            "경기": ["안산시", "화성시", "수원시", "시흥시", "부천시", "평택시"], // 축약형 (전체 데이터 유지 가능)
-            "서울": ["강남구", "송파구", "강서구", "마포구"],
-            "인천": ["남동구", "부평구", "연수구"]
+            "경기": ["안산시", "화성시", "수원시", "시흥시", "부천시", "평택시", "오산시", "군포시", "의왕시"],
+            "서울": ["강남구", "송파구", "강서구", "마포구", "은평구", "서초구"],
+            "인천": ["남동구", "부평구", "연수구", "서구"]
         };
 
-        // 초기 설정
+        // [핵심] 페이지 로드 즉시 실행 보장 로직
+        document.addEventListener('DOMContentLoaded', () => {
+            initForm();
+            refreshAll();
+        });
+
+        // 셀렉트 박스 데이터 주입 (년, 월, 일, 시도)
         function initForm() {
-            const y = document.getElementById('reg-year'), m = document.getElementById('reg-month'), d = document.getElementById('reg-day'), sido = document.getElementById('reg-sido');
-            y.innerHTML = '<option value="">년도</option>'; for(let i=2026; i>=1940; i--) y.add(new Option(i+'년', i));
-            m.innerHTML = '<option value="">월</option>'; for(let i=1; i<=12; i++) m.add(new Option(i+'월', i));
-            d.innerHTML = '<option value="">일</option>'; for(let i=1; i<=31; i++) d.add(new Option(i+'일', i));
-            sido.innerHTML = '<option value="">시/도</option>'; Object.keys(regionData).forEach(s => sido.add(new Option(s, s)));
+            const y = document.getElementById('reg-year');
+            const m = document.getElementById('reg-month');
+            const d = document.getElementById('reg-day');
+            const sido = document.getElementById('reg-sido');
+
+            if(!y || !sido) return;
+
+            // 년도 (1940~2026)
+            y.innerHTML = '<option value="">년도 선택</option>';
+            for(let i=2026; i>=1940; i--) y.add(new Option(i+'년', i));
+
+            // 월 (1~12)
+            m.innerHTML = '<option value="">월</option>';
+            for(let i=1; i<=12; i++) m.add(new Option(i+'월', i));
+
+            // 일 (1~31)
+            d.innerHTML = '<option value="">일</option>';
+            for(let i=1; i<=31; i++) d.add(new Option(i+'일', i));
+
+            // 시도
+            sido.innerHTML = '<option value="">시/도 선택</option>';
+            Object.keys(regionData).forEach(s => sido.add(new Option(s, s)));
+            
             updateSigungu();
         }
 
         function updateSigungu() {
-            const sido = document.getElementById('reg-sido').value;
+            const sidoVal = document.getElementById('reg-sido').value;
             const sigungu = document.getElementById('reg-sigungu');
-            sigungu.innerHTML = '<option value="">시/군/구</option>';
-            if(sido && regionData[sido]) regionData[sido].forEach(s => sigungu.add(new Option(s, s)));
+            if(!sigungu) return;
+            sigungu.innerHTML = '<option value="">시/군/구 선택</option>';
+            if(sidoVal && regionData[sidoVal]) {
+                regionData[sidoVal].forEach(s => sigungu.add(new Option(s, s)));
+            }
         }
 
         function toggleEtcInput() {
-            const check = document.getElementById('etc-check'), input = document.getElementById('etc-input');
+            const check = document.getElementById('etc-check');
+            const input = document.getElementById('etc-input');
             input.style.display = check.checked ? 'inline-block' : 'none';
         }
 
@@ -189,21 +218,19 @@
         function renderPreviews() {
             const grid = document.getElementById('previewGrid');
             grid.innerHTML = fileDataUrls.map((url, i) => `
-                <div class="aspect-square border rounded-lg overflow-hidden relative">
+                <div class="aspect-square border rounded-lg overflow-hidden relative shadow-sm">
                     <img src="${url}" class="w-full h-full object-cover">
-                    <button type="button" onclick="fileDataUrls.splice(${i},1);renderPreviews();" class="absolute top-0 right-0 bg-red-500 text-white w-5 h-5 text-xs">×</button>
+                    <button type="button" onclick="fileDataUrls.splice(${i},1);renderPreviews();" class="absolute top-0 right-0 bg-red-500 text-white w-5 h-5 flex items-center justify-center text-xs">×</button>
                 </div>
             `).join('');
             document.getElementById('uploadLabel').style.display = fileDataUrls.length >= 4 ? 'none' : 'flex';
         }
 
-        // 데이터 처리 로직 (핵심)
-        function loadCases() { return JSON.parse(localStorage.getItem('exlux_cases') || '[]'); }
-
+        // 저장 및 데이터 관리 (LocalStorage 기반)
         function saveCase() {
             const name = document.getElementById('reg-name').value;
-            if(!name) return alert("성함을 입력하세요.");
-            
+            if(!name) return alert("성함을 입력해 주세요.");
+
             const regId = document.getElementById('reg-id').value;
             let symptoms = Array.from(document.querySelectorAll('input[name="symptom"]:checked')).map(c => c.value);
             if(document.getElementById('etc-check').checked) symptoms.push(document.getElementById('etc-input').value);
@@ -221,56 +248,77 @@
                 photos: fileDataUrls
             };
 
-            let cases = loadCases();
-            if(regId) { const idx = cases.findIndex(c => c.id == regId); cases[idx] = data; }
-            else { cases.unshift(data); }
+            let cases = JSON.parse(localStorage.getItem('exlux_cases') || '[]');
+            if(regId) {
+                const idx = cases.findIndex(c => c.id == regId);
+                if(idx !== -1) cases[idx] = data;
+            } else {
+                cases.unshift(data);
+            }
 
             localStorage.setItem('exlux_cases', JSON.stringify(cases));
-            alert("저장되었습니다.");
+            alert("성공적으로 저장되었습니다.");
             initRegisterMode();
             showTab('list');
         }
 
-        function refreshList() {
-            const cases = loadCases();
+        function refreshAll() {
+            const cases = JSON.parse(localStorage.getItem('exlux_cases') || '[]');
             document.getElementById('stat-total').innerText = cases.length + "건";
-            document.getElementById('caseTableBody').innerHTML = cases.map((c, i) => `
-                <tr class="border-b hover:bg-gray-50 transition text-sm">
-                    <td class="p-4">${cases.length - i}</td>
-                    <td class="p-4 text-gray-500">${c.date}</td>
-                    <td class="p-4 font-bold text-blue-600 cursor-pointer" onclick="editCase(${c.id})">${c.name}</td>
-                    <td class="p-4">${c.age}/${c.gender}</td>
-                    <td class="p-4">${c.region}</td>
-                    <td class="p-4"><button onclick="deleteCase(${c.id})" class="text-red-400 hover:text-red-600"><i class="fas fa-trash"></i></button></td>
-                </tr>
-            `).join('');
+            
+            const tbody = document.getElementById('caseTableBody');
+            if(tbody) {
+                tbody.innerHTML = cases.map((c, i) => `
+                    <tr class="border-b hover:bg-gray-50 transition">
+                        <td class="p-4">${cases.length - i}</td>
+                        <td class="p-4 text-gray-500">${c.date}</td>
+                        <td class="p-4 font-bold text-blue-600 cursor-pointer underline" onclick="editCase(${c.id})">${c.name}</td>
+                        <td class="p-4 font-semibold text-gray-700">${c.age}/${c.gender}</td>
+                        <td class="p-4 text-gray-600">${c.region}</td>
+                        <td class="p-4"><button onclick="deleteCase(${c.id})" class="text-red-400 hover:text-red-600"><i class="fas fa-trash"></i></button></td>
+                    </tr>
+                `).join('');
+                if(cases.length === 0) tbody.innerHTML = '<tr><td colspan="6" class="p-10 text-center text-gray-400">등록된 체험 사례가 없습니다.</td></tr>';
+            }
         }
 
-        function deleteCase(id) { if(confirm('삭제할까요?')) { const cases = loadCases().filter(c => c.id != id); localStorage.setItem('exlux_cases', JSON.stringify(cases)); refreshList(); } }
-
         function editCase(id) {
-            const c = loadCases().find(x => x.id == id);
-            showTab('register');
+            const c = JSON.parse(localStorage.getItem('exlux_cases') || '[]').find(x => x.id == id);
+            if(!c) return;
+            initRegisterMode(false);
             document.getElementById('reg-id').value = c.id;
             document.getElementById('reg-name').value = c.name;
+            document.getElementById('reg-gender').value = c.gender;
             document.getElementById('reg-desc-symptom').value = c.descSymptom;
             document.getElementById('reg-desc-change').value = c.descChange;
             fileDataUrls = c.photos || [];
             renderPreviews();
+            showTab('register');
+        }
+
+        function deleteCase(id) {
+            if(confirm('이 사례를 정말 삭제하시겠습니까?')) {
+                const cases = JSON.parse(localStorage.getItem('exlux_cases') || '[]').filter(c => c.id != id);
+                localStorage.setItem('exlux_cases', JSON.stringify(cases));
+                refreshAll();
+            }
         }
 
         function openPosterModal() {
             const name = document.getElementById('reg-name').value;
+            if(!name) return alert("성함을 입력해야 미리보기가 가능합니다.");
+            
+            // 이름 마스킹 (홍길동 -> 홍*동)
             const maskedName = name.length > 2 ? name[0] + "*" + name[name.length-1] : name[0] + "*";
             document.getElementById('modal-name').innerText = maskedName + " 고객님";
-            document.getElementById('modal-meta').innerText = `${document.getElementById('reg-gender').value} | ${document.getElementById('reg-sido').value}`;
+            document.getElementById('modal-meta').innerText = `${document.getElementById('reg-gender').value} | ${document.getElementById('reg-sido').value} 거주`;
             document.getElementById('modal-desc-symptom').innerText = document.getElementById('reg-desc-symptom').value || "사용 전 증상 미입력";
             document.getElementById('modal-desc-change').innerText = document.getElementById('reg-desc-change').value || "사용 후 결과 미입력";
             
             const grid = document.getElementById('modal-photo-grid');
             grid.innerHTML = "";
             for(let i=0; i<4; i++) {
-                grid.innerHTML += `<div class="bg-gray-200 rounded-lg overflow-hidden border">
+                grid.innerHTML += `<div class="bg-gray-100 rounded-lg border overflow-hidden">
                     ${fileDataUrls[i] ? `<img src="${fileDataUrls[i]}" class="w-full h-full object-cover">` : ''}
                 </div>`;
             }
@@ -280,14 +328,18 @@
         function showTab(id) {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
             document.getElementById('tab-'+id).classList.remove('hidden');
-            if(id === 'list' || id === 'dash') refreshList();
+            refreshAll();
         }
 
         function closePoster() { document.getElementById('posterModal').classList.add('hidden'); }
-        function initRegisterMode() { document.getElementById('registerForm').reset(); fileDataUrls = []; renderPreviews(); showTab('register'); initForm(); }
-
-        initForm();
-        showTab('register');
+        function clearData() { if(confirm('모든 체험사례 데이터를 초기화하시겠습니까?')) { localStorage.removeItem('exlux_cases'); refreshAll(); } }
+        function initRegisterMode(move = true) {
+            document.getElementById('registerForm').reset();
+            document.getElementById('reg-id').value = "";
+            fileDataUrls = [];
+            renderPreviews();
+            if(move) showTab('register');
+        }
     </script>
 </body>
 </html>
