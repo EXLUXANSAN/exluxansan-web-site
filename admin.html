@@ -12,7 +12,6 @@
         .tab-content { animation: fadeIn 0.3s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         .wrap-text { word-break: break-all; overflow-wrap: break-word; white-space: normal; line-height: 1.5; }
-        /* 스크롤바 커스텀 */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         ::-webkit-scrollbar-thumb { background: #888; border-radius: 10px; }
@@ -26,7 +25,7 @@
             <h1 class="text-2xl font-black text-slate-900 mb-6 uppercase tracking-tighter">EXLUX ADMIN LOGIN</h1>
             <input type="password" id="adminPassword" placeholder="관리자 비밀번호 입력" class="w-full border-2 border-gray-200 p-4 rounded-xl mb-4 outline-none focus:border-blue-500 transition">
             <button onclick="checkAdmin()" class="w-full bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-blue-700 transition shadow-lg">접속하기</button>
-            <p class="text-gray-400 text-xs mt-4">비밀번호는 1204입니다.</p>
+            <p class="text-gray-400 text-xs mt-4">비밀번호(1204)를 입력해야 관리 기능을 사용할 수 있습니다.</p>
         </div>
     </div>
 
@@ -40,6 +39,7 @@
     </aside>
 
     <main class="flex-1 overflow-y-auto p-8">
+        
         <div id="tab-dash" class="tab-content hidden">
             <h2 class="text-2xl font-bold mb-6 text-gray-800">📊 관리 통계</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -48,7 +48,7 @@
                     <p id="stat-total" class="text-3xl font-bold mt-2">0건</p>
                 </div>
             </div>
-            <p class="text-gray-400 italic">현재 시스템에 저장된 전체 데이터 개수입니다.</p>
+            <p class="text-gray-400 italic">현재 브라우저 내부에 저장된 사례 수입니다.</p>
         </div>
 
         <div id="tab-list" class="tab-content hidden">
@@ -78,10 +78,11 @@
         </div>
 
         <div id="tab-register" class="tab-content">
-            <h2 class="text-2xl font-bold mb-6 text-gray-800"><i class="fas fa-pen-fancy mr-2 text-blue-600"></i> 체험 사례 등록</h2>
+            <h2 class="text-2xl font-bold mb-6 text-gray-800"><i class="fas fa-pen-fancy mr-2 text-blue-600"></i> 체험 사례 등록 및 수정</h2>
             <div class="max-w-4xl bg-white p-8 rounded-xl shadow-lg border border-gray-200">
                 <form id="registerForm" class="space-y-6">
                     <input type="hidden" id="reg-id">
+                    
                     <div class="border-b pb-4">
                         <h3 class="font-bold text-lg text-blue-900 mb-4">① 기본 정보 입력</h3>
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -134,11 +135,11 @@
                                 <input type="file" id="fileInput" class="hidden" accept="image/*" multiple onchange="handleFiles(this.files)">
                             </label>
                         </div>
-                        <p class="text-xs text-blue-600 mt-2 font-bold">* 고화질 사진을 올려도 자동으로 최적화되어 저장 실패를 방지합니다.</p>
+                        <p class="text-xs text-blue-500 mt-2 font-bold">* 사진은 자동으로 최적화되어 압축 저장됩니다.</p>
                     </div>
 
                     <div class="flex gap-4">
-                        <button type="button" onclick="openPosterModal()" class="flex-1 bg-slate-800 text-white py-4 rounded-lg font-bold shadow-lg hover:bg-black transition"><i class="fas fa-id-card mr-2"></i>포스터 보기</button>
+                        <button type="button" onclick="openPosterModal()" class="flex-1 bg-slate-800 text-white py-4 rounded-lg font-bold shadow-lg hover:bg-black transition"><i class="fas fa-id-card mr-2"></i>포스터 미리보기</button>
                         <button type="button" onclick="saveCase()" class="flex-1 bg-blue-600 text-white py-4 rounded-lg font-bold shadow-lg hover:bg-blue-700 transition"><i class="fas fa-save mr-2"></i>갤러리 저장하기</button>
                     </div>
                 </form>
@@ -163,13 +164,13 @@
                     <p id="modal-desc-symptom" class="text-sm text-gray-700 font-semibold wrap-text"></p>
                 </div>
                 <div id="modal-photo-grid" class="grid grid-cols-2 gap-2 h-48 mb-4"></div>
-                <div class="bg-blue-600 text-white p-4 rounded-xl result-container shadow-lg">
+                <div class="bg-blue-600 text-white p-4 rounded-xl shadow-lg">
                     <p id="modal-desc-change" class="font-bold text-lg leading-snug wrap-text"></p>
                 </div>
             </div>
-            <div class="p-5 bg-gray-100 border-t text-center shadow-2xl">
+            <div class="p-5 bg-gray-100 border-t text-center">
                 <p class="text-blue-900 font-black text-lg mb-4 tracking-tighter">"익스럭스로 건강을 찾으신 것을 축하합니다."</p>
-                <button onclick="closePoster()" class="w-full bg-slate-800 text-white py-3 rounded-lg font-bold hover:bg-black transition shadow-md">닫기</button>
+                <button onclick="closePoster()" class="w-full bg-slate-800 text-white py-3 rounded-lg font-bold hover:bg-black transition">닫기</button>
             </div>
         </div>
     </div>
@@ -179,9 +180,9 @@
         const regionData = {
             "경기": ["가평군", "고양시", "과천시", "광명시", "광주시", "구리시", "군포시", "김포시", "남양주시", "동두천시", "부천시", "성남시", "수원시", "시흥시", "안산시", "안성시", "안양시", "양주시", "양평군", "여주시", "연천군", "오산시", "용인시", "의왕시", "의정부시", "이천시", "파주시", "평택시", "포천시", "하남시", "화성시"],
             "서울": ["강남구", "강동구", "강북구", "강서구", "관악구", "광진구", "구로구", "금천구", "노원구", "도봉구", "동대문구", "동작구", "마포구", "서대문구", "서초구", "성동구", "성북구", "송파구", "양천구", "영등포구", "용산구", "은평구", "종로구", "중구", "중랑구"],
+            "인천": ["강화군", "계양구", "남동구", "동구", "미추홀구", "부평구", "서구", "연수구", "옹진군", "중구"],
             "부산": ["강서구", "금정구", "기장군", "남구", "동구", "동래구", "부산진구", "북구", "사상구", "사하구", "서구", "수영구", "연제구", "영도구", "중구", "해운대구"],
             "경남": ["거제시", "거창군", "고성군", "김해시", "남해군", "밀양시", "사천시", "산청군", "양산시", "의령군", "진주시", "창녕군", "창원시", "통영시", "하동군", "함안군", "함양군", "합천군"],
-            "인천": ["강화군", "계양구", "남동구", "동구", "미추홀구", "부평구", "서구", "연수구", "옹진군", "중구"],
             "경북": ["경산시", "경주시", "고령군", "구미시", "군위군", "김천시", "문경시", "봉화군", "상주시", "성주군", "안동시", "영덕군", "영양군", "영주시", "영천시", "예천군", "울릉군", "울진군", "의성군", "청도군", "청송군", "칠곡군", "포항시"],
             "대구": ["군위군", "남구", "달서구", "달성군", "동구", "북구", "서구", "수성구", "중구"],
             "충남": ["계룡시", "공주시", "금산군", "논산시", "당진시", "부여군", "서산시", "서천군", "아산시", "예산군", "천안시", "청양군", "태안군", "홍성군"],
@@ -196,125 +197,248 @@
             "세종": ["세종시"]
         };
 
+        // 관리자 인증
         function checkAdmin() {
-            if(document.getElementById('adminPassword').value === "1204") {
+            const pass = document.getElementById('adminPassword').value;
+            if(pass === "1204") {
                 document.getElementById('login-overlay').style.display = 'none';
-                refreshAllViews();
+                showTab('dash');
             } else { alert("비밀번호가 올바르지 않습니다."); }
         }
 
-        function handleFiles(files) {
-            Array.from(files).forEach(file => {
-                if(fileDataUrls.length >= 4) return;
+        // 이미지 자동 압축 기술
+        async function compressImage(file) {
+            return new Promise((resolve) => {
                 const reader = new FileReader();
+                reader.readAsDataURL(file);
                 reader.onload = (e) => {
                     const img = new Image();
+                    img.src = e.target.result;
                     img.onload = () => {
                         const canvas = document.createElement('canvas');
+                        const MAX_WIDTH = 800;
                         let width = img.width;
                         let height = img.height;
-                        const max_size = 1024; // 이미지 자동 최적화 핵심 로직
-                        if (width > height) { if (width > max_size) { height *= max_size / width; width = max_size; } }
-                        else { if (height > max_size) { width *= max_size / height; height = max_size; } }
+                        if (width > MAX_WIDTH) {
+                            height = (MAX_WIDTH / width) * height;
+                            width = MAX_WIDTH;
+                        }
                         canvas.width = width;
                         canvas.height = height;
                         const ctx = canvas.getContext('2d');
                         ctx.drawImage(img, 0, 0, width, height);
-                        fileDataUrls.push(canvas.toDataURL('image/jpeg', 0.7)); // 품질 70% 압축 저장
-                        renderPreviews();
+                        resolve(canvas.toDataURL('image/jpeg', 0.6));
                     };
-                    img.src = e.target.result;
                 };
-                reader.readAsDataURL(file);
             });
+        }
+
+        async function handleFiles(files) {
+            for (let file of files) {
+                if (fileDataUrls.length >= 4) break;
+                const compressed = await compressImage(file);
+                fileDataUrls.push(compressed);
+            }
+            renderPreviews();
+        }
+
+        function renderPreviews() {
+            const grid = document.getElementById('previewGrid');
+            const box = document.getElementById('uploadLabel');
+            grid.innerHTML = fileDataUrls.map((url, i) => `
+                <div class="aspect-square border rounded-lg overflow-hidden relative">
+                    <img src="${url}" class="w-full h-full object-cover">
+                    <button type="button" onclick="fileDataUrls.splice(${i},1);renderPreviews();" class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 text-[10px]">X</button>
+                </div>
+            `).join('');
+            box.style.display = fileDataUrls.length >= 4 ? 'none' : 'flex';
+        }
+
+        // 데이터 처리 로직
+        function loadCases() {
+            const data = localStorage.getItem('exlux_cases');
+            return data ? JSON.parse(data) : [];
         }
 
         function saveCase() {
             const name = document.getElementById('reg-name').value;
             if(!name) { alert("성함을 입력해주세요."); return; }
+
+            const regId = document.getElementById('reg-id').value;
+            let symptomsList = Array.from(document.querySelectorAll('input[name="symptom"]:checked')).map(c => c.value);
+            if(document.getElementById('etc-check').checked) {
+                const etcVal = document.getElementById('etc-input').value.trim();
+                if(etcVal) symptomsList.push(etcVal);
+            }
+
             const data = {
-                id: document.getElementById('reg-id').value ? parseInt(document.getElementById('reg-id').value) : Date.now(),
+                id: regId ? parseInt(regId) : Date.now(),
                 date: new Date().toLocaleDateString(),
                 name: name,
                 age: getAge(),
                 gender: document.getElementById('reg-gender').value,
                 region: document.getElementById('reg-sido').value + ' ' + document.getElementById('reg-sigungu').value,
-                symptoms: Array.from(document.querySelectorAll('input[name="symptom"]:checked')).map(c => c.value).join(', '),
+                symptoms: symptomsList.join(', '),
+                period: document.getElementById('reg-period').value,
                 descSymptom: document.getElementById('reg-desc-symptom').value,
                 descChange: document.getElementById('reg-desc-change').value,
-                photos: fileDataUrls
+                photos: fileDataUrls,
+                birthYear: document.getElementById('reg-year').value,
+                birthMonth: document.getElementById('reg-month').value,
+                birthDay: document.getElementById('reg-day').value
             };
-            let cs = loadCases();
-            const idx = cs.findIndex(c => c.id == data.id);
-            if(idx !== -1) cs[idx] = data; else cs.unshift(data);
+
+            let cases = loadCases();
+            if(regId) {
+                const index = cases.findIndex(c => c.id == regId);
+                if(index !== -1) cases[index] = data;
+            } else { cases.unshift(data); }
+
             try {
-                localStorage.setItem('exlux_cases', JSON.stringify(cs));
-                alert('갤러리에 저장되었습니다!');
-                initRegisterMode(false); refreshAllViews(); showTab('list');
-            } catch (e) {
-                alert("⚠️ 저장 공간 부족! 리스트 추출 후 초기화를 진행하세요.");
+                localStorage.setItem('exlux_cases', JSON.stringify(cases));
+                alert('성공적으로 저장되었습니다.');
+                initRegisterMode(false);
+                showTab('list');
+            } catch (e) { alert("저장 용량 초과! 사진을 줄이거나 이전 데이터를 삭제해주세요."); }
+        }
+
+        function editCase(id) {
+            const cases = loadCases();
+            const data = cases.find(c => c.id === id);
+            if(!data) return;
+            showTab('register');
+            document.getElementById('reg-id').value = data.id;
+            document.getElementById('reg-name').value = data.name;
+            document.getElementById('reg-year').value = data.birthYear || "";
+            document.getElementById('reg-month').value = data.birthMonth || "";
+            document.getElementById('reg-day').value = data.birthDay || "";
+            document.getElementById('reg-gender').value = data.gender;
+            if (data.region) {
+                const parts = data.region.split(' ');
+                document.getElementById('reg-sido').value = parts[0];
+                updateSigungu();
+                if (parts[1]) document.getElementById('reg-sigungu').value = parts[1];
             }
+            const symArr = data.symptoms ? data.symptoms.split(', ') : [];
+            document.querySelectorAll('input[name="symptom"]').forEach(cb => {
+                cb.checked = symArr.includes(cb.value);
+            });
+            document.getElementById('reg-period').value = data.period || "계속 사용 중";
+            document.getElementById('reg-desc-symptom').value = data.descSymptom || "";
+            document.getElementById('reg-desc-change').value = data.descChange || "";
+            fileDataUrls = data.photos || [];
+            renderPreviews();
+        }
+
+        function refreshAllViews() {
+            const cases = loadCases();
+            document.getElementById('stat-total').innerText = cases.length + "건";
+            const tableBody = document.getElementById('caseTableBody');
+            if(cases.length > 0) {
+                tableBody.innerHTML = cases.map((c, i) => `
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="p-4">${cases.length - i}</td>
+                        <td class="p-4 text-xs">${c.date}</td>
+                        <td class="p-4 font-bold text-blue-600 cursor-pointer underline" onclick="editCase(${c.id})">${c.name}</td>
+                        <td class="p-4 text-xs">${c.age}/${c.gender}</td>
+                        <td class="p-4 text-xs">${c.region}</td>
+                        <td class="p-4 text-xs truncate max-w-[150px]">${c.symptoms}</td>
+                        <td class="p-4"><button onclick="deleteCase(${c.id})" class="text-red-400 hover:text-red-600"><i class="fas fa-trash"></i></button></td>
+                    </tr>
+                `).join('');
+            } else { tableBody.innerHTML = '<tr><td colspan="7" class="p-8 text-center text-gray-400">데이터가 없습니다.</td></tr>'; }
+        }
+
+        // 공통 유틸리티
+        function showTab(id) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
+            document.getElementById('tab-'+id).classList.remove('hidden');
+            refreshAllViews();
+            ['dash', 'list', 'register'].forEach(nav => {
+                const el = document.getElementById('nav-' + nav);
+                el.className = nav === id ? "block py-4 px-6 bg-slate-800 border-l-4 border-blue-400 cursor-pointer" : "block py-4 px-6 border-l-4 border-transparent hover:bg-slate-800 cursor-pointer";
+            });
+        }
+
+        function initForm() {
+            const ySelect = document.getElementById('reg-year');
+            const mSelect = document.getElementById('reg-month');
+            const dSelect = document.getElementById('reg-day');
+            ySelect.add(new Option("년도", ""));
+            for(let i=2026; i>=1926; i--) ySelect.add(new Option(i+'년', i));
+            mSelect.add(new Option("월", ""));
+            for(let i=1; i<=12; i++) mSelect.add(new Option(i+'월', i));
+            dSelect.add(new Option("일", ""));
+            for(let i=1; i<=31; i++) dSelect.add(new Option(i+'일', i));
+            const sidoSelect = document.getElementById('reg-sido');
+            sidoSelect.add(new Option("시/도 선택", ""));
+            Object.keys(regionData).forEach(s => sidoSelect.add(new Option(s, s)));
+        }
+
+        function updateSigungu() {
+            const sido = document.getElementById('reg-sido').value;
+            const sigunguSelect = document.getElementById('reg-sigungu');
+            sigunguSelect.innerHTML = '<option value="">시/군/구 선택</option>';
+            if(sido && regionData[sido]) regionData[sido].forEach(sig => sigunguSelect.add(new Option(sig, sig)));
+        }
+
+        function getAge() {
+            const y = parseInt(document.getElementById('reg-year').value);
+            return y ? (2026 - y + 1) + "세" : "미입력";
+        }
+
+        function toggleEtcInput() {
+            document.getElementById('etc-input').style.display = document.getElementById('etc-check').checked ? 'inline-block' : 'none';
+        }
+
+        function initRegisterMode(moveTab = true) {
+            document.getElementById('registerForm').reset();
+            document.getElementById('reg-id').value = "";
+            fileDataUrls = [];
+            renderPreviews();
+            if(moveTab) showTab('register');
         }
 
         function exportData() {
-            const dataStr = "const exlux_cases = " + JSON.stringify(loadCases(), null, 2) + ";";
+            const cases = loadCases();
+            const dataStr = "const EXLUX_DATA = " + JSON.stringify(cases, null, 2) + ";";
             const blob = new Blob([dataStr], {type: "text/javascript"});
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.href = url; a.download = "exlux_db.js"; a.click();
-            alert("DB 파일이 추출되었습니다. GitHub에 올려주세요!");
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = "exlux_db.js";
+            a.click();
         }
 
-        function loadCases() { const d = localStorage.getItem('exlux_cases'); return d ? JSON.parse(d) : []; }
-        function renderPreviews() {
-            const grid = document.getElementById('previewGrid');
-            grid.innerHTML = fileDataUrls.map((url, i) => `<div class="relative aspect-square border rounded overflow-hidden shadow-sm"><img src="${url}" class="w-full h-full object-cover"><button type="button" onclick="fileDataUrls.splice(${i},1);renderPreviews();" class="absolute top-0 right-0 bg-red-600 text-white w-6 h-6 flex items-center justify-center font-bold">×</button></div>`).join('');
-            document.getElementById('uploadLabel').style.display = fileDataUrls.length >= 4 ? 'none' : 'flex';
+        function deleteCase(id) {
+            if(confirm('삭제하시겠습니까?')) {
+                let cases = loadCases().filter(c => c.id !== id);
+                localStorage.setItem('exlux_cases', JSON.stringify(cases));
+                refreshAllViews();
+            }
         }
-        function initForm() {
-            const y = document.getElementById('reg-year'); const m = document.getElementById('reg-month'); const d = document.getElementById('reg-day'); const s = document.getElementById('reg-sido');
-            for(let i=2026; i>=1926; i--) y.add(new Option(i+'년', i));
-            for(let i=1; i<=12; i++) m.add(new Option(i+'월', i));
-            for(let i=1; i<=31; i++) d.add(new Option(i+'일', i));
-            Object.keys(regionData).forEach(sid => s.add(new Option(sid, sid)));
-            updateSigungu();
-        }
-        function updateSigungu() {
-            const s = document.getElementById('reg-sido').value; const sg = document.getElementById('reg-sigungu');
-            sg.innerHTML = '<option value="">선택</option>';
-            if(s && regionData[s]) regionData[s].forEach(sig => sg.add(new Option(sig, sig)));
-        }
-        function getAge() { const y = parseInt(document.getElementById('reg-year').value); return y ? (2026 - y + 1) + "세" : ""; }
-        function showTab(id) { 
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden')); 
-            document.getElementById('tab-'+id).classList.remove('hidden'); 
-            refreshAllViews();
-        }
-        function refreshAllViews() {
-            const cs = loadCases(); document.getElementById('stat-total').innerText = cs.length + "건";
-            const tb = document.getElementById('caseTableBody');
-            tb.innerHTML = cs.map((c, i) => `<tr class="border-b hover:bg-gray-50 transition"><td class="p-4">${cs.length-i}</td><td class="p-4 text-xs">${c.date}</td><td class="p-4 font-bold cursor-pointer underline text-blue-700" onclick="editCase(${c.id})">${c.name}</td><td class="p-4 text-xs">${c.age}/${c.gender}</td><td class="p-4 text-xs">${c.region}</td><td class="p-4 text-xs truncate max-w-[120px]">${c.symptoms}</td><td class="p-4"><button onclick="deleteCase(${c.id})" class="text-red-500">삭제</button></td></tr>`).join('');
-        }
-        function deleteCase(id) { if(confirm('사례를 삭제할까요?')) { localStorage.setItem('exlux_cases', JSON.stringify(loadCases().filter(c => c.id !== id))); refreshAllViews(); } }
-        function editCase(id) {
-            const c = loadCases().find(c => c.id === id); if(!c) return;
-            showTab('register'); document.getElementById('reg-id').value = c.id; document.getElementById('reg-name').value = c.name;
-            if (c.region) { const p = c.region.split(' '); document.getElementById('reg-sido').value = p[0]; updateSigungu(); if(p[1]) document.getElementById('reg-sigungu').value = p[1]; }
-            document.getElementById('reg-desc-symptom').value = c.descSymptom || ""; document.getElementById('reg-desc-change').value = c.descChange || "";
-            fileDataUrls = c.photos || []; renderPreviews();
-        }
-        function initRegisterMode(mv = true) { document.getElementById('registerForm').reset(); document.getElementById('reg-id').value = ""; fileDataUrls = []; renderPreviews(); if(mv) showTab('register'); }
+
         function openPosterModal() {
-            const n = document.getElementById('reg-name').value;
-            document.getElementById('modal-name').innerText = (n[0] || "") + "*" + (n[n.length-1] || "") + " 고객님";
-            document.getElementById('modal-meta').innerText = `${getAge()} | ${document.getElementById('reg-gender').value}`;
-            document.getElementById('modal-desc-change').innerText = document.getElementById('reg-desc-change').value || "사용 후 변화 미입력";
-            const g = document.getElementById('modal-photo-grid'); g.innerHTML = fileDataUrls.map(url => `<div class="border rounded overflow-hidden shadow-inner"><img src="${url}" class="w-full h-full object-cover"></div>`).join('');
+            const name = document.getElementById('reg-name').value;
+            const masked = name.length > 2 ? name[0] + "*" + name[name.length-1] : (name.length === 2 ? name[0] + "*" : name);
+            document.getElementById('modal-name').innerText = masked + " 고객님";
+            let symptoms = Array.from(document.querySelectorAll('input[name="symptom"]:checked')).map(c => c.value);
+            document.getElementById('modal-meta').innerText = `${getAge()} | ${document.getElementById('reg-gender').value} | ${symptoms.join(', ')}`;
+            document.getElementById('modal-desc-symptom').innerText = document.getElementById('reg-desc-symptom').value || "내용 없음";
+            document.getElementById('modal-desc-change').innerText = `"${document.getElementById('reg-desc-change').value || "내용 없음"}"`;
+            const grid = document.getElementById('modal-photo-grid');
+            grid.innerHTML = "";
+            for(let i=0; i<4; i++) {
+                grid.innerHTML += `<div class="bg-gray-200 rounded-lg overflow-hidden border">
+                    ${fileDataUrls[i] ? `<img src="${fileDataUrls[i]}" class="w-full h-full object-cover">` : `<span class="text-[8px] text-gray-400">NO IMAGE</span>`}
+                </div>`;
+            }
             document.getElementById('posterModal').classList.remove('hidden');
         }
+
         function closePoster() { document.getElementById('posterModal').classList.add('hidden'); }
-        function clearData() { if(confirm('모든 데이터를 삭제할까요?')) { localStorage.removeItem('exlux_cases'); refreshAllViews(); } }
-        function toggleEtcInput() { document.getElementById('etc-input').style.display = document.getElementById('etc-check').checked ? 'inline-block' : 'none'; }
-        initForm();
+        function clearData() { if(confirm('전체 삭제하시겠습니까?')) { localStorage.removeItem('exlux_cases'); refreshAllViews(); } }
+
+        window.onload = () => { initForm(); };
     </script>
 </body>
 </html>
