@@ -36,6 +36,24 @@
             <a onclick="showTab('list')" id="nav-list" class="block py-4 px-6 hover:bg-slate-800 cursor-pointer border-l-4 border-transparent transition"><i class="fas fa-list w-6"></i> 체험사례 리스트</a>
             <a onclick="initRegisterMode()" id="nav-register" class="block py-4 px-6 hover:bg-slate-800 cursor-pointer border-l-4 border-blue-400 bg-slate-800 transition"><i class="fas fa-edit w-6"></i> 체험사례 등록</a>
         </nav>
+        <a onclick="initRegisterMode()" id="nav-register" class="block py-4 px-6 hover:bg-slate-800 cursor-pointer border-l-4 border-blue-400 bg-slate-800 transition">
+                <i class="fas fa-edit w-6"></i> 체험사례 등록
+            </a>
+        </nav> <div class="mt-auto p-4 border-t border-slate-700">
+            <a href="index.html" class="flex items-center justify-center w-full bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-lg text-xs font-bold transition shadow-inner">
+                <i class="fas fa-home mr-2"></i> 소비자 모드 전환
+            </a>
+        </div>
+
+    </aside> ```
+
+---
+
+### 💡 확인 포인트
+* **`mt-auto`** 속성 덕분에 메뉴 개수가 적어도 이 버튼은 항상 사이드바의 **최하단**에 예쁘게 고정될 거예요.
+* 만약 소비자 모드 파일명이 `index.html`이 아니라면 `href="파일명.html"` 부분만 살짝 수정해 주시면 됩니다.
+
+첫 번째 수정 사항은 이렇게 위치 잡으시면 끝납니다! **자, 그럼 기다리고 계신 두 번째 수정 사항은 무엇인가요?** 바로 분석 들어갈게요! 😊
     </aside>
 
     <main class="flex-1 overflow-y-auto p-8">
@@ -458,3 +476,4 @@
     </script>
 </body>
 </html>
+
