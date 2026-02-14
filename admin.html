@@ -29,28 +29,18 @@
         </div>
     </div>
 
-  <aside class="w-64 bg-slate-900 text-white flex-shrink-0 flex flex-col">
+    <aside class="w-64 bg-slate-900 text-white flex-shrink-0 flex flex-col">
         <div class="p-6 font-black text-2xl border-b border-slate-700 text-center uppercase tracking-tighter">EXLUX Admin</div>
         <nav class="flex-1 mt-6 text-sm">
             <a onclick="showTab('dash')" id="nav-dash" class="block py-4 px-6 hover:bg-slate-800 cursor-pointer border-l-4 border-transparent transition"><i class="fas fa-chart-line w-6"></i> 대시보드</a>
             <a onclick="showTab('list')" id="nav-list" class="block py-4 px-6 hover:bg-slate-800 cursor-pointer border-l-4 border-transparent transition"><i class="fas fa-list w-6"></i> 체험사례 리스트</a>
             <a onclick="initRegisterMode()" id="nav-register" class="block py-4 px-6 hover:bg-slate-800 cursor-pointer border-l-4 border-blue-400 bg-slate-800 transition"><i class="fas fa-edit w-6"></i> 체험사례 등록</a>
         </nav>
-
         <div class="mt-auto p-4 border-t border-slate-700">
             <a href="index.html" class="flex items-center justify-center w-full bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-lg text-xs font-bold transition shadow-inner">
                 <i class="fas fa-home mr-2"></i> 소비자 모드 전환
             </a>
         </div>
-    </aside>
-
----
-
-### 💡 확인 포인트
-* **`mt-auto`** 속성 덕분에 메뉴 개수가 적어도 이 버튼은 항상 사이드바의 **최하단**에 예쁘게 고정될 거예요.
-* 만약 소비자 모드 파일명이 `index.html`이 아니라면 `href="파일명.html"` 부분만 살짝 수정해 주시면 됩니다.
-
-첫 번째 수정 사항은 이렇게 위치 잡으시면 끝납니다! **자, 그럼 기다리고 계신 두 번째 수정 사항은 무엇인가요?** 바로 분석 들어갈게요! 😊
     </aside>
 
     <main class="flex-1 overflow-y-auto p-8">
@@ -266,17 +256,14 @@
         function saveCase() {
             const name = document.getElementById('reg-name').value;
             if(!name) { alert("성함을 입력해주세요."); return; }
-
             const regId = document.getElementById('reg-id').value;
             let symptomsList = Array.from(document.querySelectorAll('input[name="symptom"]:checked')).map(c => c.value);
-            
             const data = {
                 id: regId ? parseInt(regId) : Date.now(),
                 date: new Date().toLocaleDateString(),
                 name: name,
                 age: getAge(),
                 gender: document.getElementById('reg-gender').value,
-                // 저장 시 지역을 합쳐서 저장
                 region: document.getElementById('reg-sido').value + ' ' + document.getElementById('reg-sigungu').value,
                 symptoms: symptomsList.join(', '),
                 period: document.getElementById('reg-period').value,
@@ -291,13 +278,11 @@
                 etcChecked: document.getElementById('etc-check').checked,
                 etcValue: document.getElementById('etc-input').value
             };
-
             let cases = loadCases();
             if(regId) {
                 const idx = cases.findIndex(c => c.id == regId);
                 if(idx !== -1) cases[idx] = data;
             } else { cases.unshift(data); }
-
             try {
                 localStorage.setItem('exlux_cases', JSON.stringify(cases));
                 alert('저장되었습니다.');
@@ -310,34 +295,26 @@
             const cases = loadCases();
             const data = cases.find(c => c.id === id);
             if(!data) return;
-
             showTab('register');
-
             document.getElementById('reg-id').value = data.id;
             document.getElementById('reg-name').value = data.name || "";
             document.getElementById('reg-year').value = data.birthYear || "";
             document.getElementById('reg-month').value = data.birthMonth || "";
             document.getElementById('reg-day').value = data.birthDay || "";
             document.getElementById('reg-gender').value = data.gender || "남";
-            
-            // 지역 정보 복구 (수정: sido 선택 후 sigungu 리스트 갱신)
             document.getElementById('reg-sido').value = data.sido || "";
-            updateSigungu(); // 시군구 리스트 생성
+            updateSigungu();
             document.getElementById('reg-sigungu').value = data.sigungu || "";
-
             const symArr = data.symptoms ? data.symptoms.split(', ') : [];
             document.querySelectorAll('input[name="symptom"]').forEach(cb => {
                 cb.checked = symArr.includes(cb.value);
             });
-            
             document.getElementById('etc-check').checked = data.etcChecked || false;
             document.getElementById('etc-input').value = data.etcValue || "";
             toggleEtcInput();
-
             document.getElementById('reg-period').value = data.period || "10일 이하";
             document.getElementById('reg-desc-symptom').value = data.descSymptom || "";
             document.getElementById('reg-desc-change').value = data.descChange || "";
-
             fileDataUrls = data.photos || [];
             renderPreviews();
         }
@@ -346,10 +323,8 @@
             const cases = loadCases();
             const statTotal = document.getElementById('stat-total');
             if(statTotal) statTotal.innerText = cases.length + "건";
-            
             const tableBody = document.getElementById('caseTableBody');
             if(!tableBody) return;
-
             if(cases.length > 0) {
                 tableBody.innerHTML = cases.map((c, i) => `
                     <tr class="border-b hover:bg-gray-50 transition">
@@ -390,7 +365,6 @@
             for(let i=1; i<=12; i++) mSelect.add(new Option(i+'월', i));
             dSelect.add(new Option("일", ""));
             for(let i=1; i<=31; i++) dSelect.add(new Option(i+'일', i));
-            
             const sidoSelect = document.getElementById('reg-sido');
             sidoSelect.add(new Option("시/도 선택", ""));
             Object.keys(regionData).forEach(s => sidoSelect.add(new Option(s, s)));
@@ -442,20 +416,14 @@
         function openPosterModal() {
             const name = document.getElementById('reg-name').value;
             if(!name) { alert("성함을 먼저 입력해주세요."); return; }
-            
             const masked = name.length > 2 ? name[0] + "*" + name[name.length-1] : (name.length === 2 ? name[0] + "*" : name);
             document.getElementById('modal-name').innerText = masked + " 고객님";
-            
             let symptoms = Array.from(document.querySelectorAll('input[name="symptom"]:checked')).map(c => c.value);
             if(document.getElementById('etc-check').checked) symptoms.push(document.getElementById('etc-input').value);
-            
-            // 수정: 포스터 상단 정보에 지역(시/도 시/군/구)이 보이도록 매칭
             const regionStr = document.getElementById('reg-sido').value + ' ' + document.getElementById('reg-sigungu').value;
             document.getElementById('modal-meta').innerText = `${getAge()} | ${document.getElementById('reg-gender').value} | ${regionStr} | ${symptoms.join(', ')}`;
-            
             document.getElementById('modal-desc-symptom').innerText = document.getElementById('reg-desc-symptom').value || "내용 없음";
             document.getElementById('modal-desc-change').innerText = `"${document.getElementById('reg-desc-change').value || "내용 없음"}"`;
-            
             const grid = document.getElementById('modal-photo-grid');
             grid.innerHTML = "";
             for(let i=0; i<4; i++) {
@@ -468,11 +436,7 @@
 
         function closePoster() { document.getElementById('posterModal').classList.add('hidden'); }
         function clearData() { if(confirm('전체 삭제하시겠습니까?')) { localStorage.removeItem('exlux_cases'); refreshAllViews(); } }
-
         window.onload = () => { initForm(); };
     </script>
 </body>
 </html>
-
-
-
