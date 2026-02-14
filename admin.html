@@ -240,7 +240,7 @@
             const grid = document.getElementById('previewGrid');
             const box = document.getElementById('uploadLabel');
             grid.innerHTML = fileDataUrls.map((url, i) => `
-                <div class="aspect-square border rounded-lg overflow-hidden relative">
+                <div class="aspect-square border rounded-lg overflow-hidden relative shadow-sm">
                     <img src="${url}" class="w-full h-full object-cover">
                     <button type="button" onclick="fileDataUrls.splice(${i},1);renderPreviews();" class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 text-[10px] flex items-center justify-center">X</button>
                 </div>
@@ -399,7 +399,7 @@
             const cases = loadCases();
             const dataStr = "const EXLUX_DATA = " + JSON.stringify(cases, null, 2) + ";";
             const blob = new Blob([dataStr], {type: "text/javascript"});
-            const a = document.createElement('a');
+            const a = document.createObjectURL(blob);
             a.href = URL.createObjectURL(blob);
             a.download = "exlux_db.js";
             a.click();
