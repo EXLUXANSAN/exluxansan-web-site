@@ -48,6 +48,7 @@
                     <p id="stat-total" class="text-3xl font-bold mt-2">0건</p>
                 </div>
             </div>
+            <p class="text-gray-400 italic">현재 시스템에 저장된 전체 데이터 개수입니다.</p>
         </div>
 
         <div id="tab-list" class="tab-content hidden">
@@ -82,55 +83,63 @@
                 <form id="registerForm" class="space-y-6">
                     <input type="hidden" id="reg-id">
                     <div class="border-b pb-4">
-                        <h3 class="font-bold text-lg text-blue-900 mb-4">① 기본 정보</h3>
+                        <h3 class="font-bold text-lg text-blue-900 mb-4">① 기본 정보 입력</h3>
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                            <input type="text" id="reg-name" placeholder="성함" class="border p-3 rounded focus:border-blue-500 outline-none">
-                            <select id="reg-year" class="border p-3 rounded"></select>
-                            <select id="reg-month" class="border p-3 rounded"></select>
-                            <select id="reg-day" class="border p-3 rounded"></select>
-                            <select id="reg-gender" class="border p-3 rounded">
+                            <input type="text" id="reg-name" placeholder="성함" class="border p-3 rounded focus:border-blue-500 outline-none shadow-sm">
+                            <select id="reg-year" class="border p-3 rounded shadow-sm"></select>
+                            <select id="reg-month" class="border p-3 rounded shadow-sm"></select>
+                            <select id="reg-day" class="border p-3 rounded shadow-sm"></select>
+                            <select id="reg-gender" class="border p-3 rounded shadow-sm">
                                 <option value="남">남성</option>
                                 <option value="여">여성</option>
                             </select>
-                            <select id="reg-sido" class="border p-3 rounded" onchange="updateSigungu()"></select>
-                            <select id="reg-sigungu" class="border p-3 rounded md:col-span-2"></select>
-                        </div>
-                    </div>
-                    
-                    <div class="border-b pb-4">
-                        <h3 class="font-bold text-lg text-blue-900 mb-4">② 증상 및 내용</h3>
-                        <div class="flex flex-wrap gap-3 mb-4 bg-gray-50 p-4 rounded border">
-                            <label class="flex items-center"><input type="checkbox" name="symptom" value="허리통증" class="mr-1">허리통증</label>
-                            <label class="flex items-center"><input type="checkbox" name="symptom" value="목/어깨" class="mr-1">목/어깨</label>
-                            <label class="flex items-center"><input type="checkbox" name="symptom" value="무릎/관절" class="mr-1">무릎/관절</label>
-                            <label class="flex items-center"><input type="checkbox" name="symptom" value="혈당/혈압" class="mr-1">혈당/혈압</label>
-                            <label class="flex items-center"><input type="checkbox" name="symptom" value="불면/우울" class="mr-1">불면/우울</label>
-                            <div class="flex items-center gap-2">
-                                <label class="flex items-center"><input type="checkbox" id="etc-check" onchange="toggleEtcInput()">기타</label>
-                                <input type="text" id="etc-input" placeholder="직접입력" class="border px-2 py-1 rounded text-sm hidden">
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <textarea id="reg-desc-symptom" placeholder="상세 증상" class="border p-3 rounded h-32"></textarea>
-                            <textarea id="reg-desc-change" placeholder="사용 후 변화" class="border p-3 rounded h-32"></textarea>
+                            <select id="reg-sido" class="border p-3 rounded shadow-sm" onchange="updateSigungu()"></select>
+                            <select id="reg-sigungu" class="border p-3 rounded shadow-sm md:col-span-2"></select>
                         </div>
                     </div>
 
                     <div class="border-b pb-4">
-                        <h3 class="font-bold text-lg text-blue-900 mb-4">③ 사진 업로드 (자동 최적화)</h3>
+                        <h3 class="font-bold text-lg text-blue-900 mb-4">② 증상 및 사용 정보</h3>
+                        <div class="flex flex-wrap gap-3 mb-4 bg-gray-50 p-4 rounded border">
+                            <label class="flex items-center cursor-pointer"><input type="checkbox" name="symptom" value="허리통증" class="mr-1">허리통증</label>
+                            <label class="flex items-center cursor-pointer"><input type="checkbox" name="symptom" value="목/어깨" class="mr-1">목/어깨</label>
+                            <label class="flex items-center cursor-pointer"><input type="checkbox" name="symptom" value="무릎/관절" class="mr-1">무릎/관절</label>
+                            <label class="flex items-center cursor-pointer"><input type="checkbox" name="symptom" value="혈당/혈압" class="mr-1">혈당/혈압</label>
+                            <label class="flex items-center cursor-pointer"><input type="checkbox" name="symptom" value="불면/우울" class="mr-1">불면/우울</label>
+                            <div class="flex items-center gap-2">
+                                <label class="flex items-center cursor-pointer"><input type="checkbox" id="etc-check" onchange="toggleEtcInput()">기타</label>
+                                <input type="text" id="etc-input" placeholder="직접입력" class="border px-2 py-1 rounded text-sm hidden outline-none focus:border-blue-500 shadow-sm">
+                            </div>
+                        </div>
+                        <select id="reg-period" class="w-full border p-3 rounded mb-4 shadow-sm">
+                            <option value="10일 이하">10일 이하</option>
+                            <option value="10일 이상">10일 이상</option>
+                            <option value="20일 이상">20일 이상</option>
+                            <option value="30일 이상">30일 이상</option>
+                            <option value="계속 사용 중">계속 사용 중</option>
+                        </select>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <textarea id="reg-desc-symptom" placeholder="구체적 증상 내용" class="border p-3 rounded h-32 outline-none shadow-sm"></textarea>
+                            <textarea id="reg-desc-change" placeholder="사용 후 변화 (결과)" class="border p-3 rounded h-32 outline-none shadow-sm"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="border-b pb-4">
+                        <h3 class="font-bold text-lg text-blue-900 mb-4">③ 사진 업로드 (최대 4장)</h3>
                         <div class="flex gap-4 items-start">
                             <div id="previewGrid" class="grid grid-cols-4 gap-2 flex-grow"></div>
                             <label id="uploadLabel" class="flex flex-col items-center justify-center w-24 h-24 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition shrink-0">
                                 <i class="fas fa-plus text-gray-400 text-xl"></i>
+                                <p class="text-[10px] text-gray-500 mt-1 font-bold">사진 추가</p>
                                 <input type="file" id="fileInput" class="hidden" accept="image/*" multiple onchange="handleFiles(this.files)">
                             </label>
                         </div>
-                        <p class="text-xs text-blue-600 mt-2 font-bold">* 고화질 사진을 올려도 화질을 유지하며 용량을 자동으로 줄여줍니다.</p>
+                        <p class="text-xs text-blue-600 mt-2 font-bold">* 고화질 사진을 올려도 자동으로 최적화되어 저장 실패를 방지합니다.</p>
                     </div>
 
                     <div class="flex gap-4">
-                        <button type="button" onclick="openPosterModal()" class="flex-1 bg-slate-800 text-white py-4 rounded-lg font-bold shadow-lg">포스터 보기</button>
-                        <button type="button" onclick="saveCase()" class="flex-1 bg-blue-600 text-white py-4 rounded-lg font-bold shadow-lg">갤러리 저장하기</button>
+                        <button type="button" onclick="openPosterModal()" class="flex-1 bg-slate-800 text-white py-4 rounded-lg font-bold shadow-lg hover:bg-black transition"><i class="fas fa-id-card mr-2"></i>포스터 보기</button>
+                        <button type="button" onclick="saveCase()" class="flex-1 bg-blue-600 text-white py-4 rounded-lg font-bold shadow-lg hover:bg-blue-700 transition"><i class="fas fa-save mr-2"></i>갤러리 저장하기</button>
                     </div>
                 </form>
             </div>
@@ -141,21 +150,25 @@
         <div class="absolute inset-0 bg-black/90 backdrop-blur-sm" onclick="closePoster()"></div>
         <div class="relative bg-white rounded-2xl max-w-md w-full overflow-hidden shadow-2xl">
             <div class="bg-blue-900 text-white p-4 flex justify-between items-center">
-                <span class="font-bold">익스럭스 체험 사례</span>
-                <button onclick="closePoster()" class="text-2xl font-bold">&times;</button>
+                <span class="font-bold text-lg">익스럭스 체험 사례</span>
+                <button onclick="closePoster()" class="text-3xl leading-none">&times;</button>
             </div>
             <div class="p-6 text-center">
-                <div class="border-[4px] border-double border-blue-900 p-4 rounded-lg bg-gray-50 mb-4">
-                    <h4 class="text-[10px] text-blue-600 font-bold mb-1 uppercase tracking-widest">Success Story</h4>
-                    <h3 id="modal-name" class="text-2xl font-black text-gray-900 mb-2">고객님</h3>
+                <div class="border-[4px] border-double border-blue-900 p-4 rounded-lg bg-gray-50 mb-4 text-center">
+                    <h4 class="text-[10px] text-blue-600 font-bold tracking-[0.2em] mb-1 uppercase">Success Story</h4>
+                    <h3 id="modal-name" class="text-2xl font-black text-gray-900 mb-2 tracking-tight">고객님</h3>
                     <p id="modal-meta" class="text-xs font-bold text-gray-600 border-t mt-2 pt-2"></p>
                 </div>
+                <div class="bg-yellow-50 p-3 rounded border border-yellow-100 mb-4">
+                    <p id="modal-desc-symptom" class="text-sm text-gray-700 font-semibold wrap-text"></p>
+                </div>
                 <div id="modal-photo-grid" class="grid grid-cols-2 gap-2 h-48 mb-4"></div>
-                <div class="bg-blue-600 text-white p-4 rounded-xl shadow-lg">
+                <div class="bg-blue-600 text-white p-4 rounded-xl result-container shadow-lg">
                     <p id="modal-desc-change" class="font-bold text-lg leading-snug wrap-text"></p>
                 </div>
             </div>
-            <div class="p-5 bg-gray-100 border-t text-center">
+            <div class="p-5 bg-gray-100 border-t text-center shadow-2xl">
+                <p class="text-blue-900 font-black text-lg mb-4 tracking-tighter">"익스럭스로 건강을 찾으신 것을 축하합니다."</p>
                 <button onclick="closePoster()" class="w-full bg-slate-800 text-white py-3 rounded-lg font-bold hover:bg-black transition shadow-md">닫기</button>
             </div>
         </div>
@@ -187,7 +200,7 @@
             if(document.getElementById('adminPassword').value === "1204") {
                 document.getElementById('login-overlay').style.display = 'none';
                 refreshAllViews();
-            } else { alert("비밀번호가 틀렸습니다."); }
+            } else { alert("비밀번호가 올바르지 않습니다."); }
         }
 
         function handleFiles(files) {
@@ -200,14 +213,14 @@
                         const canvas = document.createElement('canvas');
                         let width = img.width;
                         let height = img.height;
-                        const max_size = 1024; // [핵심] 긴 쪽을 1024px로 자동 축소
+                        const max_size = 1024; // 이미지 자동 최적화 핵심 로직
                         if (width > height) { if (width > max_size) { height *= max_size / width; width = max_size; } }
                         else { if (height > max_size) { width *= max_size / height; height = max_size; } }
                         canvas.width = width;
                         canvas.height = height;
-                        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
-                        // [핵심] JPEG 0.7 품질로 압축하여 저장 실패 방지
-                        fileDataUrls.push(canvas.toDataURL('image/jpeg', 0.7));
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        fileDataUrls.push(canvas.toDataURL('image/jpeg', 0.7)); // 품질 70% 압축 저장
                         renderPreviews();
                     };
                     img.src = e.target.result;
@@ -237,11 +250,9 @@
             try {
                 localStorage.setItem('exlux_cases', JSON.stringify(cs));
                 alert('갤러리에 저장되었습니다!');
-                initRegisterMode(false);
-                refreshAllViews();
-                showTab('list');
+                initRegisterMode(false); refreshAllViews(); showTab('list');
             } catch (e) {
-                alert("⚠️ 저장 공간 부족! 추출 후 초기화가 필요합니다.");
+                alert("⚠️ 저장 공간 부족! 리스트 추출 후 초기화를 진행하세요.");
             }
         }
 
@@ -249,47 +260,46 @@
             const dataStr = "const exlux_cases = " + JSON.stringify(loadCases(), null, 2) + ";";
             const blob = new Blob([dataStr], {type: "text/javascript"});
             const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = "exlux_db.js";
-            a.click();
-            alert("DB 파일이 추출되었습니다.");
+            const a = document.createElement('a'); a.href = url; a.download = "exlux_db.js"; a.click();
+            alert("DB 파일이 추출되었습니다. GitHub에 올려주세요!");
         }
 
         function loadCases() { const d = localStorage.getItem('exlux_cases'); return d ? JSON.parse(d) : []; }
         function renderPreviews() {
             const grid = document.getElementById('previewGrid');
-            grid.innerHTML = fileDataUrls.map((url, i) => `<div class="relative aspect-square border rounded overflow-hidden"><img src="${url}" class="w-full h-full object-cover"><button type="button" onclick="fileDataUrls.splice(${i},1);renderPreviews();" class="absolute top-0 right-0 bg-red-500 text-white p-1 text-xs font-bold">X</button></div>`).join('');
+            grid.innerHTML = fileDataUrls.map((url, i) => `<div class="relative aspect-square border rounded overflow-hidden shadow-sm"><img src="${url}" class="w-full h-full object-cover"><button type="button" onclick="fileDataUrls.splice(${i},1);renderPreviews();" class="absolute top-0 right-0 bg-red-600 text-white w-6 h-6 flex items-center justify-center font-bold">×</button></div>`).join('');
             document.getElementById('uploadLabel').style.display = fileDataUrls.length >= 4 ? 'none' : 'flex';
         }
         function initForm() {
-            const y = document.getElementById('reg-year');
-            const m = document.getElementById('reg-month');
-            const d = document.getElementById('reg-day');
-            const s = document.getElementById('reg-sido');
+            const y = document.getElementById('reg-year'); const m = document.getElementById('reg-month'); const d = document.getElementById('reg-day'); const s = document.getElementById('reg-sido');
             for(let i=2026; i>=1926; i--) y.add(new Option(i+'년', i));
             for(let i=1; i<=12; i++) m.add(new Option(i+'월', i));
             for(let i=1; i<=31; i++) d.add(new Option(i+'일', i));
             Object.keys(regionData).forEach(sid => s.add(new Option(sid, sid)));
+            updateSigungu();
         }
         function updateSigungu() {
-            const s = document.getElementById('reg-sido').value;
-            const sg = document.getElementById('reg-sigungu');
+            const s = document.getElementById('reg-sido').value; const sg = document.getElementById('reg-sigungu');
             sg.innerHTML = '<option value="">선택</option>';
             if(s && regionData[s]) regionData[s].forEach(sig => sg.add(new Option(sig, sig)));
         }
-        function getAge() { const y = parseInt(document.getElementById('reg-year').value); return y ? (2026-y+1)+"세" : ""; }
-        function showTab(id) { document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden')); document.getElementById('tab-'+id).classList.remove('hidden'); refreshAllViews(); }
+        function getAge() { const y = parseInt(document.getElementById('reg-year').value); return y ? (2026 - y + 1) + "세" : ""; }
+        function showTab(id) { 
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden')); 
+            document.getElementById('tab-'+id).classList.remove('hidden'); 
+            refreshAllViews();
+        }
         function refreshAllViews() {
-            const cs = loadCases();
-            document.getElementById('stat-total').innerText = cs.length + "건";
+            const cs = loadCases(); document.getElementById('stat-total').innerText = cs.length + "건";
             const tb = document.getElementById('caseTableBody');
             tb.innerHTML = cs.map((c, i) => `<tr class="border-b hover:bg-gray-50 transition"><td class="p-4">${cs.length-i}</td><td class="p-4 text-xs">${c.date}</td><td class="p-4 font-bold cursor-pointer underline text-blue-700" onclick="editCase(${c.id})">${c.name}</td><td class="p-4 text-xs">${c.age}/${c.gender}</td><td class="p-4 text-xs">${c.region}</td><td class="p-4 text-xs truncate max-w-[120px]">${c.symptoms}</td><td class="p-4"><button onclick="deleteCase(${c.id})" class="text-red-500">삭제</button></td></tr>`).join('');
         }
-        function deleteCase(id) { if(confirm('삭제할까요?')) { localStorage.setItem('exlux_cases', JSON.stringify(loadCases().filter(c => c.id !== id))); refreshAllViews(); } }
+        function deleteCase(id) { if(confirm('사례를 삭제할까요?')) { localStorage.setItem('exlux_cases', JSON.stringify(loadCases().filter(c => c.id !== id))); refreshAllViews(); } }
         function editCase(id) {
             const c = loadCases().find(c => c.id === id); if(!c) return;
             showTab('register'); document.getElementById('reg-id').value = c.id; document.getElementById('reg-name').value = c.name;
+            if (c.region) { const p = c.region.split(' '); document.getElementById('reg-sido').value = p[0]; updateSigungu(); if(p[1]) document.getElementById('reg-sigungu').value = p[1]; }
+            document.getElementById('reg-desc-symptom').value = c.descSymptom || ""; document.getElementById('reg-desc-change').value = c.descChange || "";
             fileDataUrls = c.photos || []; renderPreviews();
         }
         function initRegisterMode(mv = true) { document.getElementById('registerForm').reset(); document.getElementById('reg-id').value = ""; fileDataUrls = []; renderPreviews(); if(mv) showTab('register'); }
@@ -297,13 +307,12 @@
             const n = document.getElementById('reg-name').value;
             document.getElementById('modal-name').innerText = (n[0] || "") + "*" + (n[n.length-1] || "") + " 고객님";
             document.getElementById('modal-meta').innerText = `${getAge()} | ${document.getElementById('reg-gender').value}`;
-            document.getElementById('modal-desc-change').innerText = document.getElementById('reg-desc-change').value || "변화 내용 미입력";
-            const g = document.getElementById('modal-photo-grid');
-            g.innerHTML = fileDataUrls.map(url => `<div class="border rounded overflow-hidden"><img src="${url}" class="w-full h-full object-cover"></div>`).join('');
+            document.getElementById('modal-desc-change').innerText = document.getElementById('reg-desc-change').value || "사용 후 변화 미입력";
+            const g = document.getElementById('modal-photo-grid'); g.innerHTML = fileDataUrls.map(url => `<div class="border rounded overflow-hidden shadow-inner"><img src="${url}" class="w-full h-full object-cover"></div>`).join('');
             document.getElementById('posterModal').classList.remove('hidden');
         }
         function closePoster() { document.getElementById('posterModal').classList.add('hidden'); }
-        function clearData() { if(confirm('전체 비울까요?')) { localStorage.removeItem('exlux_cases'); refreshAllViews(); } }
+        function clearData() { if(confirm('모든 데이터를 삭제할까요?')) { localStorage.removeItem('exlux_cases'); refreshAllViews(); } }
         function toggleEtcInput() { document.getElementById('etc-input').style.display = document.getElementById('etc-check').checked ? 'inline-block' : 'none'; }
         initForm();
     </script>
