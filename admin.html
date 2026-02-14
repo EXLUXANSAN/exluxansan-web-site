@@ -25,7 +25,7 @@
             <h1 class="text-2xl font-black text-slate-900 mb-6 uppercase tracking-tighter">EXLUX ADMIN LOGIN</h1>
             <input type="password" id="adminPassword" placeholder="관리자 비밀번호 입력" class="w-full border-2 border-gray-200 p-4 rounded-xl mb-4 outline-none focus:border-blue-500 transition">
             <button onclick="checkAdmin()" class="w-full bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-blue-700 transition shadow-lg">접속하기</button>
-            <p class="text-gray-400 text-xs mt-4">관리자 비밀번호를 입력해주세요. (기본: 1204)</p>
+            <p class="text-gray-400 text-xs mt-4">비밀번호(1204)를 입력해야 관리 기능을 사용할 수 있습니다.</p>
         </div>
     </div>
 
@@ -39,7 +39,6 @@
     </aside>
 
     <main class="flex-1 overflow-y-auto p-8">
-        
         <div id="tab-dash" class="tab-content hidden">
             <h2 class="text-2xl font-bold mb-6 text-gray-800">📊 관리 통계</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -48,7 +47,6 @@
                     <p id="stat-total" class="text-3xl font-bold mt-2">0건</p>
                 </div>
             </div>
-            <p class="text-gray-400 italic font-medium">데이터는 브라우저 저장소(LocalStorage)에 안전하게 압축되어 보관됩니다.</p>
         </div>
 
         <div id="tab-list" class="tab-content hidden">
@@ -82,7 +80,6 @@
             <div class="max-w-4xl bg-white p-8 rounded-xl shadow-lg border border-gray-200">
                 <form id="registerForm" class="space-y-6">
                     <input type="hidden" id="reg-id">
-                    
                     <div class="border-b pb-4">
                         <h3 class="font-bold text-lg text-blue-900 mb-4">① 기본 정보 입력</h3>
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -135,7 +132,6 @@
                                 <input type="file" id="fileInput" class="hidden" accept="image/*" multiple onchange="handleFiles(this.files)">
                             </label>
                         </div>
-                        <p class="text-xs text-blue-500 mt-2 font-bold">* 사진은 자동으로 압축되어 안전하게 저장됩니다.</p>
                     </div>
 
                     <div class="flex gap-4">
@@ -168,9 +164,9 @@
                     <p id="modal-desc-change" class="font-bold text-lg leading-snug wrap-text"></p>
                 </div>
             </div>
-            <div class="p-5 bg-gray-100 border-t text-center">
+            <div class="p-5 bg-gray-100 border-t text-center shadow-inner">
                 <p class="text-blue-900 font-black text-lg mb-4">"익스럭스로 건강을 찾으신 것을 축하합니다."</p>
-                <button onclick="closePoster()" class="w-full bg-slate-800 text-white py-3 rounded-lg font-bold hover:bg-black transition">닫기</button>
+                <button onclick="closePoster()" class="w-full bg-slate-800 text-white py-3 rounded-lg font-bold">닫기</button>
             </div>
         </div>
     </div>
@@ -239,7 +235,7 @@
             const grid = document.getElementById('previewGrid');
             const box = document.getElementById('uploadLabel');
             grid.innerHTML = fileDataUrls.map((url, i) => `
-                <div class="aspect-square border rounded-lg overflow-hidden relative shadow-sm">
+                <div class="aspect-square border rounded-lg overflow-hidden relative">
                     <img src="${url}" class="w-full h-full object-cover">
                     <button type="button" onclick="fileDataUrls.splice(${i},1);renderPreviews();" class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 text-[10px] flex items-center justify-center">X</button>
                 </div>
@@ -252,7 +248,6 @@
             return data ? JSON.parse(data) : [];
         }
 
-        // [최종 검수] 데이터 저장 - 모든 필드를 명확하게 저장
         function saveCase() {
             const name = document.getElementById('reg-name').value;
             if(!name) { alert("성함을 입력해주세요."); return; }
@@ -266,13 +261,13 @@
                 name: name,
                 age: getAge(),
                 gender: document.getElementById('reg-gender').value,
+                // 저장 시 지역을 합쳐서 저장
                 region: document.getElementById('reg-sido').value + ' ' + document.getElementById('reg-sigungu').value,
                 symptoms: symptomsList.join(', '),
                 period: document.getElementById('reg-period').value,
-                descSymptom: document.getElementById('reg-desc-symptom').value, // 구체적 증상
-                descChange: document.getElementById('reg-desc-change').value,   // 변화 결과
+                descSymptom: document.getElementById('reg-desc-symptom').value,
+                descChange: document.getElementById('reg-desc-change').value,
                 photos: fileDataUrls,
-                // 수정 시 복구를 위한 원본 데이터 보존
                 birthYear: document.getElementById('reg-year').value,
                 birthMonth: document.getElementById('reg-month').value,
                 birthDay: document.getElementById('reg-day').value,
@@ -290,13 +285,12 @@
 
             try {
                 localStorage.setItem('exlux_cases', JSON.stringify(cases));
-                alert('정상적으로 저장되었습니다.');
+                alert('저장되었습니다.');
                 initRegisterMode(false);
                 showTab('list');
-            } catch (e) { alert("저장 용량 초과! 오래된 데이터를 삭제해주세요."); }
+            } catch (e) { alert("저장 용량 초과!"); }
         }
 
-        // [최종 검수] 수정 모드 - 이름 클릭 시 모든 필드 완벽 복구
         function editCase(id) {
             const cases = loadCases();
             const data = cases.find(c => c.id === id);
@@ -304,7 +298,6 @@
 
             showTab('register');
 
-            // 1. 기본 인적 정보 복구
             document.getElementById('reg-id').value = data.id;
             document.getElementById('reg-name').value = data.name || "";
             document.getElementById('reg-year').value = data.birthYear || "";
@@ -312,28 +305,24 @@
             document.getElementById('reg-day').value = data.birthDay || "";
             document.getElementById('reg-gender').value = data.gender || "남";
             
-            // 2. 지역 정보 복구
+            // 지역 정보 복구 (수정: sido 선택 후 sigungu 리스트 갱신)
             document.getElementById('reg-sido').value = data.sido || "";
-            updateSigungu();
+            updateSigungu(); // 시군구 리스트 생성
             document.getElementById('reg-sigungu').value = data.sigungu || "";
 
-            // 3. 증상 체크박스 복구
             const symArr = data.symptoms ? data.symptoms.split(', ') : [];
             document.querySelectorAll('input[name="symptom"]').forEach(cb => {
                 cb.checked = symArr.includes(cb.value);
             });
             
-            // 4. 기타(직접입력) 복구
             document.getElementById('etc-check').checked = data.etcChecked || false;
             document.getElementById('etc-input').value = data.etcValue || "";
             toggleEtcInput();
 
-            // 5. 구체적 증상 및 사용 결과 복구 (누락 방지 핵심)
             document.getElementById('reg-period').value = data.period || "10일 이하";
             document.getElementById('reg-desc-symptom').value = data.descSymptom || "";
             document.getElementById('reg-desc-change').value = data.descChange || "";
 
-            // 6. 사진 복구
             fileDataUrls = data.photos || [];
             renderPreviews();
         }
@@ -349,19 +338,19 @@
             if(cases.length > 0) {
                 tableBody.innerHTML = cases.map((c, i) => `
                     <tr class="border-b hover:bg-gray-50 transition">
-                        <td class="p-4 font-medium text-gray-400">${cases.length - i}</td>
+                        <td class="p-4 text-gray-400">${cases.length - i}</td>
                         <td class="p-4 text-xs text-gray-500">${c.date}</td>
                         <td class="p-4 font-bold text-blue-600 cursor-pointer underline" onclick="editCase(${c.id})">${c.name}</td>
-                        <td class="p-4 text-xs font-semibold text-gray-700">${c.age}/${c.gender}</td>
-                        <td class="p-4 text-xs text-gray-600">${c.region}</td>
-                        <td class="p-4 text-xs text-gray-500 truncate max-w-[150px]">${c.symptoms}</td>
+                        <td class="p-4 text-xs">${c.age}/${c.gender}</td>
+                        <td class="p-4 text-xs">${c.region}</td>
+                        <td class="p-4 text-xs truncate max-w-[150px]">${c.symptoms}</td>
                         <td class="p-4">
-                            <button onclick="deleteCase(${c.id})" class="text-red-400 hover:text-red-600 transition"><i class="fas fa-trash"></i></button>
+                            <button onclick="deleteCase(${c.id})" class="text-red-400 hover:text-red-600"><i class="fas fa-trash"></i></button>
                         </td>
                     </tr>
                 `).join('');
             } else {
-                tableBody.innerHTML = '<tr><td colspan="7" class="p-8 text-center text-gray-400 font-medium">등록된 사례가 없습니다.</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="7" class="p-8 text-center text-gray-400">데이터가 없습니다.</td></tr>';
             }
         }
 
@@ -425,49 +414,45 @@
             a.href = URL.createObjectURL(blob);
             a.download = "exlux_db.js";
             a.click();
-            alert("DB 파일이 다운로드 되었습니다. 깃허브에 업로드 하세요.");
         }
 
         function deleteCase(id) {
-            if(confirm('정말 삭제하시겠습니까?')) {
+            if(confirm('삭제하시겠습니까?')) {
                 let cases = loadCases().filter(c => c.id !== id);
                 localStorage.setItem('exlux_cases', JSON.stringify(cases));
                 refreshAllViews();
             }
         }
 
-        // [최종 검수] 포스터 미리보기 - 실시간 폼 데이터를 바탕으로 생성
         function openPosterModal() {
             const name = document.getElementById('reg-name').value;
-            if(!name) { alert("성함을 입력해주세요."); return; }
+            if(!name) { alert("성함을 먼저 입력해주세요."); return; }
             
             const masked = name.length > 2 ? name[0] + "*" + name[name.length-1] : (name.length === 2 ? name[0] + "*" : name);
             document.getElementById('modal-name').innerText = masked + " 고객님";
             
             let symptoms = Array.from(document.querySelectorAll('input[name="symptom"]:checked')).map(c => c.value);
-            if(document.getElementById('etc-check').checked) {
-                const etcVal = document.getElementById('etc-input').value;
-                if(etcVal) symptoms.push(etcVal);
-            }
+            if(document.getElementById('etc-check').checked) symptoms.push(document.getElementById('etc-input').value);
             
-            document.getElementById('modal-meta').innerText = `${getAge()} | ${document.getElementById('reg-gender').value} | ${symptoms.join(', ')}`;
+            // 수정: 포스터 상단 정보에 지역(시/도 시/군/구)이 보이도록 매칭
+            const regionStr = document.getElementById('reg-sido').value + ' ' + document.getElementById('reg-sigungu').value;
+            document.getElementById('modal-meta').innerText = `${getAge()} | ${document.getElementById('reg-gender').value} | ${regionStr} | ${symptoms.join(', ')}`;
             
-            // 포스터 상세 증상 연동 확인
-            document.getElementById('modal-desc-symptom').innerText = document.getElementById('reg-desc-symptom').value || "상세 증상이 입력되지 않았습니다.";
-            document.getElementById('modal-desc-change').innerText = `"${document.getElementById('reg-desc-change').value || "사용 후 놀라운 변화를 경험하셨습니다."}"`;
+            document.getElementById('modal-desc-symptom').innerText = document.getElementById('reg-desc-symptom').value || "내용 없음";
+            document.getElementById('modal-desc-change').innerText = `"${document.getElementById('reg-desc-change').value || "내용 없음"}"`;
             
             const grid = document.getElementById('modal-photo-grid');
             grid.innerHTML = "";
             for(let i=0; i<4; i++) {
-                grid.innerHTML += `<div class="bg-gray-200 rounded-lg overflow-hidden border border-gray-300 shadow-inner flex items-center justify-center">
-                    ${fileDataUrls[i] ? `<img src="${fileDataUrls[i]}" class="w-full h-full object-cover">` : `<span class="text-[8px] text-gray-400 font-bold">Image ${i+1}</span>`}
+                grid.innerHTML += `<div class="bg-gray-200 rounded-lg overflow-hidden border">
+                    ${fileDataUrls[i] ? `<img src="${fileDataUrls[i]}" class="w-full h-full object-cover">` : `<span class="text-[8px] text-gray-400">Image ${i+1}</span>`}
                 </div>`;
             }
             document.getElementById('posterModal').classList.remove('hidden');
         }
 
         function closePoster() { document.getElementById('posterModal').classList.add('hidden'); }
-        function clearData() { if(confirm('모든 데이터를 삭제하시겠습니까? 되돌릴 수 없습니다.')) { localStorage.removeItem('exlux_cases'); refreshAllViews(); } }
+        function clearData() { if(confirm('전체 삭제하시겠습니까?')) { localStorage.removeItem('exlux_cases'); refreshAllViews(); } }
 
         window.onload = () => { initForm(); };
     </script>
