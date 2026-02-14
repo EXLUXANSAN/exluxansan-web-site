@@ -187,19 +187,38 @@
         </footer>
     </div>
 
-    <div id="galleryModal" class="fixed inset-0 bg-black/95 hidden z-[9999] flex items-center justify-center p-4 backdrop-blur-md">
+    <div id="galleryModal" class="fixed inset-0 bg-black/95 hidden z-[9999] flex items-center justify-center p-4 backdrop-blur-sm overflow-hidden">
         <div class="max-w-7xl w-full">
             <div class="flex justify-between items-center text-white mb-10 px-6">
-                <h2 class="text-4xl font-black italic border-l-8 border-blue-500 pl-6 uppercase tracking-tighter underline underline-offset-8 decoration-blue-600">Success Gallery</h2>
-                <button onclick="closeGallery()" class="text-6xl leading-none hover:text-red-500 transition-colors">&times;</button>
+                <h2 class="text-3xl md:text-5xl font-black italic border-l-8 border-blue-500 pl-6 uppercase tracking-tighter underline underline-offset-8 decoration-blue-600">Success Gallery</h2>
+                <button onclick="closeGallery()" class="text-5xl md:text-7xl leading-none hover:text-red-500 transition-colors">&times;</button>
             </div>
-            <div id="gallery-list" class="slide-container px-6">
+            
+            <div id="gallery-list" class="slide-container px-6 flex gap-6 overflow-x-auto">
                 </div>
+
             <div class="text-center mt-12">
-                <p class="text-blue-400 font-black text-lg animate-bounce italic"><i class="fas fa-arrows-alt-h mr-3"></i> 좌우로 밀어서 사례를 확인하세요 <i class="fas fa-arrows-alt-h ml-3"></i></p>
+                <p class="text-blue-400 font-black text-lg animate-bounce italic">
+                    <i class="fas fa-arrows-alt-h mr-3"></i> 
+                    좌우로 밀어서 사례를 확인하세요 (마우스 휠/드래그 가능) 
+                    <i class="fas fa-arrows-alt-h ml-3"></i>
+                </p>
             </div>
         </div>
     </div>
+    ```
+
+---
+
+### 💡 수정 후 꼭 확인해야 할 것
+HTML만 바꾸면 안 되고, 아까 말씀드린 **자바스크립트(`function openGallery`) 부분도 함께 짝을 맞춰 수정**해 주셔야 합니다. (스크립트 부분에 `flex-shrink-0`과 `md:w-[380px]` 설정이 들어가야 PC에서 카드가 찌부러지지 않고 예쁘게 나옵니다.)
+
+**수정 방법 요약:**
+1.  위의 **HTML 코드**를 지금 올리신 위치에 덮어쓰기 한다.
+2.  하단 `<script>` 영역의 **`openGallery()` 함수**도 제가 이전에 드린 코드로 바꾼다.
+3.  **저장** 후 브라우저에서 **Ctrl + F5**를 눌러 확인한다.
+
+성기님, 이제 PC에서도 안산 체험관의 성공 사례들이 잡지 화보처럼 멋지게 보일 겁니다. 수정해 보시고 바로 결과 알려주세요! 😊
 
     <div id="posterModal" class="fixed inset-0 bg-black hidden z-[10000] flex items-center justify-center p-4">
         <div class="bg-white rounded-[3rem] shadow-2xl max-w-md w-full overflow-hidden flex flex-col max-h-[95vh] scale-95 transition-transform" id="posterContent">
@@ -243,23 +262,28 @@
 
         const cases = typeof EXLUX_DATA !== 'undefined' ? EXLUX_DATA : [];
 
-        function openGallery() {
-            const list = document.getElementById('gallery-list');
-            if(cases.length === 0) { alert('등록된 체험 사례가 아직 없습니다.'); return; }
-            list.innerHTML = cases.map(c => {
-                const mask = c.name.length > 2 ? c.name[0] + "*" + c.name[c.name.length-1] : (c.name.length === 2 ? c.name[0] + "*" : c.name);
-                return `
-                <div class="slide-card bg-white rounded-[2.5rem] shadow-2xl overflow-hidden cursor-pointer transform hover:scale-105 transition-transform duration-300 border-2 border-slate-50" onclick="openPosterDetail(${c.id})">
-                    <div class="aspect-video bg-gray-200"><img src="${c.photos[0] || ''}" class="w-full h-full object-cover"></div>
-                    <div class="p-8">
-                        <h4 class="font-black text-2xl mb-2 tracking-tighter italic underline decoration-blue-500 decoration-4">${mask} 고객님</h4>
-                        <p class="text-blue-600 text-xs font-black mb-4 uppercase tracking-widest underline underline-offset-2">${c.symptoms}</p>
-                        <p class="text-sm text-gray-500 line-clamp-2 italic font-black leading-relaxed">"${c.descChange}"</p>
-                    </div>
-                </div>`;
-            }).join('');
-            document.getElementById('galleryModal').classList.remove('hidden');
-        }
+       // 시작 지점: function openGallery() {
+function openGallery() {
+    const list = document.getElementById('gallery-list');
+    if(!EXLUX_DATA || EXLUX_DATA.length === 0) { alert('등록된 체험 사례가 아직 없습니다.'); return; }
+    
+    list.innerHTML = EXLUX_DATA.map(c => {
+        const mask = c.name.length > 2 ? c.name[0] + "*" + c.name[c.name.length-1] : c.name[0] + "*";
+        return `
+        <div class="slide-card flex-shrink-0 w-[300px] md:w-[380px] bg-white rounded-[2.5rem] shadow-2xl overflow-hidden cursor-pointer transform hover:scale-105 transition-transform duration-300 border-2 border-slate-50" onclick="openPosterDetail(${c.id})">
+            <div class="aspect-video bg-gray-200"><img src="${c.photos[0] || ''}" class="w-full h-full object-cover"></div>
+            <div class="p-8">
+                <h4 class="font-black text-2xl mb-2 tracking-tighter italic underline decoration-blue-500 decoration-4">${mask} 고객님</h4>
+                <p class="text-blue-600 text-xs font-black mb-4 uppercase tracking-widest underline underline-offset-2">${c.symptoms}</p>
+                <p class="text-sm text-gray-500 line-clamp-2 italic font-black leading-relaxed">"${c.descChange}"</p>
+            </div>
+        </div>`;
+    }).join('');
+    
+    document.getElementById('galleryModal').classList.remove('hidden');
+    document.body.style.overflow = 'hidden'; // 배경 스크롤 방지
+}
+// 끝 지점: 위 함수의 닫는 중괄호 }
 
         function closeGallery() { document.getElementById('galleryModal').classList.add('hidden'); }
 
@@ -282,3 +306,4 @@
     </script>
 </body>
 </html>
+
