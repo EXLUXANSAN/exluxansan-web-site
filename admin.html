@@ -395,14 +395,31 @@
             if(moveTab) showTab('register');
         }
 
-        function exportData() {
+  function exportData() {
             const cases = loadCases();
+            if (cases.length === 0) {
+                alert("추출할 데이터가 없습니다.");
+                return;
+            }
+
             const dataStr = "const EXLUX_DATA = " + JSON.stringify(cases, null, 2) + ";";
             const blob = new Blob([dataStr], {type: "text/javascript"});
-            const a = document.createObjectURL(blob);
-            a.href = URL.createObjectURL(blob);
+            
+            // 링크 태그를 올바르게 생성하는 로직입니다.
+            const a = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            
+            a.href = url;
             a.download = "exlux_db.js";
+            
+            document.body.appendChild(a);
             a.click();
+            
+            // 작업 후 깔끔하게 정리
+            setTimeout(() => {
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            }, 0);
         }
 
         function deleteCase(id) {
@@ -440,3 +457,4 @@
     </script>
 </body>
 </html>
+
